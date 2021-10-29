@@ -1,0 +1,31 @@
+:root {
+  --primary-color: rgb(46, 139, 87);
+}
+
+.btn {
+  border-radius: 1em;
+  border-style: solid;
+  border-width: 0.1em;
+  padding: 0.5em 1.5em;
+  font-weight: bold;
+  /* margin: 0.5em; */
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  transition: transform 0.2s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btnPrimary {
+  background-color: var(--primary-color);
+  color: whitesmoke;
+  border-color: transparent;
+}
+
+.btnSecondary {
+  background-color: transparent;
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
