@@ -80,7 +80,7 @@
 
 .home-banner {
   width: 90%;
-  margin: auto;
+  margin: auto 0;
   transition: transform 0.5s;
 }
 
