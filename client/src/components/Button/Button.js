@@ -1,8 +1,16 @@
 import "./button.css"
 
 function Button({ handleClick, text, secondary }) {
+  const handleOnClick = (e) => {
+    e.preventDefault()
+    handleClick()
+  }
+
   return (
-    <button onClick={handleClick} className={`btn ${secondary ? "btnSecondary" : "btnPrimary"}`}>
+    <button
+      onClick={(e) => handleOnClick(e)}
+      className={`btn ${secondary ? "btnSecondary" : "btnPrimary"}`}
+    >
       {text}
     </button>
   )
