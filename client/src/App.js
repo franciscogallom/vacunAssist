@@ -50,7 +50,7 @@ function App() {
           dni,
           password,
           vaccination,
-          dateOfBirth,
+          date_of_birth: dateOfBirth,
         })
         .then((res) => {
           console.log(res)
