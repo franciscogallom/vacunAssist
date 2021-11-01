@@ -5,17 +5,28 @@ import Button from "./components/Button/Button"
 
 function App() {
   const [hasAnAccount, setHasAnAccount] = useState(false)
+  const [name, setName] = useState('')
+  const [lastName, setLastname] = useState('')
+  const [email, setEmail] = useState('')
+  const [dni, setDni] = useState('')
+  const [password, setPassword] = useState('')
+  const [verifyPassword, setVerifyPassword] = useState('')
+  const [date, setDate] = useState('')
+  const [vacunatorio, setVacunatorio] = useState('')
+
+  const [dniLogin, setDniLogin] = useState('');
+  const [passwordLogin, setPasswordLogin] = useState('')
 
   return (
     <div className="App">
       {hasAnAccount ? (
         <div className="form-container">
           <form className="form">
-            <input placeholder="Email" type="text" />
-            <input placeholder="Contraseña" type="password" />
+            <input onChange={e => setDniLogin(e.target.value)} placeholder="DNI" type="text" />
+            <input onChange={e => setPasswordLogin(e.target.value)} placeholder="Contraseña" type="password" />
 
             <div className="buttons-container">
-              <Button handleClick={() => alert("Inicia sesión")} text="Iniciar sesión" />
+              <Button handleClick={() => console.log(`${dniLogin}`)} text="Iniciar sesión" />
               <Button
                 handleClick={() => setHasAnAccount((prevState) => !prevState)}
                 text="No tengo cuenta"
@@ -27,25 +38,25 @@ function App() {
       ) : (
         <div className="form-container">
           <form className="form">
-            <input placeholder="Nombre" type="text" />
-            <input placeholder="Apellido" type="text" />
-            <input placeholder="Email" type="text" />
-            <input placeholder="DNI" type="text" />
-            <input placeholder="Contraseña" type="password" />
-            <input placeholder="Repetir contraseña" type="password" />
+            <input onChange={e => setName(e.target.value)} placeholder="Nombre" type="text" />
+            <input onChange={e => setLastname(e.target.value)} placeholder="Apellido" type="text" />
+            <input onChange={e => setEmail(e.target.value)} placeholder="Email" type="text" />
+            <input onChange={e => setDni(e.target.value)} placeholder="DNI" type="text" />
+            <input onChange={e => setPassword(e.target.value)} placeholder="Contraseña" type="password" />
+            <input onChange={e => setVerifyPassword(e.target.value)}  placeholder="Repetir contraseña" type="password" />
 
             <p className="form-label">Fecha de nacimiento.</p>
-            <input className="form-date" type="date" />
+            <input onChange={e => setDate(e.target.value)} className="form-date" type="date" />
 
             <p className="form-label">Vacunatorio.</p>
-            <select className="select" name="" id="">
+            <select onChange={e => setVacunatorio(e.target.value)} className="select" name="" id="">
               <option value="vac1">H.S.E. "Elina de la Serna de Montes"</option>
               <option value="vac2">Estadio "Único" de La Plata</option>
               <option value="vac3">Polideportivo Los Hornos </option>
             </select>
 
             <div className="buttons-container">
-              <Button handleClick={() => alert("Se registra el usuario")} text="Registrarme" />
+              <Button handleClick={() => console.log(`${name} ${lastName} ${email} ${date} ${vacunatorio} `)} text="Registrarme" />
               <Button
                 handleClick={() => setHasAnAccount((prevState) => !prevState)}
                 text="Ya tengo cuenta!"
