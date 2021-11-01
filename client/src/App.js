@@ -4,6 +4,7 @@ import homeBannerSVG from "./assets/images/home-banner.svg"
 import logo from "./assets/images/logo.png"
 import Button from "./components/Button/Button"
 import axios from "axios"
+import { signupValidation } from "./services/signupValidation"
 
 function App() {
   // Signup states.
@@ -19,9 +20,9 @@ function App() {
   // LoginStates
   const [dniLogin, setDniLogin] = useState("")
   const [passwordLogin, setPasswordLogin] = useState("")
+  // Errors state
+  const [errors, setErrors] = useState([])
 
-  // maxDate
-  
   const handleLogin = () => {
     axios
       .post("http://localhost:8080/api/auth/login", {
@@ -37,34 +38,34 @@ function App() {
   }
 
   const handleSignUp = () => {
-    axios
-      .post("http://localhost:8080/api/auth/signup", {
-        email,
-        name,
-        lastname,
-        dni,
-        password,
-        vaccination,
-        dateOfBirth
-      })
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    setErrors(
+      signupValidation({ email, name, lastname, dni, password, verifyPassword, dateOfBirth })
+    )
+    if (errors.length === 0) {
+      axios
+        .post("http://localhost:8080/api/auth/signup", {
+          email,
+          name,
+          lastname,
+          dni,
+          password,
+          vaccination,
+          dateOfBirth,
+        })
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
   }
 
   const getMaxDate = () => {
     const todayDate = new Date()
-    let max=""
-    if(todayDate.getUTCDay() < 10){
-      max=`${todayDate.getFullYear()}-${todayDate.getMonth()}-0${todayDate.getUTCDay()}`
-    }
-    else{
-      max=`${todayDate.getFullYear()}-${todayDate.getMonth()}-${todayDate.getUTCDay()}`
-    }
-    return max
+    const UTCDay = todayDate.getUTCDay()
+    const day = UTCDay < 10 ? `0${UTCDay}` : UTCDay
+    return `${todayDate.getFullYear()}-${todayDate.getMonth()}-${day}`
   }
 
   return (
@@ -73,7 +74,7 @@ function App() {
         <div className="form-container">
           <form className="form">
             <img className="logo" src={logo} alt="Logo de VacunAssist" />
-            <input onChange={(e) => setDniLogin(e.target.value)} placeholder="DNI" type="text" />
+            <input onChange={(e) => setDniLogin(e.target.value)} placeholder="DNI" type="number" />
             <input
               onChange={(e) => setPasswordLogin(e.target.value)}
               placeholder="Contraseña"
@@ -101,7 +102,7 @@ function App() {
               type="text"
             />
             <input onChange={(e) => setEmail(e.target.value)} placeholder="Email" type="text" />
-            <input onChange={(e) => setDni(e.target.value)} placeholder="DNI" type="text" />
+            <input onChange={(e) => setDni(e.target.value)} placeholder="DNI" type="number" />
             <input
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Contraseña"
@@ -113,20 +114,29 @@ function App() {
               type="password"
             />
 
-            <p className="form-label">Fecha de nacimiento.</p>
-            <input min="1890-01-01" max={`${getMaxDate()}`} onChange={(e) => setDateOfBirth(e.target.value)} className="form-date" type="date" />
+            <p className="form-label">Fecha de nacimiento</p>
+            <input
+              min="1890-01-01"
+              max={`${getMaxDate()}`}
+              onChange={(e) => setDateOfBirth(e.target.value)}
+              className="form-date"
+              type="date"
+            />
 
-            <p className="form-label">Vacunatorio.</p>
-            <select
-              onChange={(e) => setVaccination(e.target.value)}
-              className="select"
-              name=""
-              id=""
-            >
-              <option value="vac1">H.S.E. "Elina de la Serna de Montes"</option>
-              <option value="vac2">Estadio "Único" de La Plata</option>
-              <option value="vac3">Polideportivo Los Hornos </option>
+            <p className="form-label">Vacunatorio</p>
+            <select onChange={(e) => setVaccination(e.target.value)} className="select">
+              <option value="polideportivo">Polideportivo</option>
+              <option value="corralon">Corralón municipal</option>
+              <option value="anexo">Anexo Hospital 9 de Julio</option>
             </select>
+
+            {errors.length > 0 && (
+              <ul className="form-errors">
+                {errors.map((error) => (
+                  <li>{error}</li>
+                ))}
+              </ul>
+            )}
 
             <div className="buttons-container">
               <Button handleClick={() => handleSignUp()} text="Registrarme" />
