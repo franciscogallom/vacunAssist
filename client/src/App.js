@@ -13,12 +13,14 @@ function App() {
   const [dni, setDni] = useState("")
   const [password, setPassword] = useState("")
   const [verifyPassword, setVerifyPassword] = useState("")
-  const [date_of_birth, setDate_of_birth] = useState("")
-  const [vaccination, setVacunatorio] = useState("")
+  const [dateOfBirth, setDateOfBirth] = useState("")
+  const [vaccination, setVaccination] = useState("")
   // LoginStates
   const [dniLogin, setDniLogin] = useState("")
   const [passwordLogin, setPasswordLogin] = useState("")
 
+  // maxDate
+  
   const handleLogin = () => {
     axios
       .post("http://localhost:8080/api/auth/login", {
@@ -42,7 +44,7 @@ function App() {
         dni,
         password,
         vaccination,
-        date_of_birth
+        dateOfBirth
       })
       .then((res) => {
         console.log(res)
@@ -50,6 +52,18 @@ function App() {
       .catch((error) => {
         console.log(error)
       })
+  }
+
+  const getMaxDate = () => {
+    const todayDate = new Date()
+    let max=""
+    if(todayDate.getUTCDay() < 10){
+      max=`${todayDate.getFullYear()}-${todayDate.getMonth()}-0${todayDate.getUTCDay()}`
+    }
+    else{
+      max=`${todayDate.getFullYear()}-${todayDate.getMonth()}-${todayDate.getUTCDay()}`
+    }
+    return max
   }
 
   return (
@@ -97,11 +111,11 @@ function App() {
             />
 
             <p className="form-label">Fecha de nacimiento.</p>
-            <input onChange={(e) => setDate_of_birth(e.target.value)} className="form-date" type="date" />
+            <input min="1890-01-01" max={`${getMaxDate()}`} onChange={(e) => setDateOfBirth(e.target.value)} className="form-date" type="date" />
 
             <p className="form-label">Vacunatorio.</p>
             <select
-              onChange={(e) => setVacunatorio(e.target.value)}
+              onChange={(e) => setVaccination(e.target.value)}
               className="select"
               name=""
               id=""
