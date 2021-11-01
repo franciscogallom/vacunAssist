@@ -13,14 +13,14 @@ export const signupValidation = ({
     const regexEmail = new RegExp(".+@.+..+", "")
     const regexPassword = new RegExp("^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*])(?=.{8,})")
     const isValidDate = dateOfBirth
-    if(!regexEmail.test(email)){
-        errors.push('El email es inválido')
-    }
     if(name.length === 0){
         errors.push('Ingrese un nombre')
     }
     if(lastname.length === 0){
         errors.push('Ingrese un apellido')
+    }
+    if(!regexEmail.test(email)){
+        errors.push('El email es inválido')
     }
     if(dni.length > 8 || dni.length < 6){
         errors.push('El DNI debe contener entre 6 y 8 números')
