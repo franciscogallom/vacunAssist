@@ -49,8 +49,10 @@
 }
 
 .form-label {
-  margin: 0.75em 0;
-  font-weight: 600;
+  margin: 0.5em 0.2em;
+  font-weight: 700;
+  font-size: 0.8em;
+  opacity: 0.2;
 }
 
 .form-date {
@@ -76,6 +78,12 @@
   margin: 1em 0;
   display: flex;
   justify-content: space-between;
+}
+
+.logo {
+  height: 4.5em;
+  margin: 0 5em;
+  text-align: center;
 }
 
 .home-banner {
