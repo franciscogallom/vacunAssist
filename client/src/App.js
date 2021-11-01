@@ -1,6 +1,7 @@
 import { useState } from "react"
 import "./App.css"
 import homeBannerSVG from "./assets/images/home-banner.svg"
+import logo from "./assets/images/logo.png"
 import Button from "./components/Button/Button"
 import axios from "axios"
 
@@ -37,7 +38,7 @@ function App() {
 
   const handleSignUp = () => {
     axios
-      .post("http://localhost:8080/api/auth/signup" , {
+      .post("http://localhost:8080/api/auth/signup", {
         email,
         name,
         lastname,
@@ -71,6 +72,7 @@ function App() {
       {hasAnAccount ? (
         <div className="form-container">
           <form className="form">
+            <img className="logo" src={logo} alt="Logo de VacunAssist" />
             <input onChange={(e) => setDniLogin(e.target.value)} placeholder="DNI" type="text" />
             <input
               onChange={(e) => setPasswordLogin(e.target.value)}
@@ -91,6 +93,7 @@ function App() {
       ) : (
         <div className="form-container">
           <form className="form">
+            <img className="logo" src={logo} alt="Logo de VacunAssist" />
             <input onChange={(e) => setName(e.target.value)} placeholder="Nombre" type="text" />
             <input
               onChange={(e) => setLastname(e.target.value)}
@@ -126,10 +129,7 @@ function App() {
             </select>
 
             <div className="buttons-container">
-              <Button
-                handleClick={() => handleSignUp() }
-                text="Registrarme"
-              />
+              <Button handleClick={() => handleSignUp()} text="Registrarme" />
               <Button
                 handleClick={() => setHasAnAccount((prevState) => !prevState)}
                 text="Ya tengo cuenta!"

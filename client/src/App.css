@@ -28,10 +28,11 @@
   border-style: solid;
   border-color: rgba(2, 136, 2, 0.5);
   border-width: 0 0 0.05em 0;
-  margin: 1.5em 0;
+  margin: 1em 0;
   background-color: transparent;
   width: 100%;
   font-weight: 600;
+  transition: border 0.5s;
 }
 
 .form input::-webkit-input-placeholder {
@@ -46,15 +47,27 @@
 
 .form input:focus {
   outline: none;
+  border-color: rgba(0, 226, 0, 0.5);
+  border-width: 0 0 0.15em 0;
 }
 
 .form-label {
-  margin: 0.75em 0;
-  font-weight: 600;
+  margin: 0.5em 0.2em;
+  font-weight: 700;
+  font-size: 0.8em;
+  opacity: 0.2;
 }
 
 .form-date {
   margin: 0 !important;
+}
+
+.form-errors {
+  color: red;
+  font-size: 0.7em;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0 1.3em;
 }
 
 .select {
@@ -76,6 +89,12 @@
   margin: 1em 0;
   display: flex;
   justify-content: space-between;
+}
+
+.logo {
+  height: 4.5em;
+  margin: 0 5em;
+  text-align: center;
 }
 
 .home-banner {

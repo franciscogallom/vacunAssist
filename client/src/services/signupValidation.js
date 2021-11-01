@@ -7,11 +7,12 @@ export const signupValidation = ({
     dni,
     password,
     verifyPassword,
-    date_of_birth
+    dateOfBirth
   }) => {
     const errors = []
     const regexEmail = new RegExp(".+@.+..+", "")
     const regexPassword = new RegExp("^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&*])(?=.{8,})")
+    const isValidDate = dateOfBirth
     if(!regexEmail.test(email)){
         errors.push('El email es inválido')
     }
@@ -30,6 +31,6 @@ export const signupValidation = ({
     if(!(verifyPassword === password)){
         errors.push('Las contraseñas deben coincidir')
     }
-    
+
     return errors
 }
