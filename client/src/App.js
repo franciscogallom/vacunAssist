@@ -8,13 +8,13 @@ function App() {
   // Signup states.
   const [hasAnAccount, setHasAnAccount] = useState(false)
   const [name, setName] = useState("")
-  const [lastName, setLastname] = useState("")
+  const [lastname, setLastname] = useState("")
   const [email, setEmail] = useState("")
   const [dni, setDni] = useState("")
   const [password, setPassword] = useState("")
   const [verifyPassword, setVerifyPassword] = useState("")
-  const [date, setDate] = useState("")
-  const [vacunatorio, setVacunatorio] = useState("")
+  const [date_of_birth, setDate_of_birth] = useState("")
+  const [vaccination, setVacunatorio] = useState("")
   // LoginStates
   const [dniLogin, setDniLogin] = useState("")
   const [passwordLogin, setPasswordLogin] = useState("")
@@ -24,6 +24,25 @@ function App() {
       .post("http://localhost:8080/api/auth/login", {
         dni: dniLogin,
         password: passwordLogin,
+      })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  const handleSignUp = () => {
+    axios
+      .post("http://localhost:8080/api/auth/signup" , {
+        email,
+        name,
+        lastname,
+        dni,
+        password,
+        vaccination,
+        date_of_birth
       })
       .then((res) => {
         console.log(res)
@@ -78,7 +97,7 @@ function App() {
             />
 
             <p className="form-label">Fecha de nacimiento.</p>
-            <input onChange={(e) => setDate(e.target.value)} className="form-date" type="date" />
+            <input onChange={(e) => setDate_of_birth(e.target.value)} className="form-date" type="date" />
 
             <p className="form-label">Vacunatorio.</p>
             <select
@@ -94,9 +113,7 @@ function App() {
 
             <div className="buttons-container">
               <Button
-                handleClick={() =>
-                  console.log(`${name} ${lastName} ${email} ${date} ${vacunatorio} `)
-                }
+                handleClick={() => handleSignUp() }
                 text="Registrarme"
               />
               <Button
