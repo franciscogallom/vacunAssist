@@ -21,7 +21,7 @@ function Comorbidities() {
     const history = useHistory()
 
     const handleSubmit = () => {
-      history.push("/home")
+      history.push("/login")
     }
   
     return (
