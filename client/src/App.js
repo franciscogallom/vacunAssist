@@ -1,8 +1,8 @@
-import { Switch, BrowserRouter, Route } from 'react-router-dom'
-import { ContextProvider } from './context/context'
-import Comorbidities from './components/Onboarding/Comorbidities'
-import Login from './components/Onboarding/Login'
-import Signup from './components/Onboarding/Signup'
+import { Switch, BrowserRouter, Route } from "react-router-dom"
+import { ContextProvider } from "./context/context"
+import Comorbidities from "./components/Onboarding/Comorbidities"
+import Login from "./components/Onboarding/Login"
+import Signup from "./components/Onboarding/Signup"
 import Home from "./components/Home/Home"
 
 function App() {
@@ -18,6 +18,6 @@ function App() {
       </BrowserRouter>
     </ContextProvider>
   )
-} 
+}
 
 export default App
