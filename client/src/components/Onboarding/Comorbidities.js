@@ -1,11 +1,15 @@
 import './onboarding.css'
 import { useState } from "react"
 import { useHistory } from 'react-router-dom'
+import { useContext } from 'react'
 import homeBannerSVG from "../../assets/images/home-banner.svg"
 import logo from "../../assets/images/logo.png"
 import Button from "../Button/Button"
+import Context from '../../context/context'
+import axios from 'axios'
 
 function Comorbidities() {
+    const { dni } = useContext(Context)
     const [ com1, setCom1 ] = useState(false)
     const [ com2, setCom2 ] = useState(false)
     const [ com3, setCom3 ] = useState(false)
@@ -21,6 +25,13 @@ function Comorbidities() {
     const history = useHistory()
 
     const handleSubmit = () => {
+      axios.post('http://localhost:8080/api/auth/signup/comorbidities', { dni, com1, com2, com3, com4, com5, com6, com7, com8, com9, com10, com11, com12 })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
       history.push("/login")
     }
   
