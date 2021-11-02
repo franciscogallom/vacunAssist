@@ -6,18 +6,18 @@ router.post("/signup", (req, res) => {
   const confirmed = false
   const createdAt = new Date().toLocaleString()
 
-  db.query(`SELECT email FROM users WHERE email=${email}`, (error, result) => {
+  db.query(`SELECT email FROM users WHERE email='${email}'`, (error, result) => {
     if (error) {
       res.send({ error })
     } else {
-      if (result.lenght > 0) {
-        res.send("Email ya está en uso.")
+      if (result[0]) {
+        res.send({ error: true, message: "El email ya está en uso." })
       } else {
         db.query(`SELECT dni FROM users WHERE dni=${dni}`, (error, result) => {
           if (error) {
             res.send({ error })
-          } else if (result.lenght > 0) {
-            res.send("DNI ya está uso.")
+          } else if (result[0]) {
+            res.send({ error: true, message: "El DNI ya está en uso." })
           } else {
             db.query(
               "INSERT INTO users (email, name, lastname, dni, password, vaccination, date_of_birth, confirmed, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -79,8 +79,8 @@ router.post("/login", (req, res) => {
 })
 
 router.post("/verification/:dni", (req, res) => {
-  const {dni} = req.params
-  db.query(`UPDATE users SET confirmed = true WHERE dni = ${dni}`, (error,result) => {
+  const { dni } = req.params
+  db.query(`UPDATE users SET confirmed = true WHERE dni = ${dni}`, (error, result) => {
     if (error) {
       res.send(error)
     } else if (result.affectedRows === 0) {
