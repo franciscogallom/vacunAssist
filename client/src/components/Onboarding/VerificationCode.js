@@ -53,7 +53,7 @@ function VerificationCode() {
           )}
 
           <div className="buttons-container">
-            <Button handleClick={() => handleSubmit()} text="Iniciar sesión" />
+            <Button handleClick={() => handleSubmit()} text="Registrarme" />
             <Button handleClick={() => sendAgain()} text="Reenviar código" secondary />
           </div>
         </form>
