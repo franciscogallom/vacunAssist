@@ -16,15 +16,22 @@ function Signup() {
   const [password, setPassword] = useState("")
   const [verifyPassword, setVerifyPassword] = useState("")
   const [dateOfBirth, setDateOfBirth] = useState("")
-  const [vaccination, setVaccination] = useState("")
+  const [vaccination, setVaccination] = useState("polideportivo")
   const [errors, setErrors] = useState([])
   const history = useHistory()
 
   const handleSignUp = () => {
-    setErrors(
-      signupValidation({ email, name, lastname, dni, password, verifyPassword, dateOfBirth })
-    )
-    if (errors.length === 0) {
+    const validations = signupValidation({
+      email,
+      name,
+      lastname,
+      dni,
+      password,
+      verifyPassword,
+      dateOfBirth,
+    })
+    setErrors(validations)
+    if (validations.length === 0) {
       axios
         .post("http://localhost:8080/api/auth/signup", {
           email,
@@ -36,11 +43,15 @@ function Signup() {
           date_of_birth: dateOfBirth,
         })
         .then((res) => {
-          console.log(res)
-          history.push("/comorbidities")
+          if (res.data.error) {
+            setErrors((prevState) => [...prevState, res.data.message])
+          } else {
+            history.push("/comorbidities")
+          }
         })
         .catch((error) => {
           console.log(error)
+          setErrors((prevState) => [...prevState, "Algo salió mal..."])
         })
     }
   }
