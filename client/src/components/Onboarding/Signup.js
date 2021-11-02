@@ -36,6 +36,7 @@ function Signup() {
           })
           .then((res) => {
             console.log(res)
+            history.push("/comorbidities")
           })
           .catch((error) => {
             console.log(error)
@@ -92,8 +93,8 @@ function Signup() {
     
                 {errors.length > 0 && (
                   <ul className="form-errors">
-                    {errors.map((error) => (
-                      <li>{error}</li>
+                    {errors.map((error, index) => (
+                      <li key={index}>{error}</li>
                     ))}
                   </ul>
                 )}

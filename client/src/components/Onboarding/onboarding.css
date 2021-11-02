@@ -90,7 +90,36 @@
     display: flex;
     justify-content: space-between;
   }
-  
+
+  .form-container h5 {
+    margin: 0 0 .75em 0;
+    opacity: .8;
+    font-weight: 800;
+    font-style: italic;
+    border-bottom: rgba(0, 0, 0, 0.219) solid .05em;
+  }
+
+  .comorbidities-container {
+    font-size: .8em;
+    font-weight: bold;
+  }
+
+  .comorbidities-container p {
+    opacity: .25;
+    cursor: pointer;
+    margin-bottom: .2em;
+    transition: opacity .3s, transform .3s;
+  }
+
+  .comorbidities-container p:hover {
+    transform: scale(1.025);
+    opacity: .75;
+  }
+
+  .comorbidities-container .active {
+    opacity: .9;
+  }
+
   .logo {
     height: 4.5em;
     margin: 0 5em;
