@@ -43,11 +43,15 @@ function Comorbidities() {
       })
       .then((res) => {
         console.log(res)
+        localStorage.setItem(
+          "verificationCode",
+          Math.floor(Math.random() * (999999 - 100000)) + 100000
+        )
+        history.push("/verification")
       })
       .catch((error) => {
         console.log(error)
       })
-    history.push("/login")
   }
 
   return (
@@ -55,7 +59,7 @@ function Comorbidities() {
       <div className="form-container">
         <form className="form">
           <img className="logo" src={logo} alt="Logo de VacunAssist" />
-          <h5>Haga click en las comorbilidades que le correspondan y luego guarde.</h5>
+          <h5>Haga click en las comorbilidades que le correspondan y luego continue.</h5>
           <div className="comorbidities-container">
             <p onClick={() => setCom1((prevState) => !prevState)} className={com1 ? "active" : ""}>
               Diabetes tipo 1 o 2.
@@ -106,7 +110,7 @@ function Comorbidities() {
           </div>
 
           <div className="buttons-container">
-            <Button handleClick={() => handleSubmit()} text="Guardar" />
+            <Button handleClick={() => handleSubmit()} text="Continuar" />
           </div>
         </form>
       </div>
