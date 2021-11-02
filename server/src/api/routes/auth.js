@@ -70,6 +70,18 @@ router.post("/login", (req, res) => {
   })
 })
 
+router.post("/verification/:dni", (req, res) => {
+  const {dni} = req.params
+  db.query(`UPDATE users SET confirmed = true WHERE dni = ${dni}`, (error,result) => {
+    if (error) {
+      res.send(error)
+    }else if (result.affectedRows === 0) {
+      res.send("No existe el DNI.")
+    } else {
+      res.send("Confirmación realizada.")
+    }
+  })
+})
 
 
 
