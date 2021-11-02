@@ -62,50 +62,55 @@ function Comorbidities() {
           <h5>Haga click en las comorbilidades que le correspondan y luego continue.</h5>
           <div className="comorbidities-container">
             <p onClick={() => setCom1((prevState) => !prevState)} className={com1 ? "active" : ""}>
-              Diabetes tipo 1 o 2.
+              <span className="icon">{com1 ? "✅" : "❌"}</span> Diabetes tipo 1 o 2.
             </p>
             <p onClick={() => setCom2((prevState) => !prevState)} className={com2 ? "active" : ""}>
-              Obesidad de 2do o 3er grado.
+              <span className="icon">{com2 ? "✅" : "❌"}</span> Obesidad de 2do o 3er grado.
             </p>
             <p onClick={() => setCom3((prevState) => !prevState)} className={com3 ? "active" : ""}>
-              Enfermedad cardiovascular.
+              <span className="icon">{com3 ? "✅" : "❌"}</span> Enfermedad cardiovascular.
             </p>
             <p onClick={() => setCom4((prevState) => !prevState)} className={com4 ? "active" : ""}>
-              Enfermedad renal crónica (incluidos pacientes en diálisis crónica).
+              <span className="icon">{com4 ? "✅" : "❌"}</span> Enfermedad renal crónica (incluidos
+              pacientes en diálisis crónica).
             </p>
             <p onClick={() => setCom5((prevState) => !prevState)} className={com5 ? "active" : ""}>
-              Enfermedad respiratoria crónica.
+              <span className="icon">{com5 ? "✅" : "❌"}</span> Enfermedad respiratoria crónica.
             </p>
             <p onClick={() => setCom6((prevState) => !prevState)} className={com6 ? "active" : ""}>
-              VIH (independientemente del recuento de CD4 y niveles de carga viral).
+              <span className="icon">{com6 ? "✅" : "❌"}</span> VIH (independientemente del
+              recuento de CD4 y niveles de carga viral).
             </p>
             <p onClick={() => setCom7((prevState) => !prevState)} className={com7 ? "active" : ""}>
-              En lista de espera para trasplante de órganos sólidos y trasplantados de órganos
-              sólidos.
+              <span className="icon">{com7 ? "✅" : "❌"}</span> En lista de espera para trasplante
+              de órganos sólidos y trasplantados de órganos sólidos.
             </p>
             <p onClick={() => setCom8((prevState) => !prevState)} className={com8 ? "active" : ""}>
-              Personas con discapacidad residentes de hogares, residencias y pequeños hogares.
+              <span className="icon">{com8 ? "✅" : "❌"}</span> Personas con discapacidad
+              residentes de hogares, residencias y pequeños hogares.
             </p>
             <p onClick={() => setCom9((prevState) => !prevState)} className={com9 ? "active" : ""}>
-              Pacientes oncológicos y oncohematológicos.
+              <span className="icon">{com9 ? "✅" : "❌"}</span> Pacientes oncológicos y
+              oncohematológicos.
             </p>
             <p
               onClick={() => setCom10((prevState) => !prevState)}
               className={com10 ? "active" : ""}
             >
-              Tratamiento quimioterápico.
+              <span className="icon">{com10 ? "✅" : "❌"}</span> Tratamiento quimioterápico.
             </p>
             <p
               onClick={() => setCom11((prevState) => !prevState)}
               className={com11 ? "active" : ""}
             >
-              Cursando una TB activa.
+              <span className="icon">{com11 ? "✅" : "❌"}</span> Cursando una TB activa.
             </p>
             <p
               onClick={() => setCom12((prevState) => !prevState)}
               className={com12 ? "active" : ""}
             >
-              Personas con discapacidad Intelectual y del desarrollo.
+              <span className="icon">{com12 ? "✅" : "❌"}</span> Personas con discapacidad
+              Intelectual y del desarrollo.
             </p>
           </div>
 
