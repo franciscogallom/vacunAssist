@@ -1,17 +1,18 @@
 import './onboarding.css'
 import axios from "axios"
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { useHistory } from 'react-router-dom'
 import homeBannerSVG from "../../assets/images/home-banner.svg"
 import logo from "../../assets/images/logo.png"
 import Button from "../Button/Button"
 import { signupValidation } from "../../services/signupValidation"
+import Context from "../../context/context"
 
 function Signup() {
+    const { dni, setDni } = useContext(Context)
     const [name, setName] = useState("")
     const [lastname, setLastname] = useState("")
     const [email, setEmail] = useState("")
-    const [dni, setDni] = useState("")
     const [password, setPassword] = useState("")
     const [verifyPassword, setVerifyPassword] = useState("")
     const [dateOfBirth, setDateOfBirth] = useState("")
