@@ -1,25 +1,27 @@
 import "./onboarding.css"
 import axios from "axios"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { useHistory } from "react-router-dom"
 import homeBannerSVG from "../../assets/images/home-banner.svg"
 import logo from "../../assets/images/logo.png"
 import Button from "../Button/Button"
+import Context from "../../context/context"
 
 function Login() {
-  const [dniLogin, setDniLogin] = useState("")
-  const [passwordLogin, setPasswordLogin] = useState("")
+  const { dni, setDni } = useContext(Context)
+  const [password, setPassword] = useState("")
   const [errors, setErrors] = useState([])
   const history = useHistory()
 
   const handleLogin = () => {
     axios
       .post("http://localhost:8080/api/auth/login", {
-        dni: dniLogin,
-        password: passwordLogin,
+        dni,
+        password,
       })
       .then((res) => {
         console.log(res)
+        history.push("/home")
       })
       .catch((error) => {
         setErrors(error)
@@ -32,9 +34,9 @@ function Login() {
       <div className="form-container">
         <form className="form">
           <img className="logo" src={logo} alt="Logo de VacunAssist" />
-          <input onChange={(e) => setDniLogin(e.target.value)} placeholder="DNI" type="number" />
+          <input onChange={(e) => setDni(e.target.value)} placeholder="DNI" type="number" />
           <input
-            onChange={(e) => setPasswordLogin(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             placeholder="Contraseña"
             type="password"
           />
