@@ -1,3 +1,4 @@
+
 import "./onboarding.css"
 import { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
@@ -72,7 +73,7 @@ function VerificationCode() {
           )}
 
           <div className="buttons-container">
-            <Button handleClick={() => handleSubmit()} text="Registrarme" />
+            <Button handleClick={() => handleSubmit()} text="Continuar" />
             <Button handleClick={() => sendAgain()} text="Reenviar código" secondary />
           </div>
         </form>
