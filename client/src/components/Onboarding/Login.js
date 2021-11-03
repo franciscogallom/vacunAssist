@@ -14,35 +14,38 @@ function Login() {
   const history = useHistory()
 
   const handleLogin = () => {
-    if ( dni.length === 0  || password.length === 0){
-      setErrors(["Complete todos los datos."])  
+    if (dni.length === 0 || password.length === 0) {
+      setErrors(["Complete todos los datos."])
     } else {
-       axios
-         .post("http://localhost:8080/api/auth/login", {
-           dni,
-           password,
-         })
-         .then((res) => {
-           if (res.data.error) {
-             setErrors([res.data.message])
-           } else {
+      axios
+        .post("http://localhost:8080/api/auth/login", {
+          dni,
+          password,
+        })
+        .then((res) => {
+          if (res.data.error) {
+            setErrors([res.data.message])
+          } else {
             localStorage.setItem(
               "verificationCode",
-              Math.floor(Math.random() * (999999 - 100000)) + 100000)
-             axios
-              .post(`http://localhost:8080/api/auth/verification/${dni}`, {verificationCode: localStorage.getItem("verificationCode")})
+              Math.floor(Math.random() * (999999 - 100000)) + 100000
+            )
+            axios
+              .post(`http://localhost:8080/api/auth/verification/${dni}`, {
+                verificationCode: localStorage.getItem("verificationCode"),
+              })
               .then(() => {
                 history.push("/verification")
               })
               .catch((error) => {
                 console.log(error)
               })
-           }
-         })
-         .catch((error) => {
-           setErrors(error)
-           console.log(errors)
-         })
+          }
+        })
+        .catch((error) => {
+          setErrors(error)
+          console.log(errors)
+        })
     }
   }
 
