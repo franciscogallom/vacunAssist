@@ -2,11 +2,11 @@ import "./onboarding.css"
 import { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import homeBannerSVG from "../../assets/images/home-banner.svg"
-import logo from "../../assets/images/logo.png"
 import Button from "../Button/Button"
 import axios from "axios"
 import { useContext } from "react/cjs/react.development"
 import Context from "../../context/context"
+import Form from "../Form/Form"
 
 function VerificationCode() {
   const [code, setCode] = useState("")
@@ -52,36 +52,32 @@ function VerificationCode() {
 
   return (
     <div className="onboarding-container">
-      <div className="form-container">
-        <form className="form">
-          <img className="logo" src={logo} alt="Logo de VacunAssist" />
+      <Form>
+        {!message ? (
+          <h5 style={{ border: "none", opacity: ".7" }}>
+            Te enviamos un código a tu correo, tene en cuenta que expirará en 10 minutos.
+          </h5>
+        ) : (
+          <p className="validation-message">{message}</p>
+        )}
 
-          {!message ? (
-            <h5 style={{ border: "none", opacity: ".7" }}>
-              Te enviamos un código a tu correo, tene en cuenta que expirará en 10 minutos.
-            </h5>
-          ) : (
-            <p className="validation-message">{message}</p>
-          )}
+        <input
+          onChange={(e) => setCode(e.target.value)}
+          placeholder="Codigo de verificación."
+          type="number"
+        />
 
-          <input
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="Codigo de verificación."
-            type="number"
-          />
+        {error && (
+          <ul className="form-errors">
+            <li>{error}</li>
+          </ul>
+        )}
 
-          {error && (
-            <ul className="form-errors">
-              <li>{error}</li>
-            </ul>
-          )}
-
-          <div className="buttons-container">
-            <Button handleClick={() => handleSubmit()} text="Continuar" />
-            <Button handleClick={() => sendAgain()} text="Reenviar código" secondary />
-          </div>
-        </form>
-      </div>
+        <div className="buttons-container">
+          <Button handleClick={() => handleSubmit()} text="Continuar" />
+          <Button handleClick={() => sendAgain()} text="Reenviar código" secondary />
+        </div>
+      </Form>
       <img className="home-banner" src={homeBannerSVG} alt="Ilustración de médicos" />
     </div>
   )

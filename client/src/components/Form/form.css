@@ -1,0 +1,82 @@
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  padding: 1em 2em;
+  width: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 1em;
+  box-shadow: rgba(255, 255, 255, 0.1) 0px 1px 1px 0px inset,
+    rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.form input {
+  display: block;
+  border-style: solid;
+  border-color: rgba(2, 136, 2, 0.5);
+  border-width: 0 0 0.05em 0;
+  margin: 1em 0;
+  background-color: transparent;
+  width: 100%;
+  font-weight: 600;
+  transition: border 0.5s;
+}
+
+.form input::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  opacity: 0.4;
+}
+
+.form input::-moz-placeholder {
+  /* Firefox 19+ */
+  opacity: 0.25;
+}
+
+.form input:focus {
+  outline: none;
+  border-color: rgba(0, 226, 0, 0.5);
+  border-width: 0 0 0.15em 0;
+}
+
+.form-label {
+  margin: 0.5em 0.2em;
+  font-weight: 700;
+  font-size: 0.8em;
+  opacity: 0.2;
+}
+
+.form-date {
+  margin: 0 !important;
+}
+
+.form-errors {
+  color: red;
+  font-size: 0.7em;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0 1.3em;
+}
+
+.form-container h5 {
+  margin: 0 0 0.75em 0;
+  opacity: 0.8;
+  font-weight: 800;
+  font-style: italic;
+  border-bottom: rgba(0, 0, 0, 0.219) solid 0.05em;
+}
+
+.logo {
+  height: 4.5em;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}

@@ -3,9 +3,9 @@ import axios from "axios"
 import { useContext, useState } from "react"
 import { useHistory, Link } from "react-router-dom"
 import homeBannerSVG from "../../assets/images/home-banner.svg"
-import logo from "../../assets/images/logo.png"
 import Button from "../Button/Button"
 import Context from "../../context/context"
+import Form from "../Form/Form"
 
 function Login() {
   const { dni, setDni } = useContext(Context)
@@ -42,39 +42,36 @@ function Login() {
 
   return (
     <div className="onboarding-container">
-      <div className="form-container">
-        <form className="form">
-          <img className="logo" src={logo} alt="Logo de VacunAssist" />
-          <input onChange={(e) => setDni(e.target.value)} placeholder="DNI" type="number" />
-          <input
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Contraseña"
-            type="password"
-          />
+      <Form>
+        <input onChange={(e) => setDni(e.target.value)} placeholder="DNI" type="number" />
+        <input
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Contraseña"
+          type="password"
+        />
 
-          {errors.length > 0 && (
-            <ul className="form-errors">
-              {errors.map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </ul>
-          )}
+        {errors.length > 0 && (
+          <ul className="form-errors">
+            {errors.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        )}
 
-          {errorOnConfirmation && (
-            <Link
-              style={{ fontWeight: "bold", fontSize: ".8em", color: "rgb(46, 139, 87)" }}
-              to="/verification"
-            >
-              Verificar
-            </Link>
-          )}
+        {errorOnConfirmation && (
+          <Link
+            style={{ fontWeight: "bold", fontSize: ".8em", color: "rgb(46, 139, 87)" }}
+            to="/verification"
+          >
+            Verificar
+          </Link>
+        )}
 
-          <div className="buttons-container">
-            <Button handleClick={() => handleLogin()} text="Iniciar sesión" />
-            <Button handleClick={() => history.push("/")} text="No tengo cuenta" secondary />
-          </div>
-        </form>
-      </div>
+        <div className="buttons-container">
+          <Button handleClick={() => handleLogin()} text="Iniciar sesión" />
+          <Button handleClick={() => history.push("/")} text="No tengo cuenta" secondary />
+        </div>
+      </Form>
       <img className="home-banner" src={homeBannerSVG} alt="Ilustración de médicos" />
     </div>
   )
