@@ -104,13 +104,12 @@ router.post("/sendEmail/:dni", (req, res) => {
     if (error) {
       res.send({ error })
     } else {
-        sendEmail(result[0].email, verificationCode)
-        .then(() => res.send("Confirmación realizada."))
+      sendEmail(result[0].email, verificationCode)
+        .then(() => res.send(`Email enviado correctamente a ${result[0].email}.`))
         .catch(() => res.send("Algo salio mal..."))
     }
   })
 })
-
 
 router.post("/verification/:dni", (req, res) => {
   const { dni } = req.params
@@ -124,6 +123,5 @@ router.post("/verification/:dni", (req, res) => {
     }
   })
 })
-
 
 module.exports = router
