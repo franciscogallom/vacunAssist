@@ -65,7 +65,7 @@ function Login() {
 
         <div className="buttons-container">
           <Button handleClick={() => handleLogin()} text="Iniciar sesión" />
-          <Button handleClick={() => history.push("/")} text="No tengo cuenta" secondary />
+          <Button handleClick={() => history.push("/signup")} text="No tengo cuenta" secondary />
         </div>
       </Form>
       <img className="home-banner" src={homeBannerSVG} alt="Ilustración de médicos" />
