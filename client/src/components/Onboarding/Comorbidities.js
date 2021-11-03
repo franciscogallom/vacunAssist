@@ -5,7 +5,7 @@ import { useContext } from "react"
 import homeBannerSVG from "../../assets/images/home-banner.svg"
 import Button from "../Button/Button"
 import Context from "../../context/context"
-import axios from "axios"
+import { updateComorbidities } from "../../services/axios/onboarding"
 import Form from "../Form/Form"
 
 function Comorbidities() {
@@ -25,22 +25,21 @@ function Comorbidities() {
   const history = useHistory()
 
   const handleSubmit = () => {
-    axios
-      .post("http://localhost:8080/api/auth/signup/comorbidities", {
-        dni,
-        com1,
-        com2,
-        com3,
-        com4,
-        com5,
-        com6,
-        com7,
-        com8,
-        com9,
-        com10,
-        com11,
-        com12,
-      })
+    updateComorbidities({
+      dni,
+      com1,
+      com2,
+      com3,
+      com4,
+      com5,
+      com6,
+      com7,
+      com8,
+      com9,
+      com10,
+      com11,
+      com12,
+    })
       .then((res) => {
         console.log(res)
         history.push("/verification")

@@ -1,5 +1,5 @@
 import "./onboarding.css"
-import axios from "axios"
+import { login } from "../../services/axios/onboarding"
 import { useContext, useState } from "react"
 import { useHistory, Link } from "react-router-dom"
 import homeBannerSVG from "../../assets/images/home-banner.svg"
@@ -18,11 +18,7 @@ function Login() {
     if (dni.length === 0 || password.length === 0) {
       setErrors(["Complete todos los datos."])
     } else {
-      axios
-        .post("http://localhost:8080/api/auth/login", {
-          dni,
-          password,
-        })
+      login(dni, password)
         .then((res) => {
           if (res.data.error) {
             if (res.data.confirmed) {

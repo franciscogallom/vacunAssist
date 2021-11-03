@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import homeBannerSVG from "../../assets/images/home-banner.svg"
 import Button from "../Button/Button"
-import axios from "axios"
+import { sendEmailByDni, updateConfirmed } from "../../services/axios/onboarding"
 import { useContext } from "react/cjs/react.development"
 import Context from "../../context/context"
 import Form from "../Form/Form"
@@ -15,13 +15,8 @@ function VerificationCode() {
   const history = useHistory()
   const { dni } = useContext(Context)
 
-  
-
   const sendEmail = () => {
-    axios
-      .post(`http://localhost:8080/api/auth/sendEmail/${dni}`, {
-        verificationCode: localStorage.getItem("verificationCode"),
-      })
+    sendEmailByDni(dni)
       .then((res) => {
         console.log(res)
         setTimeout(() => {
@@ -40,18 +35,18 @@ function VerificationCode() {
     setTimeout(() => {
       setMessage("")
     }, 8000)
-    setError("") 
+    setError("")
   }
 
   useEffect(() => {
     localStorage.setItem("verificationCode", Math.floor(Math.random() * (999999 - 100000)) + 100000)
     sendEmail()
-    }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleSubmit = () => {
     if (code === localStorage.getItem("verificationCode")) {
-      axios
-        .post(`http://localhost:8080/api/auth/verification/${dni}`)
+      updateConfirmed(dni)
         .then((res) => {
           console.log(res)
           history.push("/home")

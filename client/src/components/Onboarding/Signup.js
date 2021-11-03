@@ -1,5 +1,5 @@
 import "./onboarding.css"
-import axios from "axios"
+import { signup } from "../../services/axios/onboarding"
 import { useState, useContext } from "react"
 import { useHistory } from "react-router-dom"
 import homeBannerSVG from "../../assets/images/home-banner.svg"
@@ -32,16 +32,15 @@ function Signup() {
     })
     setErrors(validations)
     if (validations.length === 0) {
-      axios
-        .post("http://localhost:8080/api/auth/signup", {
-          email,
-          name,
-          lastname,
-          dni,
-          password,
-          vaccination,
-          date_of_birth: dateOfBirth,
-        })
+      signup({
+        email,
+        name,
+        lastname,
+        dni,
+        password,
+        vaccination,
+        date_of_birth: dateOfBirth,
+      })
         .then((res) => {
           if (res.data.error) {
             setErrors((prevState) => [...prevState, res.data.message])
