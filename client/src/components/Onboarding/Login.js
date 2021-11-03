@@ -14,22 +14,26 @@ function Login() {
   const history = useHistory()
 
   const handleLogin = () => {
-    axios
-      .post("http://localhost:8080/api/auth/login", {
-        dni,
-        password,
-      })
-      .then((res) => {
-        if (res.data.error) {
-          setErrors([res.data.message])
-        } else {
-          history.push("/home")
-        }
-      })
-      .catch((error) => {
-        setErrors(error)
-        console.log(errors)
-      })
+    if ( dni.length === 0  || password.length === 0){
+      setErrors(["Complete todos los datos."])  
+    } else {
+       axios
+         .post("http://localhost:8080/api/auth/login", {
+           dni,
+           password,
+         })
+         .then((res) => {
+           if (res.data.error) {
+             setErrors([res.data.message])
+           } else {
+             history.push("/home")
+           }
+         })
+         .catch((error) => {
+           setErrors(error)
+           console.log(errors)
+         })
+    }
   }
 
   return (
