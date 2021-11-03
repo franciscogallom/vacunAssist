@@ -120,6 +120,12 @@
   opacity: 0.9;
 }
 
+.validation-message {
+  color: rgba(2, 136, 2, 0.5);
+  font-weight: bold;
+  font-size: 0.75em;
+}
+
 .logo {
   height: 4.5em;
   margin: 0 auto;

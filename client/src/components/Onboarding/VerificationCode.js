@@ -4,11 +4,16 @@ import { useHistory } from "react-router-dom"
 import homeBannerSVG from "../../assets/images/home-banner.svg"
 import logo from "../../assets/images/logo.png"
 import Button from "../Button/Button"
+import axios from "axios"
+import { useContext } from "react/cjs/react.development"
+import Context from "../../context/context"
 
 function VerificationCode() {
   const [code, setCode] = useState("")
   const [error, setError] = useState("")
+  const [message, setMessage] = useState("")
   const history = useHistory()
+  const { dni } = useContext(Context)
 
   useEffect(() => {
     removeItem()
@@ -24,6 +29,19 @@ function VerificationCode() {
 
   const sendAgain = () => {
     localStorage.setItem("verificationCode", Math.floor(Math.random() * (999999 - 100000)) + 100000)
+    axios
+      .post(`http://localhost:8080/api/auth/verification/${dni}`, {
+        verificationCode: localStorage.getItem("verificationCode"),
+      })
+      .then(() => {
+        setMessage("Código reenviado!")
+        setTimeout(() => {
+          setMessage("")
+        }, 8000)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     removeItem()
   }
 
@@ -39,6 +57,7 @@ function VerificationCode() {
           <img className="logo" src={logo} alt="Logo de VacunAssist" />
 
           <h5 style={{ border: "none", opacity: ".75" }}>El código expirara en 10 minutos.</h5>
+          {message && <p className="validation-message">{message}</p>}
 
           <input
             onChange={(e) => setCode(e.target.value)}
