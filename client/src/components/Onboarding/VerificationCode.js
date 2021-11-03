@@ -24,6 +24,9 @@ function VerificationCode() {
       })
       .then((res) => {
         console.log(res)
+        setTimeout(() => {
+          localStorage.removeItem("verificationCode")
+        }, 60000 * 60)
       })
       .catch((err) => {
         console.log(err)
@@ -37,15 +40,12 @@ function VerificationCode() {
     setTimeout(() => {
       setMessage("")
     }, 8000)
-    setError("")
+    setError("") 
   }
 
   useEffect(() => {
     localStorage.setItem("verificationCode", Math.floor(Math.random() * (999999 - 100000)) + 100000)
     sendEmail()
-    // setTimeout(() => {
-    //   localStorage.removeItem("verificationCode")
-    // }, 60000 * 10)
     }, [])
 
   const handleSubmit = () => {
