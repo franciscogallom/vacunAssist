@@ -20,8 +20,11 @@ function Login() {
         password,
       })
       .then((res) => {
-        console.log(res)
-        history.push("/home")
+        if (res.data.error) {
+          setErrors([res.data.message])
+        } else {
+          history.push("/home")
+        }
       })
       .catch((error) => {
         setErrors(error)
@@ -40,6 +43,14 @@ function Login() {
             placeholder="Contraseña"
             type="password"
           />
+
+          {errors.length > 0 && (
+            <ul className="form-errors">
+              {errors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          )}
 
           <div className="buttons-container">
             <Button handleClick={() => handleLogin()} text="Iniciar sesión" />
