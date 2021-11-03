@@ -1,4 +1,3 @@
-
 import "./onboarding.css"
 import { useState, useEffect } from "react"
 import { useHistory } from "react-router-dom"
@@ -16,40 +15,40 @@ function VerificationCode() {
   const history = useHistory()
   const { dni } = useContext(Context)
 
+  setTimeout(() => {
+    localStorage.removeItem("verificationCode")
+  }, 60000 * 10)
+
+  const sendAgain = () => {
+    localStorage.setItem("verificationCode", Math.floor(Math.random() * (999999 - 100000)) + 100000)
+    setMessage("Codigo reenviado!")
+    setTimeout(() => {
+      setMessage("")
+    }, 8000)
+  }
+
   useEffect(() => {
-    removeItem()
+    localStorage.setItem("verificationCode", Math.floor(Math.random() * (999999 - 100000)) + 100000)
   }, [])
 
   const handleSubmit = () => {
     if (code === localStorage.getItem("verificationCode")) {
-      history.push("/home")
+      axios
+        .post(`http://localhost:8080/api/auth/verification/${dni}`, {
+          verificationCode: localStorage.getItem("verificationCode"),
+        })
+        .then((res) => {
+          console.log(res)
+          history.push("/home")
+        })
+        .catch((error) => {
+          console.log(error)
+          setError("Algo salio mal...")
+        })
     } else {
       setError("El código no es correcto o expiró.")
     }
   }
-
-  const sendAgain = () => {
-    localStorage.setItem("verificationCode", Math.floor(Math.random() * (999999 - 100000)) + 100000)
-    axios
-      .post(`http://localhost:8080/api/auth/verification/${dni}`, {
-        verificationCode: localStorage.getItem("verificationCode"),
-      })
-      .then(() => {
-        setMessage("Código reenviado!")
-        setTimeout(() => {
-          setMessage("")
-        }, 8000)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    removeItem()
-  }
-
-  const removeItem = () =>
-    setTimeout(() => {
-      localStorage.removeItem("verificationCode")
-    }, 60000 * 10)
 
   return (
     <div className="onboarding-container">
@@ -57,8 +56,13 @@ function VerificationCode() {
         <form className="form">
           <img className="logo" src={logo} alt="Logo de VacunAssist" />
 
-          <h5 style={{ border: "none", opacity: ".75" }}>El código expirara en 10 minutos.</h5>
-          {message && <p className="validation-message">{message}</p>}
+          {!message ? (
+            <h5 style={{ border: "none", opacity: ".7" }}>
+              Te enviamos un código a tu correo, tene en cuenta que expirará en 10 minutos.
+            </h5>
+          ) : (
+            <p className="validation-message">{message}</p>
+          )}
 
           <input
             onChange={(e) => setCode(e.target.value)}

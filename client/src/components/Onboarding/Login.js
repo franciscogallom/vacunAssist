@@ -1,7 +1,7 @@
 import "./onboarding.css"
 import axios from "axios"
 import { useContext, useState } from "react"
-import { useHistory } from "react-router-dom"
+import { useHistory, Link } from "react-router-dom"
 import homeBannerSVG from "../../assets/images/home-banner.svg"
 import logo from "../../assets/images/logo.png"
 import Button from "../Button/Button"
@@ -11,6 +11,7 @@ function Login() {
   const { dni, setDni } = useContext(Context)
   const [password, setPassword] = useState("")
   const [errors, setErrors] = useState([])
+  const [errorOnConfirmation, setErrorOnConfirmation] = useState("")
   const history = useHistory()
 
   const handleLogin = () => {
@@ -24,22 +25,12 @@ function Login() {
         })
         .then((res) => {
           if (res.data.error) {
+            if (res.data.confirmed) {
+              setErrorOnConfirmation(true)
+            }
             setErrors([res.data.message])
           } else {
-            localStorage.setItem(
-              "verificationCode",
-              Math.floor(Math.random() * (999999 - 100000)) + 100000
-            )
-            axios
-              .post(`http://localhost:8080/api/auth/verification/${dni}`, {
-                verificationCode: localStorage.getItem("verificationCode"),
-              })
-              .then(() => {
-                history.push("/verification")
-              })
-              .catch((error) => {
-                console.log(error)
-              })
+            history.push("/verification")
           }
         })
         .catch((error) => {
@@ -67,6 +58,15 @@ function Login() {
                 <li key={index}>{error}</li>
               ))}
             </ul>
+          )}
+
+          {errorOnConfirmation && (
+            <Link
+              style={{ fontWeight: "bold", fontSize: ".8em", color: "rgb(46, 139, 87)" }}
+              to="/verification"
+            >
+              Verificar
+            </Link>
           )}
 
           <div className="buttons-container">

@@ -74,17 +74,23 @@ router.post("/login", (req, res) => {
         if (result[0].password === password && result[0].confirmed) {
           res.send("Inicio de sesión exitoso")
         } else {
-          res.send({
-            error: true,
-            message:
-              "El DNI o la contraseña no son correctos o no corresponden a un usuario confirmado.",
-          })
+          if (result[0].confirmed === 0 && result[0].password === password) {
+            res.send({
+              error: true,
+              confirmed: true,
+              message: "Usuario no verificado.",
+            })
+          } else {
+            res.send({
+              error: true,
+              message: "El DNI o la contraseña no son correctos.",
+            })
+          }
         }
       } else {
         res.send({
           error: true,
-          message:
-            "El DNI o la contraseña no son correctos o no corresponden a un usuario confirmado.",
+          message: "El DNI o la contraseña no son correctos.",
         })
       }
     }

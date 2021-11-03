@@ -41,27 +41,10 @@ function Comorbidities() {
         com11,
         com12,
       })
-      // Si se actualiza bien la DB, mando el codigo de verificacion.
       .then((res) => {
         console.log(res)
-
-        localStorage.setItem(
-          "verificationCode",
-          Math.floor(Math.random() * (999999 - 100000)) + 100000
-        )
-
-        axios
-          .post(`http://localhost:8080/api/auth/verification/${dni}`, {
-            verificationCode: localStorage.getItem("verificationCode"),
-          })
-          .then(() => {
-            history.push("/verification")
-          })
-          .catch((error) => {
-            console.log()
-          })
+        history.push("/verification")
       })
-      // Algo sale mal en la DB.
       .catch((error) => {
         console.log(error)
       })
