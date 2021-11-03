@@ -15,28 +15,43 @@ function VerificationCode() {
   const history = useHistory()
   const { dni } = useContext(Context)
 
-  setTimeout(() => {
-    localStorage.removeItem("verificationCode")
-  }, 60000 * 10)
+  
+
+  const sendEmail = () => {
+    axios
+      .post(`http://localhost:8080/api/auth/sendEmail/${dni}`, {
+        verificationCode: localStorage.getItem("verificationCode"),
+      })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   const sendAgain = () => {
     localStorage.setItem("verificationCode", Math.floor(Math.random() * (999999 - 100000)) + 100000)
+    sendEmail()
     setMessage("Codigo reenviado!")
     setTimeout(() => {
       setMessage("")
     }, 8000)
+    setError("")
   }
 
   useEffect(() => {
     localStorage.setItem("verificationCode", Math.floor(Math.random() * (999999 - 100000)) + 100000)
-  }, [])
+    sendEmail()
+    // setTimeout(() => {
+    //   localStorage.removeItem("verificationCode")
+    // }, 60000 * 10)
+    }, [])
 
   const handleSubmit = () => {
     if (code === localStorage.getItem("verificationCode")) {
       axios
-        .post(`http://localhost:8080/api/auth/verification/${dni}`, {
-          verificationCode: localStorage.getItem("verificationCode"),
-        })
+        .post(`http://localhost:8080/api/auth/verification/${dni}`)
         .then((res) => {
           console.log(res)
           history.push("/home")

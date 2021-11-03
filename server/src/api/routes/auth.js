@@ -97,31 +97,33 @@ router.post("/login", (req, res) => {
   })
 })
 
-router.post("/verification/:dni", (req, res) => {
+router.post("/sendEmail/:dni", (req, res) => {
   const { dni } = req.params
   const { verificationCode } = req.body
-  db.query(`UPDATE users SET confirmed = true WHERE dni = ${dni}`, async (error, result) => {
+  db.query(`SELECT email FROM users WHERE dni = ${dni}`, (error, result) => {
+    if (error) {
+      res.send({ error })
+    } else {
+        sendEmail(result[0].email, verificationCode)
+        .then(() => res.send("Confirmación realizada."))
+        .catch(() => res.send("Algo salio mal..."))
+    }
+  })
+})
+
+
+router.post("/verification/:dni", (req, res) => {
+  const { dni } = req.params
+  db.query(`UPDATE users SET confirmed = true WHERE dni = ${dni}`, (error, result) => {
     if (error) {
       res.send(error)
     } else if (result.affectedRows === 0) {
       res.send("No existe el DNI.")
     } else {
-      try {
-        db.query(`SELECT email FROM users WHERE dni = ${dni}`, (err, result) => {
-          if (error) {
-            res.send({ error })
-          } else {
-            sendEmail(result[0].email, verificationCode).then(() =>
-              res.send("Confirmación realizada.")
-            )
-          }
-        })
-      } catch (error) {
-        console.log(error)
-        res.send("Algo salio mal")
-      }
+      res.send("Confirmación realizada.")
     }
   })
 })
+
 
 module.exports = router
