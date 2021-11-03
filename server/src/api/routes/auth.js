@@ -1,5 +1,6 @@
 const router = require("express").Router()
 const db = require("../../config/db")
+const sendEmail = require("../../services/sendMail")
 
 router.post("/signup", (req, res) => {
   const { email, name, lastname, dni, password, vaccination, date_of_birth } = req.body
@@ -92,13 +93,19 @@ router.post("/login", (req, res) => {
 
 router.post("/verification/:dni", (req, res) => {
   const { dni } = req.params
-  db.query(`UPDATE users SET confirmed = true WHERE dni = ${dni}`, (error, result) => {
+  const { verificationCode, addressee } = req.body
+  db.query(`UPDATE users SET confirmed = true WHERE dni = ${dni}`, async (error, result) => {
     if (error) {
       res.send(error)
     } else if (result.affectedRows === 0) {
       res.send("No existe el DNI.")
     } else {
-      res.send("Confirmación realizada.")
+      try {
+        sendEmail(addressee, verificationCode).then(() => res.send("Confirmación realizada."))
+      } catch (error) {
+        console.log(error)
+        res.send("Algo salio mal")
+      }
     }
   })
 })
