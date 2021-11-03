@@ -122,8 +122,9 @@
 
 .logo {
   height: 4.5em;
-  margin: 0 5em;
-  text-align: center;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
 }
 
 .home-banner {
