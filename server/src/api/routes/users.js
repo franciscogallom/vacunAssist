@@ -7,4 +7,22 @@ router.get("/", (req, res) => {
   })
 })
 
+
+router.get("/:dni", (req, res) => {
+  const { dni } = req.params
+  db.query(`SELECT name FROM users WHERE dni = ${dni}`, (error, result) => {
+    if (error) {
+      res.send(error)
+    } else {
+        if (result.length === 0){
+          console.log("DNI no existente")
+        } else {
+          res.send( result[0] )
+        }
+    }
+  })
+
+
+})
+
 module.exports = router
