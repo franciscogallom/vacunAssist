@@ -32,15 +32,7 @@ function Signup() {
     })
     setErrors(validations)
     if (validations.length === 0) {
-      signup({
-        email,
-        name,
-        lastname,
-        dni,
-        password,
-        vaccination,
-        date_of_birth: dateOfBirth,
-      })
+      signup(email, name, lastname, dni, password, vaccination, dateOfBirth)
         .then((res) => {
           if (res.data.error) {
             setErrors((prevState) => [...prevState, res.data.message])

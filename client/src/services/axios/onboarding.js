@@ -40,7 +40,7 @@ const login = (dni, password) => {
   })
 }
 
-const signup = ({ email, name, lastname, dni, password, vaccination, dateOfBirth }) => {
+const signup = (email, name, lastname, dni, password, vaccination, dateOfBirth) => {
   return axios.post(`${baseUrl}/signup`, {
     email,
     name,
