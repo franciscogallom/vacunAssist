@@ -58,6 +58,26 @@ router.post("/signup/comorbidities", (req, res) => {
       if (err) {
         res.send({ err })
       } else {
+        if (
+          com1 ||
+          com2 ||
+          com3 ||
+          com4 ||
+          com5 ||
+          com6 ||
+          com7 ||
+          com8 ||
+          com9 ||
+          com10 ||
+          com11 ||
+          com12
+        ) {
+          db.query("UPDATE users SET risk_factor = true WHERE dni = ?", [dni], (err) => {
+            if (err) {
+              res.send({ err })
+            }
+          })
+        }
         res.send("Comorbilidades añadidas.")
       }
     }
