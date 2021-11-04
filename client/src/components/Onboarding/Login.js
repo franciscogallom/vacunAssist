@@ -57,7 +57,7 @@ function Login() {
         {errorOnConfirmation && (
           <Link
             style={{ fontWeight: "bold", fontSize: ".8em", color: "rgb(46, 139, 87)" }}
-            to="/verification"
+            to="/verification?signup=true"
           >
             Verificar
           </Link>

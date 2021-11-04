@@ -52,7 +52,7 @@ function VerificationCode() {
       updateConfirmed(dni)
         .then((res) => {
           console.log(res)
-          history.push("/home")
+          history.push(isSignUp ? "/login" : "/home")
         })
         .catch((error) => {
           console.log(error)
