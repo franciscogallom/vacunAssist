@@ -42,7 +42,7 @@ function Comorbidities() {
     })
       .then((res) => {
         console.log(res)
-        history.push("/verification")
+        history.push("/verification?signup=true")
       })
       .catch((error) => {
         console.log(error)

@@ -1,6 +1,6 @@
 import "./onboarding.css"
 import { useState, useEffect } from "react"
-import { useHistory } from "react-router-dom"
+import { useHistory, useLocation } from "react-router-dom"
 import homeBannerSVG from "../../assets/images/home-banner.svg"
 import Button from "../Button/Button"
 import { sendEmailByDni, updateConfirmed } from "../../services/axios/onboarding"
@@ -14,6 +14,9 @@ function VerificationCode() {
   const [message, setMessage] = useState("")
   const history = useHistory()
   const { dni } = useContext(Context)
+
+  const useQuery = () => new URLSearchParams(useLocation().search)
+  const isSignUp = useQuery().get("signup")
 
   const sendEmail = () => {
     sendEmailByDni(dni)
@@ -65,7 +68,9 @@ function VerificationCode() {
       <Form>
         {!message ? (
           <h5 style={{ border: "none", opacity: ".7" }}>
-            Te enviamos un código a tu correo, tene en cuenta que expirará en 10 minutos.
+            {isSignUp
+              ? "Debes confirmar tu correo. Te enviamos un código de verificación, tene en cuenta que expirará en 10 minutos."
+              : "Te enviamos un código a tu correo para validar tu identidad, tene en cuenta que expirará en 10 minutos."}
           </h5>
         ) : (
           <p className="validation-message">{message}</p>
@@ -73,7 +78,7 @@ function VerificationCode() {
 
         <input
           onChange={(e) => setCode(e.target.value)}
-          placeholder="Codigo de verificación."
+          placeholder={isSignUp ? "Codigo de verificación." : "Código de autenticación."}
           type="number"
         />
 
