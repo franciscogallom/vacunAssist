@@ -7,6 +7,8 @@ import Signup from "./components/Onboarding/Signup"
 import VerificationCode from "./components/Onboarding/VerificationCode"
 import Home from "./components/Home/Home"
 import SignupMedic from "./components/Onboarding/SignUpMedic"
+import Vaccines from "./components/Vaccines/Vaccines"
+import Profile from "./components/Profile/Profile"
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
           <Route exact path="/login" component={Login} />
           <Route exact path="/comorbidities" component={Comorbidities} />
           <Route exact path="/verification" component={VerificationCode} />
+          <Route exact path="/vaccines" component={Vaccines} />
+          <Route exact path="/profile" component={Profile} />
         </Switch>
       </BrowserRouter>
     </ContextProvider>

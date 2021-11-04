@@ -9,14 +9,14 @@ function Navbar() {
     <nav class="navbar">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <Link to="/" class="nav-link">
+          <Link to="/profile" class="nav-link">
             <img src={profile} alt="Icono de perfil" className="img-icon" />
             <span class="link-text">Perfil</span>
           </Link>
         </li>
 
         <li class="nav-item">
-          <Link to="/" class="nav-link">
+          <Link to="/vaccines" class="nav-link">
             <img src={vaccine} alt="Icono de vacuna" className="img-icon" />
             <span class="link-text">Vacunas</span>
           </Link>
@@ -25,7 +25,7 @@ function Navbar() {
         <li class="nav-item">
           <Link to="/" class="nav-link">
             <img src={close} alt="Icono de cerrar sesión" className="img-icon" />
-            <span class="link-text">Cerrar sesión</span>
+            <span class="link-text">Salir</span>
           </Link>
         </li>
       </ul>
