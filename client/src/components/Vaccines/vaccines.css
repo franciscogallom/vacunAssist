@@ -14,7 +14,7 @@
   border-color: var(--primary-color);
   border-style: solid;
   border-width: 1.5px;
-  margin: 1em;
+  margin: 1em 0;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
