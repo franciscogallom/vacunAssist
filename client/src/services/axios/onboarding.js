@@ -1,5 +1,7 @@
 import axios from "axios"
 
+const baseUrl = "http://localhost:8080/api/auth"
+
 const updateComorbidities = ({
   dni,
   com1,
@@ -15,7 +17,7 @@ const updateComorbidities = ({
   com11,
   com12,
 }) =>
-  axios.post("http://localhost:8080/api/auth/signup/comorbidities", {
+  axios.post(`${baseUrl}/signup/comorbidities`, {
     dni,
     com1,
     com2,
@@ -32,14 +34,14 @@ const updateComorbidities = ({
   })
 
 const login = (dni, password) => {
-  return axios.post("http://localhost:8080/api/auth/login", {
+  return axios.post(`${baseUrl}/login`, {
     dni,
     password,
   })
 }
 
 const signup = ({ email, name, lastname, dni, password, vaccination, dateOfBirth }) => {
-  return axios.post("http://localhost:8080/api/auth/signup", {
+  return axios.post(`${baseUrl}/signup`, {
     email,
     name,
     lastname,
@@ -51,13 +53,13 @@ const signup = ({ email, name, lastname, dni, password, vaccination, dateOfBirth
 }
 
 const sendEmailByDni = (dni) => {
-  return axios.post(`http://localhost:8080/api/auth/sendEmail/${dni}`, {
+  return axios.post(`${baseUrl}/sendEmail/${dni}`, {
     verificationCode: localStorage.getItem("verificationCode"),
   })
 }
 
 const updateConfirmed = (dni) => {
-  return axios.post(`http://localhost:8080/api/auth/verification/${dni}`)
+  return axios.post(`${baseUrl}/verification/${dni}`)
 }
 
 export { updateComorbidities, login, signup, sendEmailByDni, updateConfirmed }
