@@ -5,5 +5,5 @@ const inscriptions = require("./inscriptions")
 module.exports = {
   users,
   auth,
-  inscriptions
+  inscriptions,
 }

@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }))
 
 // Routes
 app.use("/api/users", users)
-app.use("/api/auth/", auth)
+app.use("/api/auth", auth)
 app.use("/api/inscriptions", inscriptions)
 
 app.listen(8080, () => {
