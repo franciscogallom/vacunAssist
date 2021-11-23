@@ -67,13 +67,13 @@ router.post("/:vaccine/:dni", (req, res) => {
             }
           })
         } else {
-          db.query(`UPDATE users SET flu = true WHERE dni = ${dni}`, (error,result) => {
-            if(error){
-                res.send(error)
+          db.query(`UPDATE users SET flu = true WHERE dni = ${dni}`, (error, result) => {
+            if (error) {
+              res.send(error)
             } else {
-                res.send("Turno en los proximos 6 meses.")
+              res.send("Turno en los proximos 6 meses.")
             }
-        })
+          })
         }
       }
     }

@@ -21,3 +21,7 @@
 .vaccine p {
   font-weight: bold;
 }
+
+.alreadyRegistered {
+  color: var(--primary-color);
+}

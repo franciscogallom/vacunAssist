@@ -5,17 +5,42 @@ import Button from "../Button/Button"
 import { useContext } from "react"
 import { inscription } from "../../services/axios/vaccines"
 import Context from "../../context/context"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { getVaccinesByDni } from "../../services/axios/users"
 
 function Vaccines() {
   const [message, setMessage] = useState("")
   const [error, setError] = useState("")
+  const [covid, setCovid] = useState(false)
+  const [fever, setFever] = useState(false)
+  const [flu, setFlu] = useState(false)
   const { dni } = useContext(Context)
+
+  useEffect(() => {
+    getVaccinesByDni(dni)
+      .then((res) => {
+        setCovid(res.data.covid)
+        setFever(res.data.fever)
+        setFlu(res.data.flu)
+        console.log({ covid, fever, flu })
+      })
+      .catch((error) => {
+        console.log(error)
+        setError("Algo salio mal...")
+      })
+  }, [covid, dni, fever, flu])
 
   const handleInscription = (vaccine) => {
     inscription(vaccine, dni)
       .then((res) => {
         setMessage(res.data)
+        if (vaccine === "covid") {
+          setCovid(true)
+        } else if (vaccine === "fever") {
+          setFever(true)
+        } else {
+          setFlu(true)
+        }
       })
       .catch(() => {
         setError("Algo salio mal, vuelve a intentarlo.")
@@ -30,15 +55,27 @@ function Vaccines() {
         <div className="vaccines-container">
           <div className="vaccine">
             <p>Coronavirus</p>
-            <Button handleClick={() => handleInscription("covid")} text="Inscribirme" />
+            {covid ? (
+              <p className="alreadyRegistered">Ya estas inscripto!</p>
+            ) : (
+              <Button handleClick={() => handleInscription("covid")} text="Inscribirme" />
+            )}
           </div>
           <div className="vaccine">
             <p>Fiebre amarilla</p>
-            <Button handleClick={() => handleInscription("fever")} text="Inscribirme" />
+            {fever ? (
+              <p className="alreadyRegistered">Ya estas inscripto!</p>
+            ) : (
+              <Button handleClick={() => handleInscription("fever")} text="Inscribirme" />
+            )}
           </div>
           <div className="vaccine">
             <p>Gripe</p>
-            <Button handleClick={() => handleInscription("flu")} text="Inscribirme" />
+            {flu ? (
+              <p className="alreadyRegistered">Ya estas inscripto!</p>
+            ) : (
+              <Button handleClick={() => handleInscription("flu")} text="Inscribirme" />
+            )}
           </div>
         </div>
 
