@@ -37,7 +37,14 @@ router.post("/signup", (req, res) => {
                 if (err) {
                   res.send({ err })
                 } else {
-                  res.send("Usuario añadido.")
+                  // El usuario se creo correctamente. Se crea una nueva fila en la tabla "inscriptions"
+                  db.query("INSERT INTO inscriptions (dni) VALUES (?)", [dni], (err) => {
+                    if (err) {
+                      res.send(err)
+                    } else {
+                      res.send("Usuario añadido.")
+                    }
+                  })
                 }
               }
             )
