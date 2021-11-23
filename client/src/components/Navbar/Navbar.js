@@ -25,12 +25,14 @@ function Navbar() {
           </Link>
         </li>
 
-        <li className="nav-item">
-          <Link to="/vaccines" className="nav-link">
-            <img src={vaccine} alt="Icono de vacuna" className="img-icon" />
-            <span className="link-text">Vacunas</span>
-          </Link>
-        </li>
+        {!isAdmin && (
+          <li className="nav-item">
+            <Link to="/vaccines" className="nav-link">
+              <img src={vaccine} alt="Icono de vacuna" className="img-icon" />
+              <span className="link-text">Vacunas</span>
+            </Link>
+          </li>
+        )}
 
         <li className="nav-item">
           <Link onClick={() => localStorage.removeItem("admin")} to="/" className="nav-link">
