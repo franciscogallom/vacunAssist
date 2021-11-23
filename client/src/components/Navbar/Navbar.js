@@ -6,6 +6,8 @@ import home from "../../assets/images/home.png"
 import "./navbar.css"
 
 function Navbar() {
+  const isAdmin = localStorage.getItem("admin")
+
   return (
     <nav className="navbar">
       <ul className="navbar-nav">
@@ -17,9 +19,9 @@ function Navbar() {
         </li>
 
         <li className="nav-item">
-          <Link to="/profile?editProfile=true" className="nav-link">
+          <Link to={isAdmin ? "add-vaccinator" : "/profile?editProfile=true"} className="nav-link">
             <img src={profile} alt="Icono de perfil" className="img-icon" />
-            <span className="link-text">Perfil</span>
+            <span className="link-text">{isAdmin ? "Añadir" : "Perfil"}</span>
           </Link>
         </li>
 
@@ -31,7 +33,7 @@ function Navbar() {
         </li>
 
         <li className="nav-item">
-          <Link to="/" className="nav-link">
+          <Link onClick={() => localStorage.removeItem("admin")} to="/" className="nav-link">
             <img src={close} alt="Icono de cerrar sesión" className="img-icon" />
             <span className="link-text">Salir</span>
           </Link>

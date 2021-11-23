@@ -6,9 +6,9 @@ import Login from "./components/Onboarding/Login"
 import Signup from "./components/Onboarding/Signup"
 import VerificationCode from "./components/Onboarding/VerificationCode"
 import Home from "./components/Home/Home"
-import SignupMedic from "./components/Onboarding/SignUpMedic"
 import Vaccines from "./components/Vaccines/Vaccines"
 import Profile from "./components/Profile/Profile"
+import AddVaccinator from "./components/AddVaccinator/AddVaccinator"
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={WhoAmI} />
-          <Route exact path="/signupmedic" component={SignupMedic} />
+          <Route exact path="/add-vaccinator" component={AddVaccinator} />
           <Route exact path="/home" component={Home} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/login" component={Login} />
