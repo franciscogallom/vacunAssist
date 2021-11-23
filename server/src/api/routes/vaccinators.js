@@ -25,9 +25,21 @@ router.post("/login" , (req, res) => {
             }
         }
     })
+})
 
-
-
+router.get("/name/:dni" , (req, res) => {
+    const { dni } = req.params
+    db.query(`SELECT name FROM vaccinators WHERE dni = ${dni}`, (error, result) => {
+        if(error) {
+            res.send(error)
+        } else {
+            if( result.length === 0) {
+                res.send("DNI no existente")
+            } else {
+                res.send(result[0])
+            }
+        }
+    }) 
 })
 
 module.exports = router
