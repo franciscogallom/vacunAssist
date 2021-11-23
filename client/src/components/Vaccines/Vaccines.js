@@ -22,7 +22,6 @@ function Vaccines() {
         setCovid(res.data.covid)
         setFever(res.data.fever)
         setFlu(res.data.flu)
-        console.log({ covid, fever, flu })
       })
       .catch((error) => {
         console.log(error)

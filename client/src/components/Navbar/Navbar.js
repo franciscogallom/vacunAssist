@@ -7,33 +7,33 @@ import "./navbar.css"
 
 function Navbar() {
   return (
-    <nav class="navbar">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <Link to="/home" class="nav-link">
+    <nav className="navbar">
+      <ul className="navbar-nav">
+        <li className="nav-item">
+          <Link to="/home" className="nav-link">
             <img src={home} alt="Icono de Home" className="img-icon" />
-            <span class="link-text">Home</span>
+            <span className="link-text">Home</span>
           </Link>
         </li>
 
-        <li class="nav-item">
-          <Link to="/profile" class="nav-link">
+        <li className="nav-item">
+          <Link to="/profile" className="nav-link">
             <img src={profile} alt="Icono de perfil" className="img-icon" />
-            <span class="link-text">Perfil</span>
+            <span className="link-text">Perfil</span>
           </Link>
         </li>
 
-        <li class="nav-item">
-          <Link to="/vaccines" class="nav-link">
+        <li className="nav-item">
+          <Link to="/vaccines" className="nav-link">
             <img src={vaccine} alt="Icono de vacuna" className="img-icon" />
-            <span class="link-text">Vacunas</span>
+            <span className="link-text">Vacunas</span>
           </Link>
         </li>
 
-        <li class="nav-item">
-          <Link to="/" class="nav-link">
+        <li className="nav-item">
+          <Link to="/" className="nav-link">
             <img src={close} alt="Icono de cerrar sesión" className="img-icon" />
-            <span class="link-text">Salir</span>
+            <span className="link-text">Salir</span>
           </Link>
         </li>
       </ul>
