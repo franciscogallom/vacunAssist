@@ -1,15 +1,17 @@
 import "./onboarding.css"
-import { useState } from "react"
-import { useHistory } from "react-router-dom"
+import { useState, useEffect } from "react"
+import { useHistory, useLocation } from "react-router-dom"
 import { useContext } from "react"
 import homeBannerSVG from "../../assets/images/home-banner.svg"
 import Button from "../Button/Button"
 import Context from "../../context/context"
 import { updateComorbidities } from "../../services/axios/onboarding"
 import Form from "../Form/Form"
+import { getComorbidities } from "../../services/axios/users"
 
 function Comorbidities() {
   const { dni } = useContext(Context)
+  const [message, setMessage] = useState("")
   const [com1, setCom1] = useState(false)
   const [com2, setCom2] = useState(false)
   const [com3, setCom3] = useState(false)
@@ -23,6 +25,33 @@ function Comorbidities() {
   const [com11, setCom11] = useState(false)
   const [com12, setCom12] = useState(false)
   const history = useHistory()
+
+  const useQuery = () => new URLSearchParams(useLocation().search)
+  const isEditProfile = useQuery().get("editProfile")
+
+  useEffect(() => {
+    if (isEditProfile) {
+      getComorbidities(dni)
+        .then((res) => {
+          setCom1(res.data.com1 === 1)
+          setCom2(res.data.com2 === 1)
+          setCom3(res.data.com3 === 1)
+          setCom4(res.data.com4 === 1)
+          setCom5(res.data.com5 === 1)
+          setCom6(res.data.com6 === 1)
+          setCom7(res.data.com7 === 1)
+          setCom8(res.data.com8 === 1)
+          setCom9(res.data.com9 === 1)
+          setCom10(res.data.com10 === 1)
+          setCom11(res.data.com11 === 1)
+          setCom12(res.data.com12 === 1)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleSubmit = () => {
     updateComorbidities({
@@ -42,7 +71,14 @@ function Comorbidities() {
     })
       .then((res) => {
         console.log(res)
-        history.push("/verification?signup=true")
+        if (isEditProfile) {
+          setMessage("Comorbilidades actualizadas satisfactoriamente.")
+          setTimeout(() => {
+            setMessage("")
+          }, 5000)
+        } else {
+          history.push("/verification?signup=true")
+        }
       })
       .catch((error) => {
         console.log(error)
@@ -52,7 +88,11 @@ function Comorbidities() {
   return (
     <div className="onboarding-container">
       <Form>
-        <h5>Haga click en las comorbilidades que le correspondan y luego continue.</h5>
+        <h5>
+          {isEditProfile
+            ? "Editar comorbilidades."
+            : "Haga click en las comorbilidades que le correspondan y luego continue."}
+        </h5>
         <div className="comorbidities-container">
           <p onClick={() => setCom1((prevState) => !prevState)} className={com1 ? "active" : ""}>
             <span className="icon">{com1 ? "✅" : "⬜"}</span> Diabetes tipo 1 o 2.
@@ -99,11 +139,18 @@ function Comorbidities() {
         </div>
 
         <div className="buttons-container">
-          <Button handleClick={() => handleSubmit()} text="Continuar" />
+          <Button
+            handleClick={() => handleSubmit()}
+            text={isEditProfile ? "Actualizar" : "Continuar"}
+          />
         </div>
+
+        {message && <p className="validation-message">{message}</p>}
       </Form>
 
-      <img className="home-banner" src={homeBannerSVG} alt="Ilustración de médicos" />
+      {!isEditProfile && (
+        <img className="home-banner" src={homeBannerSVG} alt="Ilustración de médicos" />
+      )}
     </div>
   )
 }

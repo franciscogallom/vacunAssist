@@ -5,6 +5,7 @@ import Form from "../Form/Form"
 import Button from "../Button/Button"
 import { changePasswordValidations } from "../../services/changePasswordValidations"
 import { updatePassword, checkPassword } from "../../services/axios/users"
+import Comorbidities from "../Onboarding/Comorbidities"
 
 function Profile() {
   const [oldPassword, setOldPassword] = useState("")
@@ -78,6 +79,7 @@ function Profile() {
 
         <Button handleClick={() => handleChangePassword()} text="Cambiar contraseña" />
       </Form>
+      <Comorbidities />
     </>
   )
 }

@@ -17,4 +17,8 @@ const checkPassword = (password, dni) => {
   })
 }
 
-export { getNameByDni, updatePassword, checkPassword }
+const getComorbidities = (dni) => {
+  return axios.get(`${baseUrl}/comorbidities/${dni}`)
+}
+
+export { getNameByDni, updatePassword, checkPassword, getComorbidities }

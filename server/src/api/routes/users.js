@@ -14,7 +14,7 @@ router.get("/:dni", (req, res) => {
       res.send(error)
     } else {
       if (result.length === 0) {
-        console.log("DNI no existente")
+        res.send("DNI no existente")
       } else {
         res.send(result[0])
       }
@@ -48,6 +48,24 @@ router.post("/password/:dni", (req, res) => {
       }
     }
   })
+})
+
+router.get("/comorbidities/:dni", (req, res) => {
+  const { dni } = req.params
+  db.query(
+    `SELECT com1, com2, com3, com4, com5, com6, com7, com8, com9, com10, com11, com12 FROM users WHERE dni = ${dni}`,
+    (error, result) => {
+      if (error) {
+        res.send(error)
+      } else {
+        if (result.length === 0) {
+          res.send("DNI no existente")
+        } else {
+          res.send(result[0])
+        }
+      }
+    }
+  )
 })
 
 module.exports = router

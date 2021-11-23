@@ -17,7 +17,7 @@ function Navbar() {
         </li>
 
         <li className="nav-item">
-          <Link to="/profile" className="nav-link">
+          <Link to="/profile?editProfile=true" className="nav-link">
             <img src={profile} alt="Icono de perfil" className="img-icon" />
             <span className="link-text">Perfil</span>
           </Link>
