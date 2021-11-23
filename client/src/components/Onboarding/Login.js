@@ -1,5 +1,6 @@
 import "./onboarding.css"
 import { login } from "../../services/axios/onboarding"
+import { loginAsVaccinator } from "../../services/axios/vaccinators"
 import { useContext, useState } from "react"
 import { useHistory, Link, useLocation } from "react-router-dom"
 import homeBannerSVG from "../../assets/images/home-banner.svg"
@@ -25,22 +26,38 @@ function Login() {
         localStorage.setItem("admin", true)
         history.push("/home")
       } else {
-        login(dni, password)
-          .then((res) => {
-            if (res.data.error) {
-              if (res.data.confirmed) {
-                setErrorOnConfirmation(true)
-              } else {
+        if (isVaccinator) {
+          loginAsVaccinator(dni, password)
+            .then((res) => {
+              if (res.data.error) {
                 setErrors([res.data.message])
+              } else {
+                localStorage.setItem("vaccinator", true)
+                history.push("/home")
               }
-            } else {
-              history.push("/verification")
-            }
-          })
-          .catch((error) => {
-            setErrors(error)
-            console.log(errors)
-          })
+            })
+            .catch((error) => {
+              setErrors(error)
+              console.log(errors)
+            })
+        } else {
+          login(dni, password)
+            .then((res) => {
+              if (res.data.error) {
+                if (res.data.confirmed) {
+                  setErrorOnConfirmation(true)
+                } else {
+                  setErrors([res.data.message])
+                }
+              } else {
+                history.push("/verification")
+              }
+            })
+            .catch((error) => {
+              setErrors(error)
+              console.log(errors)
+            })
+        }
       }
     }
   }

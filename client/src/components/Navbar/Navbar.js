@@ -7,6 +7,7 @@ import "./navbar.css"
 
 function Navbar() {
   const isAdmin = localStorage.getItem("admin")
+  const isVaccinator = localStorage.getItem("vaccinator")
 
   return (
     <nav className="navbar">
@@ -18,16 +19,21 @@ function Navbar() {
           </Link>
         </li>
 
-        <li className="nav-item">
-          <Link to={isAdmin ? "add-vaccinator" : "/profile?editProfile=true"} className="nav-link">
-            <img src={profile} alt="Icono de perfil" className="img-icon" />
-            <span className="link-text">{isAdmin ? "Añadir" : "Perfil"}</span>
-          </Link>
-        </li>
+        {!isVaccinator && (
+          <li className="nav-item">
+            <Link
+              to={isAdmin ? "/add-vaccinator" : "/profile?editProfile=true"}
+              className="nav-link"
+            >
+              <img src={profile} alt="Icono de perfil" className="img-icon" />
+              <span className="link-text">{isAdmin ? "Añadir" : "Perfil"}</span>
+            </Link>
+          </li>
+        )}
 
         {!isAdmin && (
           <li className="nav-item">
-            <Link to="/vaccines" className="nav-link">
+            <Link to={isVaccinator ? "/inscriptions" : "/vaccines"} className="nav-link">
               <img src={vaccine} alt="Icono de vacuna" className="img-icon" />
               <span className="link-text">Vacunas</span>
             </Link>
@@ -35,7 +41,14 @@ function Navbar() {
         )}
 
         <li className="nav-item">
-          <Link onClick={() => localStorage.removeItem("admin")} to="/" className="nav-link">
+          <Link
+            onClick={() => {
+              localStorage.removeItem("admin")
+              localStorage.removeItem("vaccinator")
+            }}
+            to="/"
+            className="nav-link"
+          >
             <img src={close} alt="Icono de cerrar sesión" className="img-icon" />
             <span className="link-text">Salir</span>
           </Link>
