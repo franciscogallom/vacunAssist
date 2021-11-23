@@ -1,9 +1,12 @@
 const router = require("express").Router()
 const db = require("../../config/db")
 
+const date = new Date()
+const actualDay = date.getDate()
+
+
 router.post("/:vaccine/:dni", (req, res) => {
   const { vaccine, dni } = req.params
-  const date = new Date()
   db.query(`SELECT date_of_birth, risk_factor from users WHERE dni = ${dni}`, (error, result) => {
     if (error) {
       res.send(error)
@@ -14,6 +17,8 @@ router.post("/:vaccine/:dni", (req, res) => {
       // Casos para el covid-19.
       if (vaccine === "covid") {
         if (age >= 60) {
+          const assignedDay = actualDay + 7
+          date.setDate(assignedDay)
           const turn = date.toLocaleDateString()
           db.query(
             `UPDATE inscriptions SET covid = '${turn}' WHERE dni = ${dni}`,
@@ -28,7 +33,9 @@ router.post("/:vaccine/:dni", (req, res) => {
             }
           )
         } else if (age > 18 && age < 60 && result[0].risk_factor) {
-          const turn = date.toLocaleDateString()
+          const assignedDay = actualDay + 7
+          date.setDate(assignedDay)
+          const turn = date.toLocaleDateString() 
           db.query(
             `UPDATE inscriptions SET covid = '${turn}' WHERE dni = ${dni}`,
             (error, result) => {
@@ -44,13 +51,24 @@ router.post("/:vaccine/:dni", (req, res) => {
         } else if (age < 18) {
           res.send("Aun no se puede inscribir.")
         } else {
-          res.send("En cola de espera para asignacion del turno.")
+          const turn = "waiting"
+          db.query(`UPDATE inscriptions SET covid = '${turn}' WHERE dni = ${dni}`,
+          (error, result) => {
+            if(error){
+              res.send(error)
+            } else if (result.length === 0 ){
+              res.send("DNI no existente")
+            } else {
+              res.send("En cola de espera para asignacion del turno.")
+            }
+          }
+          )
         }
       }
       // Casos para la fiebre amarilla.
       else if (vaccine === "fever") {
         if (age < 60) {
-          const turn = date.toLocaleDateString()
+          const turn = "waiting"
           db.query(
             `UPDATE inscriptions SET fever = '${turn}' WHERE dni = ${dni}`,
             (error, result) => {
@@ -69,6 +87,8 @@ router.post("/:vaccine/:dni", (req, res) => {
         // Casos para la gripe.
       } else if (vaccine === "flu") {
         if (age >= 60) {
+          const assignedDay = actualDay + 90
+          date.setDate(assignedDay)
           const turn = date.toLocaleDateString()
           db.query(
             `UPDATE inscriptions SET flu = '${turn}' WHERE dni = ${dni}`,
@@ -83,6 +103,8 @@ router.post("/:vaccine/:dni", (req, res) => {
             }
           )
         } else {
+          const assignedDay = actualDay + 180
+          date.setDate(assignedDay)
           const turn = date.toLocaleDateString()
           db.query(
             `UPDATE inscriptions SET flu = '${turn}' WHERE dni = ${dni}`,
