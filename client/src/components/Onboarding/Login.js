@@ -1,7 +1,7 @@
 import "./onboarding.css"
 import { login } from "../../services/axios/onboarding"
 import { useContext, useState } from "react"
-import { useHistory, Link } from "react-router-dom"
+import { useHistory, Link, useLocation } from "react-router-dom"
 import homeBannerSVG from "../../assets/images/home-banner.svg"
 import Button from "../Button/Button"
 import Context from "../../context/context"
@@ -13,6 +13,9 @@ function Login() {
   const [errors, setErrors] = useState([])
   const [errorOnConfirmation, setErrorOnConfirmation] = useState("")
   const history = useHistory()
+
+  const useQuery = () => new URLSearchParams(useLocation().search)
+  const isVaccinator = useQuery().get("vaccinator")
 
   const handleLogin = () => {
     if (dni.length === 0 || password.length === 0) {
@@ -65,7 +68,9 @@ function Login() {
 
         <div className="buttons-container">
           <Button handleClick={() => handleLogin()} text="Iniciar sesión" />
-          <Button handleClick={() => history.push("/signup")} text="No tengo cuenta" secondary />
+          {!isVaccinator && (
+            <Button handleClick={() => history.push("/signup")} text="No tengo cuenta" secondary />
+          )}
         </div>
       </Form>
       <img className="home-banner" src={homeBannerSVG} alt="Ilustración de médicos" />
