@@ -57,7 +57,11 @@ function Vaccines() {
             {covid.length > 0 ? (
               <div className="inscription-container">
                 <p className="already-registered">Ya estas inscripto!</p>
-                <p>Tiene turno para el {covid}.</p>
+                <p>
+                  {covid === "waiting"
+                    ? "En cola de espera para asignacion del turno."
+                    : `Tiene turno para el ${covid}.`}
+                </p>
               </div>
             ) : (
               <Button handleClick={() => handleInscription("covid")} text="Inscribirme" />
@@ -68,7 +72,12 @@ function Vaccines() {
             {fever.length > 0 ? (
               <div className="inscription-container">
                 <p className="already-registered">Ya estas inscripto!</p>
-                <p>Tienes turno para el {fever}.</p>
+
+                <p>
+                  {fever === "waiting"
+                    ? "En cola de espera para asignacion del turno."
+                    : `Tiene turno para el ${fever}.`}
+                </p>
               </div>
             ) : (
               <Button handleClick={() => handleInscription("fever")} text="Inscribirme" />
@@ -79,7 +88,12 @@ function Vaccines() {
             {flu.length > 0 ? (
               <div className="inscription-container">
                 <p className="already-registered">Ya estas inscripto!</p>
-                <p>Tienes turno para el {flu}.</p>
+
+                <p>
+                  {flu === "waiting"
+                    ? "En cola de espera para asignacion del turno."
+                    : `Tiene turno para el ${flu}.`}
+                </p>
               </div>
             ) : (
               <Button handleClick={() => handleInscription("flu")} text="Inscribirme" />
