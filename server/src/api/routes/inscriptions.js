@@ -14,25 +14,33 @@ router.post("/:vaccine/:dni", (req, res) => {
       // Casos para el covid-19.
       if (vaccine === "covid") {
         if (age >= 60) {
-          db.query(`UPDATE users SET covid = true WHERE dni = ${dni}`, (error, result) => {
-            if (error) {
-              res.send(error)
-            } else if (result.length === 0) {
-              res.send("DNI no existente")
-            } else {
-              res.send("Prioridad confirmada, turno en 7 dias.")
+          const turn = date.toLocaleDateString()
+          db.query(
+            `UPDATE inscriptions SET covid = '${turn}' WHERE dni = ${dni}`,
+            (error, result) => {
+              if (error) {
+                res.send(error)
+              } else if (result.length === 0) {
+                res.send("DNI no existente")
+              } else {
+                res.send("Prioridad confirmada, turno en 7 dias.")
+              }
             }
-          })
+          )
         } else if (age > 18 && age < 60 && result[0].risk_factor) {
-          db.query(`UPDATE users SET covid = true WHERE dni = ${dni}`, (error, result) => {
-            if (error) {
-              res.send(error)
-            } else if (result.length === 0) {
-              res.send("DNI no existente")
-            } else {
-              res.send("Prioridad confirmada, turno en 7 dias.")
+          const turn = date.toLocaleDateString()
+          db.query(
+            `UPDATE inscriptions SET covid = '${turn}' WHERE dni = ${dni}`,
+            (error, result) => {
+              if (error) {
+                res.send(error)
+              } else if (result.length === 0) {
+                res.send("DNI no existente")
+              } else {
+                res.send("Prioridad confirmada, turno en 7 dias.")
+              }
             }
-          })
+          )
         } else if (age < 18) {
           res.send("Aun no se puede inscribir.")
         } else {
@@ -42,39 +50,66 @@ router.post("/:vaccine/:dni", (req, res) => {
       // Casos para la fiebre amarilla.
       else if (vaccine === "fever") {
         if (age < 60) {
-          db.query(`UPDATE users SET fever = true WHERE dni = ${dni}`, (error, result) => {
-            if (error) {
-              res.send(error)
-            } else if (result.length === 0) {
-              res.send("DNI no existente")
-            } else {
-              res.send("En espera a que se le asigne un turno.")
+          const turn = date.toLocaleDateString()
+          db.query(
+            `UPDATE inscriptions SET fever = '${turn}' WHERE dni = ${dni}`,
+            (error, result) => {
+              if (error) {
+                res.send(error)
+              } else if (result.length === 0) {
+                res.send("DNI no existente")
+              } else {
+                res.send("En espera a que se le asigne un turno.")
+              }
             }
-          })
+          )
         } else {
           res.send("No puede inscribirse a la vacuna por ser mayor de 60 años.")
         }
         // Casos para la gripe.
       } else if (vaccine === "flu") {
         if (age >= 60) {
-          db.query(`UPDATE users SET flu = true WHERE dni = ${dni}`, (error, result) => {
-            if (error) {
-              res.send(error)
-            } else if (result.length === 0) {
-              res.send("DNI no existente")
-            } else {
-              res.send("Turno en los proximos 3 meses.")
+          const turn = date.toLocaleDateString()
+          db.query(
+            `UPDATE inscriptions SET flu = '${turn}' WHERE dni = ${dni}`,
+            (error, result) => {
+              if (error) {
+                res.send(error)
+              } else if (result.length === 0) {
+                res.send("DNI no existente")
+              } else {
+                res.send("Turno en los proximos 3 meses.")
+              }
             }
-          })
+          )
         } else {
-          db.query(`UPDATE users SET flu = true WHERE dni = ${dni}`, (error, result) => {
-            if (error) {
-              res.send(error)
-            } else {
-              res.send("Turno en los proximos 6 meses.")
+          const turn = date.toLocaleDateString()
+          db.query(
+            `UPDATE inscriptions SET flu = '${turn}' WHERE dni = ${dni}`,
+            (error, result) => {
+              if (error) {
+                res.send(error)
+              } else {
+                res.send("Turno en los proximos 6 meses.")
+              }
             }
-          })
+          )
         }
+      }
+    }
+  })
+})
+
+router.get("/vaccines/:dni", (req, res) => {
+  const { dni } = req.params
+  db.query(`SELECT covid, fever, flu FROM inscriptions WHERE dni = ${dni}`, (error, result) => {
+    if (error) {
+      res.send(error)
+    } else {
+      if (result.length === 0) {
+        console.log("DNI no existente")
+      } else {
+        res.send(result[0])
       }
     }
   })

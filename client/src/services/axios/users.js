@@ -17,8 +17,4 @@ const checkPassword = (password, dni) => {
   })
 }
 
-const getVaccinesByDni = (dni) => {
-  return axios.get(`${baseUrl}/vaccines/${dni}`)
-}
-
-export { getNameByDni, updatePassword, checkPassword, getVaccinesByDni }
+export { getNameByDni, updatePassword, checkPassword }

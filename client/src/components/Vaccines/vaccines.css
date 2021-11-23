@@ -22,6 +22,14 @@
   font-weight: bold;
 }
 
-.alreadyRegistered {
+.inscription-container {
+  text-align: center;
+}
+
+.inscription-container p {
+  font-size: 0.75em;
+}
+
+.already-registered {
   color: var(--primary-color);
 }

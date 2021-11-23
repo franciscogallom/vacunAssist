@@ -5,4 +5,8 @@ const inscription = (vaccine, dni) => {
   return axios.post(`${baseUrl}/${vaccine}/${dni}`)
 }
 
-export { inscription }
+const getVaccinesByDni = (dni) => {
+  return axios.get(`${baseUrl}/vaccines/${dni}`)
+}
+
+export { inscription, getVaccinesByDni }
