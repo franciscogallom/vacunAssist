@@ -77,10 +77,9 @@ router.post("/add-user", (req, res) => {
                   res.send({ err })
                 } else {
                   // El usuario se creo correctamente. Se crea una nueva fila en la tabla "inscriptions"
-                  const date = new Date().toLocaleDateString()
                   db.query(
                     `INSERT INTO inscriptions (dni, ${vaccine}) VALUES (?, ?)`,
-                    [dni, date],
+                    [dni, "Aplicada."],
                     (err) => {
                       if (err) {
                         res.send(err)

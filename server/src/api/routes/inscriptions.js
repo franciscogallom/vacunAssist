@@ -18,7 +18,7 @@ router.post("/:vaccine/:dni", (req, res) => {
           date.setDate(assignedDay)
           const turn = date.toLocaleDateString()
           db.query(
-            `UPDATE inscriptions SET covid = '${turn}' WHERE dni = ${dni}`,
+            `UPDATE inscriptions SET covid = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
             (error, result) => {
               if (error) {
                 res.send(error)
@@ -34,7 +34,7 @@ router.post("/:vaccine/:dni", (req, res) => {
           date.setDate(assignedDay)
           const turn = date.toLocaleDateString()
           db.query(
-            `UPDATE inscriptions SET covid = '${turn}' WHERE dni = ${dni}`,
+            `UPDATE inscriptions SET covid = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
             (error, result) => {
               if (error) {
                 res.send(error)
@@ -48,7 +48,7 @@ router.post("/:vaccine/:dni", (req, res) => {
         } else if (age < 18) {
           res.send("Aun no se puede inscribir.")
         } else {
-          const turn = "waiting"
+          const turn = "En cola de espera."
           db.query(
             `UPDATE inscriptions SET covid = '${turn}' WHERE dni = ${dni}`,
             (error, result) => {
@@ -66,7 +66,7 @@ router.post("/:vaccine/:dni", (req, res) => {
       // Casos para la fiebre amarilla.
       else if (vaccine === "fever") {
         if (age < 60) {
-          const turn = "waiting"
+          const turn = "En cola de espera."
           db.query(
             `UPDATE inscriptions SET fever = '${turn}' WHERE dni = ${dni}`,
             (error, result) => {
@@ -89,7 +89,7 @@ router.post("/:vaccine/:dni", (req, res) => {
           date.setDate(assignedDay)
           const turn = date.toLocaleDateString()
           db.query(
-            `UPDATE inscriptions SET flu = '${turn}' WHERE dni = ${dni}`,
+            `UPDATE inscriptions SET flu = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
             (error, result) => {
               if (error) {
                 res.send(error)
@@ -105,7 +105,7 @@ router.post("/:vaccine/:dni", (req, res) => {
           date.setDate(assignedDay)
           const turn = date.toLocaleDateString()
           db.query(
-            `UPDATE inscriptions SET flu = '${turn}' WHERE dni = ${dni}`,
+            `UPDATE inscriptions SET flu = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
             (error, result) => {
               if (error) {
                 res.send(error)
