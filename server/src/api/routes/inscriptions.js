@@ -1,11 +1,8 @@
 const router = require("express").Router()
 const db = require("../../config/db")
 
-const date = new Date()
-const actualDay = date.getDate()
-
-
 router.post("/:vaccine/:dni", (req, res) => {
+  const actualDay = new Date().getDate()
   const { vaccine, dni } = req.params
   db.query(`SELECT date_of_birth, risk_factor from users WHERE dni = ${dni}`, (error, result) => {
     if (error) {
@@ -35,7 +32,7 @@ router.post("/:vaccine/:dni", (req, res) => {
         } else if (age > 18 && age < 60 && result[0].risk_factor) {
           const assignedDay = actualDay + 7
           date.setDate(assignedDay)
-          const turn = date.toLocaleDateString() 
+          const turn = date.toLocaleDateString()
           db.query(
             `UPDATE inscriptions SET covid = '${turn}' WHERE dni = ${dni}`,
             (error, result) => {
@@ -52,16 +49,17 @@ router.post("/:vaccine/:dni", (req, res) => {
           res.send("Aun no se puede inscribir.")
         } else {
           const turn = "waiting"
-          db.query(`UPDATE inscriptions SET covid = '${turn}' WHERE dni = ${dni}`,
-          (error, result) => {
-            if(error){
-              res.send(error)
-            } else if (result.length === 0 ){
-              res.send("DNI no existente")
-            } else {
-              res.send("En cola de espera para asignacion del turno.")
+          db.query(
+            `UPDATE inscriptions SET covid = '${turn}' WHERE dni = ${dni}`,
+            (error, result) => {
+              if (error) {
+                res.send(error)
+              } else if (result.length === 0) {
+                res.send("DNI no existente")
+              } else {
+                res.send("En cola de espera para asignacion del turno.")
+              }
             }
-          }
           )
         }
       }
@@ -137,15 +135,14 @@ router.get("/vaccines/:dni", (req, res) => {
   })
 })
 
-router.get("/queue" , (req, res) => {
-    db.query(`SELECT * FROM inscriptions`, (error,result) => {
-      if (error) {
-        res.send(error)
-      } else {
-        res.send(result)
-      }
-    })
+router.get("/", (req, res) => {
+  db.query(`SELECT * FROM inscriptions`, (error, result) => {
+    if (error) {
+      res.send(error)
+    } else {
+      res.send(result)
+    }
+  })
 })
-
 
 module.exports = router
