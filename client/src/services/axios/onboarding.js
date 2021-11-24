@@ -40,7 +40,19 @@ const login = (dni, password) => {
   })
 }
 
-const signup = (email, name, lastname, dni, password, vaccination, dateOfBirth) => {
+const signup = (email, name, lastname, dni, password, vaccination, dateOfBirth, isVaccinator, vaccine) => {
+  if (isVaccinator) {
+    return axios.post("http://localhost:8080/api/vaccinators/add-user", {
+      email,
+      name,
+      lastname,
+      dni,
+      password,
+      vaccination,
+      date_of_birth: dateOfBirth,
+      vaccine, 
+    })
+  } else {
   return axios.post(`${baseUrl}/signup`, {
     email,
     name,
@@ -50,6 +62,7 @@ const signup = (email, name, lastname, dni, password, vaccination, dateOfBirth) 
     vaccination,
     date_of_birth: dateOfBirth,
   })
+}
 }
 
 const sendEmailByDni = (dni) => {

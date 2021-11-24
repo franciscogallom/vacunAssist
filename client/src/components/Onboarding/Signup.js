@@ -18,6 +18,7 @@ function Signup() {
   const [verifyPassword, setVerifyPassword] = useState("")
   const [dateOfBirth, setDateOfBirth] = useState("")
   const [vaccination, setVaccination] = useState("polideportivo")
+  const [vaccine, setVaccine] = useState("covid")
   const [errors, setErrors] = useState([])
   const [message, setMessage] = useState("")
   const history = useHistory()
@@ -39,7 +40,7 @@ function Signup() {
     })
     setErrors(validations)
     if (validations.length === 0) {
-      signup(email, name, lastname, finalDni, password, vaccination, dateOfBirth)
+      signup(email, name, lastname, finalDni, password, vaccination, dateOfBirth, isVaccinator, vaccine)
         .then((res) => {
           if (res.data.error) {
             setErrors((prevState) => [...prevState, res.data.message])
@@ -140,7 +141,22 @@ function Signup() {
           <option value="corralon">Corralón municipal</option>
           <option value="anexo">Anexo Hospital 9 de Julio</option>
         </select>
-
+        {
+          (isVaccinator) && ( 
+          <>
+            <p className="form-label">Vacuna aplicada</p>
+            <select
+              id="vaccine1"
+              onChange={(e) => setVaccine(e.target.value)}
+              className="select"
+            >
+              <option value="covid">Covid-19</option>
+              <option value="flu">Gripe</option>
+              <option value="fever">Fiebre amarilla</option>
+            </select>
+          </>
+          )
+        }
         {errors.length > 0 && (
           <ul className="form-errors">
             {errors.map((error, index) => (
