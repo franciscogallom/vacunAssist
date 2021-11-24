@@ -9,6 +9,7 @@ import Home from "./components/Home/Home"
 import Vaccines from "./components/Vaccines/Vaccines"
 import Profile from "./components/Profile/Profile"
 import AddVaccinator from "./components/AddVaccinator/AddVaccinator"
+import AddUser from "./components/AddUser/AddUser"
 import Inscriptions from "./components/Inscriptions/Inscriptions"
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={WhoAmI} />
           <Route exact path="/add-vaccinator" component={AddVaccinator} />
+          <Route exact path="/add-user" component={AddUser} />
           <Route exact path="/home" component={Home} />
           <Route exact path="/signup" component={Signup} />
           <Route exact path="/login" component={Login} />

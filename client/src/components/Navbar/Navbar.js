@@ -9,6 +9,15 @@ function Navbar() {
   const isAdmin = localStorage.getItem("admin")
   const isVaccinator = localStorage.getItem("vaccinator")
 
+  let profileRoute
+  if (isAdmin) {
+    profileRoute = "/add-vaccinator"
+  } else if (isVaccinator) {
+    profileRoute = "/add-user"
+  } else {
+    profileRoute = "/profile?editProfile=true"
+  }
+
   return (
     <nav className="navbar">
       <ul className="navbar-nav">
@@ -19,17 +28,12 @@ function Navbar() {
           </Link>
         </li>
 
-        {!isVaccinator && (
-          <li className="nav-item">
-            <Link
-              to={isAdmin ? "/add-vaccinator" : "/profile?editProfile=true"}
-              className="nav-link"
-            >
-              <img src={profile} alt="Icono de perfil" className="img-icon" />
-              <span className="link-text">{isAdmin ? "Añadir" : "Perfil"}</span>
-            </Link>
-          </li>
-        )}
+        <li className="nav-item">
+          <Link to={profileRoute} className="nav-link">
+            <img src={profile} alt="Icono de perfil" className="img-icon" />
+            <span className="link-text">{isAdmin || isVaccinator ? "Añadir" : "Perfil"}</span>
+          </Link>
+        </li>
 
         {!isAdmin && (
           <li className="nav-item">

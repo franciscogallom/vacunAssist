@@ -10,6 +10,7 @@ import Context from "../../context/context"
 
 function Signup() {
   const { dni, setDni } = useContext(Context)
+  const [dniAsVaccinator, setDniAsVaccinator] = useState()
   const [name, setName] = useState("")
   const [lastname, setLastname] = useState("")
   const [email, setEmail] = useState("")
@@ -18,26 +19,44 @@ function Signup() {
   const [dateOfBirth, setDateOfBirth] = useState("")
   const [vaccination, setVaccination] = useState("polideportivo")
   const [errors, setErrors] = useState([])
+  const [message, setMessage] = useState("")
   const history = useHistory()
 
+  const isVaccinator = localStorage.getItem("vaccinator")
+
   const handleSignUp = () => {
+    const finalDni = isVaccinator ? dniAsVaccinator : dni
+    const checkPassword = !isVaccinator
     const validations = signupValidation({
       email,
       name,
       lastname,
-      dni,
+      finalDni,
       password,
       verifyPassword,
       dateOfBirth,
+      checkPassword,
     })
     setErrors(validations)
     if (validations.length === 0) {
-      signup(email, name, lastname, dni, password, vaccination, dateOfBirth)
+      signup(email, name, lastname, finalDni, password, vaccination, dateOfBirth)
         .then((res) => {
           if (res.data.error) {
             setErrors((prevState) => [...prevState, res.data.message])
           } else {
-            history.push("/comorbidities")
+            if (isVaccinator) {
+              setMessage("Paciente registrado exitosamente.")
+              document.getElementById("dni").value = ""
+              document.getElementById("name").value = ""
+              document.getElementById("lastname").value = ""
+              document.getElementById("email").value = ""
+              document.getElementById("password").value = ""
+              document.getElementById("check-password").value = ""
+              document.getElementById("date").value = ""
+              document.getElementById("vaccination").value = "polideportivo"
+            } else {
+              history.push("/comorbidities")
+            }
           }
         })
         .catch((error) => {
@@ -57,16 +76,45 @@ function Signup() {
   return (
     <div className="onboarding-container">
       <Form>
-        <input onChange={(e) => setName(e.target.value)} placeholder="Nombre" type="text" />
-        <input onChange={(e) => setLastname(e.target.value)} placeholder="Apellido" type="text" />
-        <input onChange={(e) => setEmail(e.target.value)} placeholder="Email" type="text" />
-        <input onChange={(e) => setDni(e.target.value)} placeholder="DNI" type="number" />
         <input
+          id="name"
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Nombre"
+          type="text"
+        />
+        <input
+          id="lastname"
+          onChange={(e) => setLastname(e.target.value)}
+          placeholder="Apellido"
+          type="text"
+        />
+        <input
+          id="email"
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          type="text"
+        />
+        {isVaccinator ? (
+          <input
+            id="dni"
+            onChange={(e) => {
+              setDniAsVaccinator(e.target.value)
+              console.log(dniAsVaccinator)
+            }}
+            placeholder="DNI"
+            type="number"
+          />
+        ) : (
+          <input onChange={(e) => setDni(e.target.value)} placeholder="DNI" type="number" />
+        )}
+        <input
+          id="password"
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Contraseña"
           type="password"
         />
         <input
+          id="check-password"
           onChange={(e) => setVerifyPassword(e.target.value)}
           placeholder="Repetir contraseña"
           type="password"
@@ -74,6 +122,7 @@ function Signup() {
 
         <p className="form-label">Fecha de nacimiento</p>
         <input
+          id="date"
           min="1890-01-01"
           max={`${getMaxDate()}`}
           onChange={(e) => setDateOfBirth(e.target.value)}
@@ -82,7 +131,11 @@ function Signup() {
         />
 
         <p className="form-label">Vacunatorio</p>
-        <select onChange={(e) => setVaccination(e.target.value)} className="select">
+        <select
+          id="vaccination"
+          onChange={(e) => setVaccination(e.target.value)}
+          className="select"
+        >
           <option value="polideportivo">Polideportivo</option>
           <option value="corralon">Corralón municipal</option>
           <option value="anexo">Anexo Hospital 9 de Julio</option>
@@ -96,13 +149,24 @@ function Signup() {
           </ul>
         )}
 
+        {message && <p className="validation-message">{message}</p>}
+
         <div className="buttons-container">
-          <Button handleClick={() => handleSignUp()} text="Registrarme" />
-          <Button handleClick={() => history.push("/login")} text="Ya tengo cuenta!" secondary />
+          {
+            <Button
+              handleClick={() => handleSignUp()}
+              text={isVaccinator ? "Registrar paciente" : "Registrarme"}
+            />
+          }
+          {!isVaccinator && (
+            <Button handleClick={() => history.push("/login")} text="Ya tengo cuenta!" secondary />
+          )}
         </div>
       </Form>
 
-      <img className="home-banner" src={homeBannerSVG} alt="Ilustración de médicos" />
+      {!isVaccinator && (
+        <img className="home-banner" src={homeBannerSVG} alt="Ilustración de médicos" />
+      )}
     </div>
   )
 }
