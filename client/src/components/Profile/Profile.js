@@ -29,6 +29,9 @@ function Profile() {
             updatePassword(newPassword, dni)
               .then(() => {
                 setMessage("Contraseña actualizada.")
+                document.getElementById("old-password").value = ""
+                document.getElementById("new-password").value = ""
+                document.getElementById("check-password").value = ""
                 setTimeout(() => {
                   setMessage("")
                 }, 5000)
@@ -52,16 +55,19 @@ function Profile() {
       <Form>
         <h5>Cambiar contraseña.</h5>
         <input
+          id="old-password"
           onChange={(e) => setOldPassword(e.target.value)}
           placeholder="Actual contraseña"
           type="password"
         />
         <input
+          id="new-password"
           onChange={(e) => setNewPassword(e.target.value)}
           placeholder="Nueva contraseña"
           type="password"
         />
         <input
+          id="check-password"
           onChange={(e) => setVerifyPassword(e.target.value)}
           placeholder="Repita la nueva contraseña"
           type="password"
