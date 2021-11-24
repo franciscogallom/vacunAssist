@@ -137,4 +137,15 @@ router.get("/vaccines/:dni", (req, res) => {
   })
 })
 
+router.get("/queue" , (req, res) => {
+    db.query(`SELECT * FROM inscriptions`, (error,result) => {
+      if (error) {
+        res.send(error)
+      } else {
+        res.send(result)
+      }
+    })
+})
+
+
 module.exports = router
