@@ -10,12 +10,20 @@ function Navbar() {
   const isVaccinator = localStorage.getItem("vaccinator")
 
   let profileRoute
+  let vaccineMessage
+  let vaccineRoute
   if (isAdmin) {
     profileRoute = "/add-vaccinator"
+    vaccineMessage = "Stock"
+    vaccineRoute = "/stock"
   } else if (isVaccinator) {
     profileRoute = "/add-user"
+    vaccineMessage = "Vacunas"
+    vaccineRoute = "/inscriptions"
   } else {
     profileRoute = "/profile?editProfile=true"
+    vaccineMessage = "Vacunas"
+    vaccineRoute = "/vaccines"
   }
 
   return (
@@ -35,14 +43,12 @@ function Navbar() {
           </Link>
         </li>
 
-        {!isAdmin && (
-          <li className="nav-item">
-            <Link to={isVaccinator ? "/inscriptions" : "/vaccines"} className="nav-link">
-              <img src={vaccine} alt="Icono de vacuna" className="img-icon" />
-              <span className="link-text">Vacunas</span>
-            </Link>
-          </li>
-        )}
+        <li className="nav-item">
+          <Link to={vaccineRoute} className="nav-link">
+            <img src={vaccine} alt="Icono de vacuna" className="img-icon" />
+            <span className="link-text">{vaccineMessage}</span>
+          </Link>
+        </li>
 
         <li className="nav-item">
           <Link

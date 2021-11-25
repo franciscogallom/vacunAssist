@@ -11,4 +11,15 @@ const addVaccinator = (email, name, lastname, dni, password) => {
   })
 }
 
-export { addVaccinator }
+const getStock = (vaccination) => {
+  return axios.get(`${baseUrl}/stock/${vaccination}`)
+}
+
+const addStock = (vaccination, stock, vaccine) => {
+  return axios.put(`${baseUrl}/add-stock/${vaccination}`, {
+    vaccine,
+    stock,
+  })
+}
+
+export { addVaccinator, getStock, addStock }

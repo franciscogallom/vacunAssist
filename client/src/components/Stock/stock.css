@@ -1,0 +1,23 @@
+.vaccination-title {
+  font-weight: bolder;
+}
+
+.vaccine-title {
+  font-weight: bold;
+  font-size: 0.8em;
+}
+
+.stock-vaccine-container {
+  border-width: 0.1em;
+  border-color: var(--primary-color);
+  border-style: solid;
+  border-radius: 1em;
+  padding: 1em;
+  margin: 1em 0;
+}
+
+.stock-message {
+  font-weight: bold;
+  margin: 0.5em 0;
+  font-size: 0.75em;
+}

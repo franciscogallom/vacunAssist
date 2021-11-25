@@ -11,6 +11,7 @@ import Profile from "./components/Profile/Profile"
 import AddVaccinator from "./components/AddVaccinator/AddVaccinator"
 import AddUser from "./components/AddUser/AddUser"
 import Inscriptions from "./components/Inscriptions/Inscriptions"
+import Stock from "./components/Stock/Stock"
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route exact path="/vaccines" component={Vaccines} />
           <Route exact path="/profile" component={Profile} />
           <Route exact path="/inscriptions" component={Inscriptions} />
+          <Route exact path="/stock" component={Stock} />
         </Switch>
       </BrowserRouter>
     </ContextProvider>
