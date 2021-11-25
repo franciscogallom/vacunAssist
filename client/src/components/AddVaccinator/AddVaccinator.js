@@ -15,21 +15,31 @@ function AddVaccinator() {
   const [error, setError] = useState("")
 
   const handleAdd = () => {
-    if (password !== verifyPassword) {
-      setError("Las contraseñas no coinciden.")
+    if (
+      name.length === 0 ||
+      lastname.length === 0 ||
+      email.length === 0 ||
+      password.length === 0 ||
+      verifyPassword.length === 0
+    ) {
+      setError("Complete todos los campos.")
     } else {
-      addVaccinator(email, name, lastname, dni, password)
-        .then((res) => {
-          if (res.data.error) {
-            setError(res.data.message)
-          } else {
-            setMessage(res.data)
-            setError("")
-          }
-        })
-        .catch(() => {
-          setError("Algo salio mal, vuelve a intentarlo.")
-        })
+      if (password !== verifyPassword) {
+        setError("Las contraseñas no coinciden.")
+      } else {
+        addVaccinator(email, name, lastname, dni, password)
+          .then((res) => {
+            if (res.data.error) {
+              setError(res.data.message)
+            } else {
+              setMessage(res.data)
+              setError("")
+            }
+          })
+          .catch(() => {
+            setError("Algo salio mal, vuelve a intentarlo.")
+          })
+      }
     }
   }
 
