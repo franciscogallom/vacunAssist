@@ -57,6 +57,23 @@ router.get("/stock/:vaccination" , (req, res) => {
   })
 })
 
+router.put("/add-stock/:vaccination" , (req, res) => {
+  const { vaccination } = req.params
+  const { vaccine, stock } = req.body
+  // if( vaccination === "polideportivo") {
+    db.query(`UPDATE stock SET ${vaccine} = ${vaccine} + ${stock} WHERE vaccination = (?)`, [ vaccination ], (error, result) =>{
+      if(error){
+        res.send(error)
+      } else {
+        res.send("Stock actualizado correctamente.")
+      }
+    })
+  // } else if (vaccination === "corralon"){
+  //   db.query(`UPDATE stock SET ${vaccine} = ${vaccine} + ${stock} WHERE id = 2`)
+  // } else {
+  //   db.query(`UPDATE stock SET ${vaccine} = ${vaccine} + ${stock} WHERE id = 3`)   
+  // } 
+})
 
 
 
