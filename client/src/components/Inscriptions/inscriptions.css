@@ -11,3 +11,10 @@
 .inscription-title {
   font-weight: bold;
 }
+
+.inscriptions-buttons-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5em 0;
+  width: 15vw;
+}
