@@ -24,3 +24,7 @@
   border-color: var(--primary-color);
   color: var(--primary-color);
 }
+
+.small {
+  font-size: 0.7em;
+}

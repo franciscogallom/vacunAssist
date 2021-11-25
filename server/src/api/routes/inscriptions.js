@@ -148,7 +148,6 @@ router.get("/", (req, res) => {
 
 router.post("/apply", (req, res) => {
   const { vaccine, dni } = req.body
-  console.log({ dni, vaccine })
   db.query(
     `UPDATE inscriptions SET ${vaccine} = 'Aplicada.' WHERE dni = ${dni}`,
     (error, result) => {
