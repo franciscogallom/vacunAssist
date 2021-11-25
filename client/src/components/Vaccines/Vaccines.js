@@ -54,50 +54,41 @@ function Vaccines() {
         <div className="vaccines-container">
           <div className="vaccine">
             <p>Coronavirus</p>
-            {covid.length > 0 ? (
-              <div className="inscription-container">
-                <p className="already-registered">Ya estas inscripto!</p>
-                <p>
-                  {covid === "waiting"
-                    ? "En cola de espera para asignacion del turno."
-                    : `Tiene turno para el ${covid}.`}
+            {covid === "No inscripto." ? (
+              <p>
+                <Button handleClick={() => handleInscription("covid")} text="Inscribirme" />
                 </p>
-              </div>
             ) : (
-              <Button handleClick={() => handleInscription("covid")} text="Inscribirme" />
+            <div className="inscription-container">
+              <p className="already-registered">
+              {covid}
+              </p>
+            </div>
             )}
           </div>
           <div className="vaccine">
             <p>Fiebre amarilla</p>
-            {fever.length > 0 ? (
-              <div className="inscription-container">
-                <p className="already-registered">Ya estas inscripto!</p>
-
-                <p>
-                  {fever === "waiting"
-                    ? "En cola de espera para asignacion del turno."
-                    : `Tiene turno para el ${fever}.`}
-                </p>
-              </div>
-            ) : (
+            {fever === "No inscripto." ? (
               <Button handleClick={() => handleInscription("fever")} text="Inscribirme" />
+            ) : (
+            <div className="inscription-container">
+              <p className="already-registered">
+              {fever}
+              </p>
+            </div>
             )}
           </div>
           <div className="vaccine">
             <p>Gripe</p>
-            {flu.length > 0 ? (
-              <div className="inscription-container">
-                <p className="already-registered">Ya estas inscripto!</p>
-
-                <p>
-                  {flu === "waiting"
-                    ? "En cola de espera para asignacion del turno."
-                    : `Tiene turno para el ${flu}.`}
-                </p>
-              </div>
-            ) : (
+            <div className="inscription-container">
+            {flu === "No inscripto." ? (
               <Button handleClick={() => handleInscription("flu")} text="Inscribirme" />
+            ) : (
+              <p className="already-registered">
+              {flu}
+              </p>
             )}
+            </div>
           </div>
         </div>
 
