@@ -35,4 +35,29 @@ router.post("/add-vaccinator", (req, res) => {
   })
 })
 
+router.get("/stock", (req, res) => {
+  
+  db.query("SELECT * FROM stock" , (error, result) => {
+    if(error){
+      res.send(error)
+    } else {
+      res.send(result)
+    }
+  })
+})
+
+router.get("/stock/:vaccination" , (req, res) => {
+  const { vaccination } = req.params
+  db.query(`SELECT flu, fever, covid FROM stock WHERE vaccination = (?)`, [vaccination] , (error, result) => {
+    if (error) {
+      res.send(error)
+    } else {
+      res.send(result[0])
+    }
+  })
+})
+
+
+
+
 module.exports = router
