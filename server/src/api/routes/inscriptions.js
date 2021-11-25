@@ -2,7 +2,8 @@ const router = require("express").Router()
 const db = require("../../config/db")
 
 router.post("/:vaccine/:dni", (req, res) => {
-  const actualDay = new Date().getDate()
+  const date = new Date()
+  const actualDay = date.getDate()
   const { vaccine, dni } = req.params
   db.query(`SELECT date_of_birth, risk_factor from users WHERE dni = ${dni}`, (error, result) => {
     if (error) {
@@ -143,6 +144,35 @@ router.get("/", (req, res) => {
       res.send(result)
     }
   })
+})
+
+router.post("/apply", (req, res) => {
+  const { vaccine, dni } = req.body
+  console.log({ dni, vaccine })
+  db.query(
+    `UPDATE inscriptions SET ${vaccine} = 'Aplicada.' WHERE dni = ${dni}`,
+    (error, result) => {
+      if (error) {
+        res.send(error)
+      } else {
+        res.send("Modificación exitosa.")
+      }
+    }
+  )
+})
+
+router.post("/lost-turn", (req, res) => {
+  const { vaccine, dni } = req.body
+  db.query(
+    `UPDATE inscriptions SET ${vaccine} = 'No se presento.' WHERE dni = ${dni}`,
+    (error, result) => {
+      if (error) {
+        res.send(error)
+      } else {
+        res.send("Modificación exitosa.")
+      }
+    }
+  )
 })
 
 module.exports = router
