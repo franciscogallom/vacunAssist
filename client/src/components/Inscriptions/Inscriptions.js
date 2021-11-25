@@ -63,57 +63,63 @@ function Inscriptions() {
               <ul className="inscriptions-items">
                 <li>
                   <span className="inscription-title">COVID:</span> {inscription.covid}
-                  {inscription.covid !== "No se presento." && inscription.covid !== "Aplicada." && (
-                    <div className="inscriptions-buttons-container">
-                      <Button
-                        handleClick={() => handleApply(inscription.dni, "covid")}
-                        text="Aplicada"
-                        isSmall
-                      />
-                      <Button
-                        handleClick={() => handleLost(inscription.dni, "covid")}
-                        text="No se presento"
-                        secondary
-                        isSmall
-                      />
-                    </div>
-                  )}
+                  {inscription.covid !== "No se presento." &&
+                    inscription.covid !== "Aplicada." &&
+                    inscription.covid !== "No inscripto." && (
+                      <div className="inscriptions-buttons-container">
+                        <Button
+                          handleClick={() => handleApply(inscription.dni, "covid")}
+                          text="Aplicada"
+                          isSmall
+                        />
+                        <Button
+                          handleClick={() => handleLost(inscription.dni, "covid")}
+                          text="No se presento"
+                          secondary
+                          isSmall
+                        />
+                      </div>
+                    )}
                 </li>
                 <li>
                   <span className="inscription-title">Fiebre amarilla:</span> {inscription.fever}
-                  {inscription.fever !== "No se presento." && inscription.fever !== "Aplicada." && (
-                    <div className="inscriptions-buttons-container">
-                      <Button
-                        handleClick={() => handleApply(inscription.dni, "fever")}
-                        text="Aplicada"
-                        isSmall
-                      />
-                      <Button
-                        handleClick={() => handleLost(inscription.dni, "fever")}
-                        text="No se presento"
-                        secondary
-                        isSmall
-                      />
-                    </div>
-                  )}
+                  {inscription.fever !== "No se presento." &&
+                    inscription.fever !== "Aplicada." &&
+                    inscription.fever !== "No inscripto." && (
+                      <div className="inscriptions-buttons-container">
+                        <Button
+                          handleClick={() => handleApply(inscription.dni, "fever")}
+                          text="Aplicada"
+                          isSmall
+                        />
+                        <Button
+                          handleClick={() => handleLost(inscription.dni, "fever")}
+                          text="No se presento"
+                          secondary
+                          isSmall
+                        />
+                      </div>
+                    )}
                 </li>
                 <li>
                   <span className="inscription-title">Gripe:</span> {inscription.flu}
-                  {inscription.flu !== "No se presento." && inscription.flu !== "Aplicada." && (
-                    <div className="inscriptions-buttons-container">
-                      <Button
-                        handleClick={() => handleApply(inscription.dni, "flu")}
-                        text="Aplicada"
-                        isSmall
-                      />
-                      <Button
-                        handleClick={() => handleLost(inscription.dni, "flu")}
-                        text="No se presento"
-                        secondary
-                        isSmall
-                      />
-                    </div>
-                  )}
+                  {inscription.flu !== "No se presento." &&
+                    inscription.flu !== "Aplicada." &&
+                    inscription.flu !== "No inscripto." && (
+                      <div className="inscriptions-buttons-container">
+                        <Button
+                          handleClick={() => handleApply(inscription.dni, "flu")}
+                          text="Aplicada"
+                          isSmall
+                        />
+                        <Button
+                          handleClick={() => handleLost(inscription.dni, "flu")}
+                          text="No se presento"
+                          secondary
+                          isSmall
+                        />
+                      </div>
+                    )}
                 </li>
               </ul>
               {message && <p className="validation-message">{message}</p>}

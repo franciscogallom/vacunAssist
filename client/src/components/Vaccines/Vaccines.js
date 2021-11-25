@@ -27,19 +27,12 @@ function Vaccines() {
         console.log(error)
         setError("Algo salio mal...")
       })
-  }, [covid, dni, fever, flu])
+  }, [message, dni])
 
   const handleInscription = (vaccine) => {
     inscription(vaccine, dni)
       .then((res) => {
         setMessage(res.data)
-        if (vaccine === "covid") {
-          setCovid(true)
-        } else if (vaccine === "fever") {
-          setFever(true)
-        } else {
-          setFlu(true)
-        }
       })
       .catch(() => {
         setError("Algo salio mal, vuelve a intentarlo.")
@@ -54,40 +47,32 @@ function Vaccines() {
         <div className="vaccines-container">
           <div className="vaccine">
             <p>Coronavirus</p>
-            {covid === "No inscripto." ? (
-              <p>
-                <Button handleClick={() => handleInscription("covid")} text="Inscribirme" />
-                </p>
-            ) : (
             <div className="inscription-container">
-              <p className="already-registered">
-              {covid}
-              </p>
+              {covid === "No inscripto." ? (
+                <Button handleClick={() => handleInscription("covid")} text="Inscribirme" />
+              ) : (
+                <p className="already-registered">{covid}</p>
+              )}
             </div>
-            )}
           </div>
           <div className="vaccine">
             <p>Fiebre amarilla</p>
-            {fever === "No inscripto." ? (
-              <Button handleClick={() => handleInscription("fever")} text="Inscribirme" />
-            ) : (
             <div className="inscription-container">
-              <p className="already-registered">
-              {fever}
-              </p>
+              {fever === "No inscripto." ? (
+                <Button handleClick={() => handleInscription("fever")} text="Inscribirme" />
+              ) : (
+                <p className="already-registered">{fever}</p>
+              )}
             </div>
-            )}
           </div>
           <div className="vaccine">
             <p>Gripe</p>
             <div className="inscription-container">
-            {flu === "No inscripto." ? (
-              <Button handleClick={() => handleInscription("flu")} text="Inscribirme" />
-            ) : (
-              <p className="already-registered">
-              {flu}
-              </p>
-            )}
+              {flu === "No inscripto." ? (
+                <Button handleClick={() => handleInscription("flu")} text="Inscribirme" />
+              ) : (
+                <p className="already-registered">{flu}</p>
+              )}
             </div>
           </div>
         </div>
