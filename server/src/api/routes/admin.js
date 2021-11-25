@@ -36,9 +36,8 @@ router.post("/add-vaccinator", (req, res) => {
 })
 
 router.get("/stock", (req, res) => {
-  
-  db.query("SELECT * FROM stock" , (error, result) => {
-    if(error){
+  db.query("SELECT * FROM stock", (error, result) => {
+    if (error) {
       res.send(error)
     } else {
       res.send(result)
@@ -46,35 +45,35 @@ router.get("/stock", (req, res) => {
   })
 })
 
-router.get("/stock/:vaccination" , (req, res) => {
+router.get("/stock/:vaccination", (req, res) => {
   const { vaccination } = req.params
-  db.query(`SELECT flu, fever, covid FROM stock WHERE vaccination = (?)`, [vaccination] , (error, result) => {
-    if (error) {
-      res.send(error)
-    } else {
-      res.send(result[0])
+  db.query(
+    `SELECT flu, fever, covid FROM stock WHERE vaccination = (?)`,
+    [vaccination],
+    (error, result) => {
+      if (error) {
+        res.send(error)
+      } else {
+        res.send(result[0])
+      }
     }
-  })
+  )
 })
 
-router.put("/add-stock/:vaccination" , (req, res) => {
+router.put("/add-stock/:vaccination", (req, res) => {
   const { vaccination } = req.params
   const { vaccine, stock } = req.body
-  // if( vaccination === "polideportivo") {
-    db.query(`UPDATE stock SET ${vaccine} = ${vaccine} + ${stock} WHERE vaccination = (?)`, [ vaccination ], (error, result) =>{
-      if(error){
+  db.query(
+    `UPDATE stock SET ${vaccine} = ${vaccine} + ${stock} WHERE vaccination = (?)`,
+    [vaccination],
+    (error, result) => {
+      if (error) {
         res.send(error)
       } else {
         res.send("Stock actualizado correctamente.")
       }
-    })
-  // } else if (vaccination === "corralon"){
-  //   db.query(`UPDATE stock SET ${vaccine} = ${vaccine} + ${stock} WHERE id = 2`)
-  // } else {
-  //   db.query(`UPDATE stock SET ${vaccine} = ${vaccine} + ${stock} WHERE id = 3`)   
-  // } 
+    }
+  )
 })
-
-
 
 module.exports = router
