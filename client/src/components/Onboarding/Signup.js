@@ -1,6 +1,7 @@
 import "./onboarding.css"
 import { signup } from "../../services/axios/onboarding"
-import { useState, useContext } from "react"
+import { getVaccination } from "../../services/axios/vaccinators"
+import { useState, useContext, useEffect } from "react"
 import { useHistory } from "react-router-dom"
 import homeBannerSVG from "../../assets/images/home-banner.svg"
 import Button from "../Button/Button"
@@ -21,9 +22,25 @@ function Signup() {
   const [vaccine, setVaccine] = useState("covid")
   const [errors, setErrors] = useState([])
   const [message, setMessage] = useState("")
+  const [vaccinatorVaccination, setVaccinatorVaccination] = useState("")
   const history = useHistory()
 
   const isVaccinator = localStorage.getItem("vaccinator")
+
+  useEffect(() => {
+    if (isVaccinator) {
+      getVaccination(dni)
+        .then((res) => {
+          setVaccinatorVaccination(res.data)
+          console.log(res.data)
+          console.log(vaccinatorVaccination)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleSignUp = () => {
     const finalDni = isVaccinator ? dniAsVaccinator : dni
@@ -40,7 +57,17 @@ function Signup() {
     })
     setErrors(validations)
     if (validations.length === 0) {
-      signup(email, name, lastname, finalDni, password, vaccination, dateOfBirth, isVaccinator, vaccine)
+      signup(
+        email,
+        name,
+        lastname,
+        finalDni,
+        password,
+        vaccination,
+        dateOfBirth,
+        isVaccinator,
+        vaccine
+      )
         .then((res) => {
           if (res.data.error) {
             setErrors((prevState) => [...prevState, res.data.message])
@@ -54,7 +81,7 @@ function Signup() {
               document.getElementById("password").value = ""
               document.getElementById("check-password").value = ""
               document.getElementById("date").value = ""
-              document.getElementById("vaccination").value = "polideportivo"
+              document.getElementById("vaccine").value = "covid"
             } else {
               history.push("/comorbidities")
             }
@@ -131,32 +158,31 @@ function Signup() {
           type="date"
         />
 
-        <p className="form-label">Vacunatorio</p>
-        <select
-          id="vaccination"
-          onChange={(e) => setVaccination(e.target.value)}
-          className="select"
-        >
-          <option value="polideportivo">Polideportivo</option>
-          <option value="corralon">Corralón municipal</option>
-          <option value="anexo">Anexo Hospital 9 de Julio</option>
-        </select>
-        {
-          (isVaccinator) && ( 
+        {!isVaccinator && (
           <>
-            <p className="form-label">Vacuna aplicada</p>
+            {" "}
+            <p className="form-label">Vacunatorio</p>
             <select
-              id="vaccine1"
-              onChange={(e) => setVaccine(e.target.value)}
+              id="vaccination"
+              onChange={(e) => setVaccination(e.target.value)}
               className="select"
             >
-              <option value="covid">Covid-19</option>
+              <option value="polideportivo">Polideportivo</option>
+              <option value="corralon">Corralón municipal</option>
+              <option value="anexo">Anexo Hospital 9 de Julio</option>
+            </select>
+          </>
+        )}
+        {isVaccinator && (
+          <>
+            <p className="form-label">Vacuna aplicada</p>
+            <select id="vaccine" onChange={(e) => setVaccine(e.target.value)} className="select">
+              <option value="covid">COVID-19</option>
               <option value="flu">Gripe</option>
               <option value="fever">Fiebre amarilla</option>
             </select>
           </>
-          )
-        }
+        )}
         {errors.length > 0 && (
           <ul className="form-errors">
             {errors.map((error, index) => (

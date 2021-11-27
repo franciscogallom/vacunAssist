@@ -12,4 +12,8 @@ const getVaccinatorNameByDni = (dni) => {
   return axios.get(`${baseUrl}/name/${dni}`)
 }
 
-export { loginAsVaccinator, getVaccinatorNameByDni }
+const getVaccination = (dni) => {
+  return axios.get(`${baseUrl}/vaccination/${dni}`)
+}
+
+export { loginAsVaccinator, getVaccinatorNameByDni, getVaccination }
