@@ -56,6 +56,9 @@ function Inscriptions() {
       <Form>
         <h5>Pacientes registrados en la aplicación.</h5>
 
+        {message && <p className="validation-message">{message}</p>}
+        {errorHandle && <p className="error-message">{errorHandle}</p>}
+
         <ul className="inscriptions-container">
           {inscriptions.map((inscription, index) => (
             <li key={index}>
@@ -122,8 +125,6 @@ function Inscriptions() {
                     )}
                 </li>
               </ul>
-              {message && <p className="validation-message">{message}</p>}
-              {errorHandle && <p className="error-message">{errorHandle}</p>}
             </li>
           ))}
         </ul>
