@@ -162,8 +162,9 @@ router.get("/today", (req, res) => {
 
 router.post("/apply", (req, res) => {
   const { vaccine, dni } = req.body
+  const today = new Date().toLocaleDateString()
   db.query(
-    `UPDATE inscriptions SET ${vaccine} = 'Aplicada.' WHERE dni = ${dni}`,
+    `UPDATE inscriptions SET ${vaccine} = 'Aplicada el ${today}.' WHERE dni = ${dni}`,
     (error, result) => {
       if (error) {
         res.send(error)

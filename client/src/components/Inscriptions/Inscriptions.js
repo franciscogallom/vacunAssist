@@ -68,7 +68,7 @@ function Inscriptions() {
                     <li>
                       <span className="inscription-title">COVID:</span> {inscription.covid}
                       {inscription.covid !== "No se presento." &&
-                        inscription.covid !== "Aplicada." &&
+                        !inscription.covid.includes("Aplicada") &&
                         inscription.covid !== "No inscripto." && (
                           <div className="inscriptions-buttons-container">
                             <Button
@@ -89,7 +89,7 @@ function Inscriptions() {
                       <span className="inscription-title">Fiebre amarilla:</span>{" "}
                       {inscription.fever}
                       {inscription.fever !== "No se presento." &&
-                        inscription.fever !== "Aplicada." &&
+                        !inscription.fever.includes("Aplicada") &&
                         inscription.fever !== "No inscripto." && (
                           <div className="inscriptions-buttons-container">
                             <Button
@@ -109,7 +109,7 @@ function Inscriptions() {
                     <li>
                       <span className="inscription-title">Gripe:</span> {inscription.flu}
                       {inscription.flu !== "No se presento." &&
-                        inscription.flu !== "Aplicada." &&
+                        !inscription.flu.includes("Aplicada") &&
                         inscription.flu !== "No inscripto." && (
                           <div className="inscriptions-buttons-container">
                             <Button

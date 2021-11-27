@@ -45,6 +45,7 @@ router.post("/add-user", (req, res) => {
   const { email, name, lastname, dni, password, vaccination, date_of_birth, vaccine } = req.body
   const confirmed = false
   const createdAt = new Date().toLocaleString()
+  const today = new Date().toLocaleDateString()
 
   db.query(`SELECT email FROM users WHERE email='${email}'`, (error, result) => {
     if (error) {
@@ -79,7 +80,7 @@ router.post("/add-user", (req, res) => {
                   // El usuario se creo correctamente. Se crea una nueva fila en la tabla "inscriptions"
                   db.query(
                     `INSERT INTO inscriptions (dni, ${vaccine}) VALUES (?, ?)`,
-                    [dni, "Aplicada."],
+                    [dni, `Aplicada el ${today}.`],
                     (err) => {
                       if (err) {
                         res.send(err)
