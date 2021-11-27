@@ -146,6 +146,20 @@ router.get("/", (req, res) => {
   })
 })
 
+router.get("/today", (req, res) => {
+  const today = `Turno para el ${new Date().toLocaleDateString()}.`
+  db.query(
+    `SELECT * FROM inscriptions WHERE covid = '${today}' OR flu = '${today}' OR fever = '${today}'`,
+    (error, result) => {
+      if (error) {
+        res.send(error)
+      } else {
+        res.send(result)
+      }
+    }
+  )
+})
+
 router.post("/apply", (req, res) => {
   const { vaccine, dni } = req.body
   db.query(

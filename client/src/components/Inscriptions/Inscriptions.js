@@ -3,7 +3,7 @@ import Navbar from "../Navbar/Navbar"
 import Form from "../Form/Form"
 import Button from "../Button/Button"
 import { useState, useEffect } from "react"
-import { getInscriptions, applyVaccine, lostTurn } from "../../services/axios/inscriptions"
+import { getInscriptionsForToday, applyVaccine, lostTurn } from "../../services/axios/inscriptions"
 
 function Inscriptions() {
   const [inscriptions, setInscriptions] = useState([])
@@ -12,7 +12,7 @@ function Inscriptions() {
   const [errorHandle, setErrorHandle] = useState("")
 
   useEffect(() => {
-    getInscriptions()
+    getInscriptionsForToday()
       .then((res) => {
         setInscriptions(res.data)
       })
@@ -54,85 +54,90 @@ function Inscriptions() {
     <>
       <Navbar />
       <Form>
-        <h5>Pacientes registrados en la aplicación.</h5>
-
-        {message && <p className="validation-message">{message}</p>}
-        {errorHandle && <p className="error-message">{errorHandle}</p>}
-
-        <ul className="inscriptions-container">
-          {inscriptions.map((inscription, index) => (
-            <li key={index}>
-              <span className="inscription-title">DNI:</span> {inscription.dni}.
-              <ul className="inscriptions-items">
-                <li>
-                  <span className="inscription-title">COVID:</span> {inscription.covid}
-                  {inscription.covid !== "No se presento." &&
-                    inscription.covid !== "Aplicada." &&
-                    inscription.covid !== "No inscripto." && (
-                      <div className="inscriptions-buttons-container">
-                        <Button
-                          handleClick={() => handleApply(inscription.dni, "covid")}
-                          text="Aplicada"
-                          isSmall
-                        />
-                        <Button
-                          handleClick={() => handleLost(inscription.dni, "covid")}
-                          text="No se presento"
-                          secondary
-                          isSmall
-                        />
-                      </div>
-                    )}
+        {inscriptions.length > 0 ? (
+          <>
+            {" "}
+            <h5>Pacientes con turno para hoy {new Date().toLocaleDateString()}.</h5>
+            {message && <p className="validation-message">{message}</p>}
+            {errorHandle && <p className="error-message">{errorHandle}</p>}
+            <ul className="inscriptions-container">
+              {inscriptions.map((inscription, index) => (
+                <li key={index}>
+                  <span className="inscription-title">DNI:</span> {inscription.dni}.
+                  <ul className="inscriptions-items">
+                    <li>
+                      <span className="inscription-title">COVID:</span> {inscription.covid}
+                      {inscription.covid !== "No se presento." &&
+                        inscription.covid !== "Aplicada." &&
+                        inscription.covid !== "No inscripto." && (
+                          <div className="inscriptions-buttons-container">
+                            <Button
+                              handleClick={() => handleApply(inscription.dni, "covid")}
+                              text="Aplicada"
+                              isSmall
+                            />
+                            <Button
+                              handleClick={() => handleLost(inscription.dni, "covid")}
+                              text="No se presento"
+                              secondary
+                              isSmall
+                            />
+                          </div>
+                        )}
+                    </li>
+                    <li>
+                      <span className="inscription-title">Fiebre amarilla:</span>{" "}
+                      {inscription.fever}
+                      {inscription.fever !== "No se presento." &&
+                        inscription.fever !== "Aplicada." &&
+                        inscription.fever !== "No inscripto." && (
+                          <div className="inscriptions-buttons-container">
+                            <Button
+                              handleClick={() => handleApply(inscription.dni, "fever")}
+                              text="Aplicada"
+                              isSmall
+                            />
+                            <Button
+                              handleClick={() => handleLost(inscription.dni, "fever")}
+                              text="No se presento"
+                              secondary
+                              isSmall
+                            />
+                          </div>
+                        )}
+                    </li>
+                    <li>
+                      <span className="inscription-title">Gripe:</span> {inscription.flu}
+                      {inscription.flu !== "No se presento." &&
+                        inscription.flu !== "Aplicada." &&
+                        inscription.flu !== "No inscripto." && (
+                          <div className="inscriptions-buttons-container">
+                            <Button
+                              handleClick={() => handleApply(inscription.dni, "flu")}
+                              text="Aplicada"
+                              isSmall
+                            />
+                            <Button
+                              handleClick={() => handleLost(inscription.dni, "flu")}
+                              text="No se presento"
+                              secondary
+                              isSmall
+                            />
+                          </div>
+                        )}
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  <span className="inscription-title">Fiebre amarilla:</span> {inscription.fever}
-                  {inscription.fever !== "No se presento." &&
-                    inscription.fever !== "Aplicada." &&
-                    inscription.fever !== "No inscripto." && (
-                      <div className="inscriptions-buttons-container">
-                        <Button
-                          handleClick={() => handleApply(inscription.dni, "fever")}
-                          text="Aplicada"
-                          isSmall
-                        />
-                        <Button
-                          handleClick={() => handleLost(inscription.dni, "fever")}
-                          text="No se presento"
-                          secondary
-                          isSmall
-                        />
-                      </div>
-                    )}
-                </li>
-                <li>
-                  <span className="inscription-title">Gripe:</span> {inscription.flu}
-                  {inscription.flu !== "No se presento." &&
-                    inscription.flu !== "Aplicada." &&
-                    inscription.flu !== "No inscripto." && (
-                      <div className="inscriptions-buttons-container">
-                        <Button
-                          handleClick={() => handleApply(inscription.dni, "flu")}
-                          text="Aplicada"
-                          isSmall
-                        />
-                        <Button
-                          handleClick={() => handleLost(inscription.dni, "flu")}
-                          text="No se presento"
-                          secondary
-                          isSmall
-                        />
-                      </div>
-                    )}
-                </li>
+              ))}
+            </ul>
+            {error.length > 0 && (
+              <ul className="form-errors">
+                <li>{error}</li>
               </ul>
-            </li>
-          ))}
-        </ul>
-
-        {error.length > 0 && (
-          <ul className="form-errors">
-            <li>{error}</li>
-          </ul>
+            )}
+          </>
+        ) : (
+          <h5>No hay pacientes con turno para hoy {new Date().toLocaleDateString()}.</h5>
         )}
       </Form>
     </>

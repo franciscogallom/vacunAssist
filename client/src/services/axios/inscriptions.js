@@ -9,6 +9,10 @@ const getInscriptions = () => {
   return axios.get(`${baseUrl}/`)
 }
 
+const getInscriptionsForToday = () => {
+  return axios.get(`${baseUrl}/today`)
+}
+
 const getVaccinesByDni = (dni) => {
   return axios.get(`${baseUrl}/vaccines/${dni}`)
 }
@@ -21,4 +25,11 @@ const lostTurn = (dni, vaccine) => {
   return axios.post(`${baseUrl}/lost-turn`, { vaccine, dni })
 }
 
-export { inscription, getVaccinesByDni, getInscriptions, applyVaccine, lostTurn }
+export {
+  inscription,
+  getVaccinesByDni,
+  getInscriptions,
+  applyVaccine,
+  lostTurn,
+  getInscriptionsForToday,
+}
