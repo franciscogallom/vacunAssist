@@ -12,6 +12,7 @@ function AddVaccinator() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [verifyPassword, setVerifyPassword] = useState("")
+  const [vaccination, setVaccination] = useState("polideportivo")
   const [message, setMessage] = useState("")
   const [errors, setErrors] = useState([])
 
@@ -27,7 +28,7 @@ function AddVaccinator() {
     if (validations.length > 0) {
       setErrors(validations)
     } else {
-      addVaccinator(email, name, lastname, dni, password)
+      addVaccinator(email, name, lastname, dni, password, vaccination)
         .then((res) => {
           if (res.data.error) {
             setErrors([res.data.message])
@@ -40,6 +41,7 @@ function AddVaccinator() {
             document.getElementById("dni").value = ""
             document.getElementById("password").value = ""
             document.getElementById("verify-password").value = ""
+            document.getElementById("vaccination").value = "polideportivo"
           }
         })
         .catch(() => {
@@ -84,6 +86,16 @@ function AddVaccinator() {
           type="password"
           onChange={(e) => setVerifyPassword(e.target.value)}
         />
+        <p className="form-label">Vacunatorio</p>
+        <select
+          id="vaccination"
+          onChange={(e) => setVaccination(e.target.value)}
+          className="select"
+        >
+          <option value="polideportivo">Polideportivo</option>
+          <option value="corralon">Corralón municipal</option>
+          <option value="anexo">Anexo Hospital 9 de Julio</option>
+        </select>
 
         {errors.length > 0 && (
           <ul className="form-errors">

@@ -2,7 +2,7 @@ const router = require("express").Router()
 const db = require("../../config/db")
 
 router.post("/add-vaccinator", (req, res) => {
-  const { email, name, lastname, dni, password } = req.body
+  const { email, name, lastname, dni, password, vaccination } = req.body
   const createdAt = new Date().toLocaleDateString()
   db.query(`SELECT email FROM vaccinators WHERE email='${email}'`, (error, result) => {
     if (error) {
@@ -18,8 +18,8 @@ router.post("/add-vaccinator", (req, res) => {
             res.send({ error: true, message: "El DNI ya está en uso." })
           } else {
             db.query(
-              "INSERT INTO vaccinators (email, name, lastname, dni, password, createdAt) VALUES (?, ?, ?, ?, ?, ?)",
-              [email, name, lastname, dni, password, createdAt],
+              "INSERT INTO vaccinators (email, name, lastname, dni, password, createdAt, vaccination) VALUES (?, ?, ?, ?, ?, ?, ?)",
+              [email, name, lastname, dni, password, createdAt, vaccination],
               (err) => {
                 if (err) {
                   res.send({ err })
