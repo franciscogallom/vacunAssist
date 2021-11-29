@@ -160,6 +160,44 @@ router.get("/today", (req, res) => {
   )
 })
 
+router.get("/lost", (req, res) => {
+  const filter = "No se presento."
+  db.query(
+    `SELECT * FROM inscriptions WHERE covid = '${filter}' OR flu = '${filter}' OR fever = '${filter}'`,
+    (error, result) => {
+      if (error) {
+        res.send(error)
+      } else {
+        res.send(result)
+      }
+    }
+  )
+})
+
+router.post("/reasign", (req, res) => {
+  const { turn, dni, vaccine } = req.body
+  let message
+  if (vaccine === "covid") {
+    message = "COVID-19"
+  } else if (vaccine === "fever") {
+    message = "fiebre amarilla"
+  } else {
+    message = "gripe"
+  }
+  db.query(
+    `UPDATE inscriptions SET ${vaccine} = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
+    (error, result) => {
+      if (error) {
+        res.send(error)
+      } else {
+        res.send(
+          `Turno del usuario de DNI ${dni} para ${message} reasignado exitosamente para el ${turn}.`
+        )
+      }
+    }
+  )
+})
+
 router.post("/apply", (req, res) => {
   const { vaccine, dni } = req.body
   const today = new Date().toLocaleDateString()

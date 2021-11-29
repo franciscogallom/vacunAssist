@@ -4,6 +4,7 @@ import profile from "../../assets/images/user.png"
 import close from "../../assets/images/close.png"
 import home from "../../assets/images/home.png"
 import lost from "../../assets/images/lost.png"
+import turn from "../../assets/images/turn.png"
 import "./navbar.css"
 
 function Navbar() {
@@ -56,6 +57,15 @@ function Navbar() {
             <Link to="/missed-inscriptions" className="nav-link">
               <img src={lost} alt="Icono de perdido" className="img-icon" />
               <span className="link-text">Perdidos</span>
+            </Link>
+          </li>
+        )}
+
+        {isAdmin && (
+          <li className="nav-item">
+            <Link to="/turns" className="nav-link">
+              <img src={turn} alt="Icono de turnos" className="img-icon" />
+              <span className="link-text">Turnos</span>
             </Link>
           </li>
         )}
