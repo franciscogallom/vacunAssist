@@ -16,6 +16,10 @@ const getStock = (vaccination) => {
   return axios.get(`${baseUrl}/stock/${vaccination}`)
 }
 
+const updateTurns = () => {
+  return axios.post(`${baseUrl}/update-turns`)
+}
+
 const addStock = (vaccination, stock, vaccine) => {
   return axios.put(`${baseUrl}/add-stock/${vaccination}`, {
     vaccine,
@@ -23,4 +27,4 @@ const addStock = (vaccination, stock, vaccine) => {
   })
 }
 
-export { addVaccinator, getStock, addStock }
+export { addVaccinator, getStock, addStock, updateTurns }

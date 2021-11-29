@@ -13,7 +13,6 @@ import AddUser from "./components/AddUser/AddUser"
 import Inscriptions from "./components/Inscriptions/Inscriptions"
 import Stock from "./components/Stock/Stock"
 import Turns from "./components/Turns/Turns"
-import MissedInscriptions from "./components/MissedInscriptions/MissedInscriptions"
 
 function App() {
   return (
@@ -33,7 +32,6 @@ function App() {
           <Route exact path="/inscriptions" component={Inscriptions} />
           <Route exact path="/stock" component={Stock} />
           <Route exact path="/turns" component={Turns} />
-          <Route exact path="/missed-inscriptions" component={MissedInscriptions} />
         </Switch>
       </BrowserRouter>
     </ContextProvider>

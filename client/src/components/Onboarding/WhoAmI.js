@@ -3,9 +3,22 @@ import homeBannerSVG from "../../assets/images/home-banner.svg"
 import logo from "../../assets/images/logo.png"
 import Button from "../Button/Button"
 import { useHistory } from "react-router-dom"
+import { useEffect } from "react"
+import { updateTurns } from "../../services/axios/admin"
 
 function WhoAmI() {
   const history = useHistory()
+
+  useEffect(() => {
+    updateTurns()
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }, [])
+
   return (
     <div className="onboarding-container">
       <div className="form-container">
