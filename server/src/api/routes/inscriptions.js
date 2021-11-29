@@ -207,7 +207,7 @@ router.post("/apply", (req, res) => {
       if (error) {
         res.send(error)
       } else {
-        res.send("Modificación exitosa.")
+        res.send("Vacuna marcada como aplicada exitosamente.")
       }
     }
   )

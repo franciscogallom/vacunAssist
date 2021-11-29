@@ -15,6 +15,8 @@ function Inscriptions() {
   const [message2, setMessage2] = useState("")
   const [errorHandle, setErrorHandle] = useState("")
 
+  const today = new Date().toLocaleDateString()
+
   useEffect(() => {
     getInscriptionsForToday()
       .then((res) => {
@@ -68,7 +70,7 @@ function Inscriptions() {
                 <li key={index}>
                   <span className="inscription-title">DNI:</span> {inscription.dni}.
                   <ul className="inscriptions-items">
-                    {inscription.covid.includes("Turno") && (
+                    {inscription.covid.includes(`Turno para el ${today}`) && (
                       <li>
                         <span className="inscription-title">COVID:</span> {inscription.covid}
                         <div className="inscriptions-buttons-container">
@@ -80,7 +82,7 @@ function Inscriptions() {
                         </div>
                       </li>
                     )}
-                    {inscription.fever.includes("Turno") && (
+                    {inscription.fever.includes(`Turno para el ${today}`) && (
                       <li>
                         <span className="inscription-title">Fiebre amarilla:</span>{" "}
                         {inscription.fever}
@@ -93,7 +95,7 @@ function Inscriptions() {
                         </div>
                       </li>
                     )}
-                    {inscription.flu.includes("Turno") && (
+                    {inscription.flu.includes(`Turno para el ${today}`) && (
                       <li>
                         <span className="inscription-title">Gripe:</span> {inscription.flu}
                         <div className="inscriptions-buttons-container">
