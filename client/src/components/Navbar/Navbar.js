@@ -3,6 +3,7 @@ import vaccine from "../../assets/images/vaccine.png"
 import profile from "../../assets/images/user.png"
 import close from "../../assets/images/close.png"
 import home from "../../assets/images/home.png"
+import lost from "../../assets/images/lost.png"
 import "./navbar.css"
 
 function Navbar() {
@@ -49,6 +50,15 @@ function Navbar() {
             <span className="link-text">{vaccineMessage}</span>
           </Link>
         </li>
+
+        {isVaccinator && (
+          <li className="nav-item">
+            <Link to="/missed-inscriptions" className="nav-link">
+              <img src={lost} alt="Icono de perdido" className="img-icon" />
+              <span className="link-text">Perdidos</span>
+            </Link>
+          </li>
+        )}
 
         <li className="nav-item">
           <Link
