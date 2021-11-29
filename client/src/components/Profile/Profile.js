@@ -26,7 +26,7 @@ function Profile() {
       .catch((e) => {
         console.log(e)
       })
-  }, [])
+  }, [dni])
 
   const handleChangePassword = async () => {
     const validations = changePasswordValidations(newPassword, verifyPassword)
