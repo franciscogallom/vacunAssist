@@ -1,20 +1,32 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import Context from "../../context/context"
 import Navbar from "../Navbar/Navbar"
 import Form from "../Form/Form"
 import Button from "../Button/Button"
 import { changePasswordValidations } from "../../services/changePasswordValidations"
 import { updatePassword, checkPassword } from "../../services/axios/users"
+import { getVaccinesByDni } from "../../services/axios/inscriptions"
 import Comorbidities from "../Onboarding/Comorbidities"
 
 function Profile() {
   const [oldPassword, setOldPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [verifyPassword, setVerifyPassword] = useState("")
+  const [vaccines, setVaccines] = useState("")
   const [errors, setErrors] = useState([])
   const [message, setMessage] = useState("")
 
   const { dni } = useContext(Context)
+
+  useEffect(() => {
+    getVaccinesByDni(dni)
+      .then((res) => {
+        setVaccines(res.data)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }, [])
 
   const handleChangePassword = async () => {
     const validations = changePasswordValidations(newPassword, verifyPassword)
@@ -86,6 +98,18 @@ function Profile() {
         <Button handleClick={() => handleChangePassword()} text="Cambiar contraseña" />
       </Form>
       <Comorbidities />
+      <Form>
+        <h5>Historial.</h5>
+        <p>
+          <span style={{ fontWeight: "bold" }}>COVID:</span> {vaccines.covid}
+        </p>
+        <p>
+          <span style={{ fontWeight: "bold" }}>Fiebre amarilla:</span> {vaccines.fever}
+        </p>
+        <p>
+          <span style={{ fontWeight: "bold" }}>Gripe:</span> {vaccines.flu}
+        </p>
+      </Form>
     </>
   )
 }
