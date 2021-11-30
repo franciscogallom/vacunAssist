@@ -37,7 +37,7 @@ function Inscriptions() {
         console.log(e)
         setError("Algo salió mal...")
       })
-  }, [message, errorHandle])
+  }, [message, errorHandle, dni])
 
   const handleApply = (dni, vaccine, isSecondForm) => {
     applyVaccine(dni, vaccine)
