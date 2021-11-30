@@ -146,10 +146,11 @@ router.get("/", (req, res) => {
   })
 })
 
-router.get("/today", (req, res) => {
+router.get("/today/:vaccination", (req, res) => {
+  const { vaccination } = req.params
   const today = `Turno para el ${new Date().toLocaleDateString()}.`
   db.query(
-    `SELECT * FROM inscriptions WHERE covid = '${today}' OR flu = '${today}' OR fever = '${today}'`,
+    `SELECT * FROM inscriptions WHERE (covid = '${today}' OR flu = '${today}' OR fever = '${today}') AND (vaccination = '${vaccination}')`,
     (error, result) => {
       if (error) {
         res.send(error)

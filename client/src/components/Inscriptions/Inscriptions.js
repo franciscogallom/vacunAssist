@@ -2,8 +2,10 @@ import "./inscriptions.css"
 import Navbar from "../Navbar/Navbar"
 import Form from "../Form/Form"
 import Button from "../Button/Button"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { getInscriptionsForToday, applyVaccine } from "../../services/axios/inscriptions"
+import { getVaccination } from "../../services/axios/vaccinators"
+import Context from "../../context/context"
 
 function Inscriptions() {
   const [inscriptions, setInscriptions] = useState([])
@@ -15,12 +17,21 @@ function Inscriptions() {
   const [message2, setMessage2] = useState("")
   const [errorHandle, setErrorHandle] = useState("")
 
+  const { dni } = useContext(Context)
+
   const today = new Date().toLocaleDateString()
 
   useEffect(() => {
-    getInscriptionsForToday()
+    getVaccination(dni)
       .then((res) => {
-        setInscriptions(res.data)
+        getInscriptionsForToday(res.data)
+          .then((res) => {
+            setInscriptions(res.data)
+          })
+          .catch((e) => {
+            console.log(e)
+            setError("Algo salió mal...")
+          })
       })
       .catch((e) => {
         console.log(e)

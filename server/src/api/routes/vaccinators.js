@@ -108,7 +108,7 @@ router.get("/vaccination/:dni", (req, res) => {
       if (result.length === 0) {
         res.send("DNI no existente")
       } else {
-        res.send(result[0])
+        res.send(result[0].vaccination)
       }
     }
   })

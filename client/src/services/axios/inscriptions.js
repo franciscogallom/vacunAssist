@@ -9,8 +9,8 @@ const getInscriptions = () => {
   return axios.get(`${baseUrl}/`)
 }
 
-const getInscriptionsForToday = () => {
-  return axios.get(`${baseUrl}/today`)
+const getInscriptionsForToday = (vaccination) => {
+  return axios.get(`${baseUrl}/today/${vaccination}`)
 }
 
 const getLostInscriptions = () => {
