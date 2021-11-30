@@ -82,6 +82,9 @@ function Signup() {
               document.getElementById("check-password").value = ""
               document.getElementById("date").value = ""
               document.getElementById("vaccine").value = "covid"
+              setTimeout(() => {
+                setMessage("")
+              }, 5000)
             } else {
               history.push("/comorbidities")
             }
