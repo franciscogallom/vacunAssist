@@ -77,6 +77,14 @@ function Vaccines() {
           </div>
         </div>
 
+        {(covid === "No se presento." ||
+          fever === "No se presento." ||
+          flu === "No se presento.") && (
+          <p style={{ fontSize: ".6em", fontWeight: "bold" }}>
+            Si usted no se presento a su turno, debe esperar a que se le asigne uno nuevo.
+          </p>
+        )}
+
         {error.length > 0 && (
           <ul className="form-errors">
             <li>{error}</li>
@@ -84,6 +92,19 @@ function Vaccines() {
         )}
 
         {message.length > 0 && <p className="validation-message">{message}</p>}
+      </Form>
+
+      <Form>
+        <h5>Historial.</h5>
+        <p>
+          <span style={{ fontWeight: "bold" }}>COVID:</span> {covid}
+        </p>
+        <p>
+          <span style={{ fontWeight: "bold" }}>Fiebre amarilla:</span> {fever}
+        </p>
+        <p>
+          <span style={{ fontWeight: "bold" }}>Gripe:</span> {flu}
+        </p>
       </Form>
     </>
   )
