@@ -68,4 +68,41 @@ router.get("/comorbidities/:dni", (req, res) => {
   )
 })
 
+router.get("/vaccination/:dni", (req, res) => {
+  const { dni } = req.params
+  db.query(`SELECT vaccination FROM users WHERE dni = ${dni}`, (error, result) => {
+    if (error) {
+      res.send(error)
+    } else {
+      if (result.length === 0) {
+        res.send("DNI no existente")
+      } else {
+        res.send(result[0].vaccination)
+      }
+    }
+  })
+})
+
+router.put("/update-vaccination/:dni", (req, res) => {
+  const { dni } = req.params
+  const { vaccination } = req.body
+  db.query(`UPDATE users SET vaccination = ? WHERE dni = ?`, [vaccination, dni], (error) => {
+    if (error) {
+      res.send(error)
+    } else {
+      db.query(
+        `UPDATE inscriptions SET vaccination = ? WHERE dni = ?`,
+        [vaccination, dni],
+        (error) => {
+          if (error) {
+            res.send(error)
+          } else {
+            res.send("Vacunatorio actualizado exitosamente.")
+          }
+        }
+      )
+    }
+  })
+})
+
 module.exports = router

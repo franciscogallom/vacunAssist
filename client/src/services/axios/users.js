@@ -21,4 +21,19 @@ const getComorbidities = (dni) => {
   return axios.get(`${baseUrl}/comorbidities/${dni}`)
 }
 
-export { getNameByDni, updatePassword, checkPassword, getComorbidities }
+const getVaccnation = (dni) => {
+  return axios.get(`${baseUrl}/vaccination/${dni}`)
+}
+
+const updateVaccination = (dni, vaccination) => {
+  return axios.put(`${baseUrl}/update-vaccination/${dni}`, { vaccination })
+}
+
+export {
+  getNameByDni,
+  updatePassword,
+  checkPassword,
+  getComorbidities,
+  getVaccnation,
+  updateVaccination,
+}

@@ -93,7 +93,7 @@ function AddVaccinator() {
           className="select"
         >
           <option value="polideportivo">Polideportivo</option>
-          <option value="corralon">Corralón municipal</option>
+          <option value="corralon">Corralón Municipal</option>
           <option value="anexo">Anexo Hospital 9 de Julio</option>
         </select>
 
