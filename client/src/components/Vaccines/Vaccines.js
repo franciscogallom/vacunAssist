@@ -33,6 +33,9 @@ function Vaccines() {
     inscription(vaccine, dni)
       .then((res) => {
         setMessage(res.data)
+        setTimeout(() => {
+          setMessage("")
+        }, 5000)
       })
       .catch(() => {
         setError("Algo salio mal, vuelve a intentarlo.")

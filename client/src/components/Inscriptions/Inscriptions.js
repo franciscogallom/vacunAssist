@@ -6,6 +6,7 @@ import { useState, useEffect, useContext } from "react"
 import { getInscriptionsForToday, applyVaccine } from "../../services/axios/inscriptions"
 import { getVaccination } from "../../services/axios/vaccinators"
 import Context from "../../context/context"
+import { getTodayDate } from "../../services/getTodayDate"
 
 function Inscriptions() {
   const [inscriptions, setInscriptions] = useState([])
@@ -19,7 +20,7 @@ function Inscriptions() {
 
   const { dni } = useContext(Context)
 
-  const today = new Date().toLocaleDateString()
+  const today = getTodayDate()
 
   useEffect(() => {
     getVaccination(dni)
@@ -81,7 +82,7 @@ function Inscriptions() {
                 <li key={index}>
                   <span className="inscription-title">DNI:</span> {inscription.dni}.
                   <ul className="inscriptions-items">
-                    {inscription.covid.includes(`Turno para el ${today}`) && (
+                    {inscription.covid.includes(today) && (
                       <li>
                         <span className="inscription-title">COVID:</span> {inscription.covid}
                         <div className="inscriptions-buttons-container">
@@ -93,7 +94,7 @@ function Inscriptions() {
                         </div>
                       </li>
                     )}
-                    {inscription.fever.includes(`Turno para el ${today}`) && (
+                    {inscription.fever.includes(today) && (
                       <li>
                         <span className="inscription-title">Fiebre amarilla:</span>{" "}
                         {inscription.fever}
@@ -106,7 +107,7 @@ function Inscriptions() {
                         </div>
                       </li>
                     )}
-                    {inscription.flu.includes(`Turno para el ${today}`) && (
+                    {inscription.flu.includes(today) && (
                       <li>
                         <span className="inscription-title">Gripe:</span> {inscription.flu}
                         <div className="inscriptions-buttons-container">

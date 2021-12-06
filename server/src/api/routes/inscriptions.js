@@ -1,5 +1,6 @@
 const router = require("express").Router()
 const db = require("../../config/db")
+const getTodayDate = require("../../services/getTodayDate")
 
 router.post("/:vaccine/:dni", (req, res) => {
   const date = new Date()
@@ -148,7 +149,8 @@ router.get("/", (req, res) => {
 
 router.get("/today/:vaccination", (req, res) => {
   const { vaccination } = req.params
-  const today = `Turno para el ${new Date().toLocaleDateString()}.`
+  const today = getTodayDate()
+
   db.query(
     `SELECT * FROM inscriptions WHERE (covid = '${today}' OR flu = '${today}' OR fever = '${today}') AND (vaccination = '${vaccination}')`,
     (error, result) => {
@@ -177,6 +179,7 @@ router.get("/lost", (req, res) => {
 
 router.post("/reasign", (req, res) => {
   const { turn, dni, vaccine } = req.body
+  let newTurn = turn.length === 9 ? `0${turn}` : turn
   let message
   if (vaccine === "covid") {
     message = "COVID-19"
@@ -186,7 +189,7 @@ router.post("/reasign", (req, res) => {
     message = "gripe"
   }
   db.query(
-    `UPDATE inscriptions SET ${vaccine} = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
+    `UPDATE inscriptions SET ${vaccine} = 'Turno para el ${newTurn}.' WHERE dni = ${dni}`,
     (error, result) => {
       if (error) {
         res.send(error)
@@ -201,9 +204,12 @@ router.post("/reasign", (req, res) => {
 
 router.post("/apply", (req, res) => {
   const { vaccine, dni } = req.body
-  const today = new Date().toLocaleDateString()
+  const todayDate = new Date()
+  const UTCDay = todayDate.getDate()
+  const day = UTCDay < 10 ? `0${UTCDay}` : UTCDay
+  const today = `Aplicada el ${day}/${todayDate.getMonth() + 1}/${todayDate.getFullYear()}.`
   db.query(
-    `UPDATE inscriptions SET ${vaccine} = 'Aplicada el ${today}.' WHERE dni = ${dni}`,
+    `UPDATE inscriptions SET ${vaccine} = '${today}' WHERE dni = ${dni}`,
     (error, result) => {
       if (error) {
         res.send(error)
