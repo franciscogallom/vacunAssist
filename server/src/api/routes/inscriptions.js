@@ -203,11 +203,13 @@ router.post("/reasign", (req, res) => {
 })
 
 router.post("/apply", (req, res) => {
-  const { vaccine, dni } = req.body
+  const { vaccine, dni, lot } = req.body
   const todayDate = new Date()
   const UTCDay = todayDate.getDate()
   const day = UTCDay < 10 ? `0${UTCDay}` : UTCDay
-  const today = `Aplicada el ${day}/${todayDate.getMonth() + 1}/${todayDate.getFullYear()}.`
+  const today = `Aplicada el ${day}/${
+    todayDate.getMonth() + 1
+  }/${todayDate.getFullYear()} (${lot}).`
   db.query(
     `UPDATE inscriptions SET ${vaccine} = '${today}' WHERE dni = ${dni}`,
     (error, result) => {

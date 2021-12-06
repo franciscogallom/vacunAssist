@@ -17,6 +17,7 @@ function Inscriptions() {
   const [message, setMessage] = useState("")
   const [message2, setMessage2] = useState("")
   const [errorHandle, setErrorHandle] = useState("")
+  const [lot, setLot] = useState("")
 
   const { dni } = useContext(Context)
 
@@ -41,30 +42,48 @@ function Inscriptions() {
   }, [message, errorHandle, dni])
 
   const handleApply = (dni, vaccine, isSecondForm) => {
-    applyVaccine(dni, vaccine)
-      .then((res) => {
-        if (isSecondForm) {
-          document.getElementById("dni").value = ""
-          document.getElementById("vaccine").value = "covid"
-          setMessage2(res.data)
-          setTimeout(() => {
-            setMessage2("")
-          }, 5000)
-        } else {
-          setMessage(res.data)
-          setTimeout(() => {
-            setMessage("")
-          }, 5000)
-        }
-      })
-      .catch((e) => {
-        console.log(e)
-        if (isSecondForm) {
-          setError2("Algo salió mal...")
-        } else {
-          setErrorHandle("Algo salió mal...")
-        }
-      })
+    if (lot.length === 0) {
+      if (isSecondForm) {
+        setError2("Ingrese un fabricante y lote de vacuna.")
+        setTimeout(() => {
+          setError2("")
+        }, 5000)
+      } else {
+        setErrorHandle("Ingrese un fabricante y lote de vacuna.")
+        setTimeout(() => {
+          setErrorHandle("")
+        }, 5000)
+      }
+    } else {
+      applyVaccine(dni, vaccine, lot)
+        .then((res) => {
+          if (isSecondForm) {
+            document.getElementById("dni").value = ""
+            document.getElementById("vaccine").value = "covid"
+            document.getElementById("lot").value = ""
+            setLot("")
+            setMessage2(res.data)
+            setTimeout(() => {
+              setMessage2("")
+            }, 5000)
+          } else {
+            document.getElementById("lot").value = ""
+            setLot("")
+            setMessage(res.data)
+            setTimeout(() => {
+              setMessage("")
+            }, 5000)
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+          if (isSecondForm) {
+            setError2("Algo salió mal...")
+          } else {
+            setErrorHandle("Algo salió mal...")
+          }
+        })
+    }
   }
 
   return (
@@ -86,6 +105,13 @@ function Inscriptions() {
                       <li>
                         <span className="inscription-title">COVID:</span> {inscription.covid}
                         <div className="inscriptions-buttons-container">
+                          <input
+                            id="lot"
+                            style={{ marginTop: 0 }}
+                            onChange={(e) => setLot(e.target.value)}
+                            placeholder="Fabricante y lote de vacuna"
+                            type="text"
+                          />
                           <Button
                             handleClick={() => handleApply(inscription.dni, "covid")}
                             text="Aplicada"
@@ -99,6 +125,13 @@ function Inscriptions() {
                         <span className="inscription-title">Fiebre amarilla:</span>{" "}
                         {inscription.fever}
                         <div className="inscriptions-buttons-container">
+                          <input
+                            id="lot"
+                            style={{ marginTop: 0 }}
+                            onChange={(e) => setLot(e.target.value)}
+                            placeholder="Fabricante y lote de vacuna"
+                            type="text"
+                          />
                           <Button
                             handleClick={() => handleApply(inscription.dni, "fever")}
                             text="Aplicada"
@@ -111,6 +144,13 @@ function Inscriptions() {
                       <li>
                         <span className="inscription-title">Gripe:</span> {inscription.flu}
                         <div className="inscriptions-buttons-container">
+                          <input
+                            id="lot"
+                            style={{ marginTop: 0 }}
+                            onChange={(e) => setLot(e.target.value)}
+                            placeholder="Fabricante y lote de vacuna"
+                            type="text"
+                          />
                           <Button
                             handleClick={() => handleApply(inscription.dni, "flu")}
                             text="Aplicada"
@@ -135,6 +175,13 @@ function Inscriptions() {
           placeholder="DNI del paciente"
           type="number"
           id="dni"
+        />
+        <input
+          id="lot"
+          style={{ marginTop: 0 }}
+          onChange={(e) => setLot(e.target.value)}
+          placeholder="Fabricante y lote de vacuna"
+          type="text"
         />
         <p className="form-label">Vacuna aplicada</p>
         <select
