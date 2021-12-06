@@ -5,6 +5,10 @@ const getNameByDni = (dni) => {
   return axios.get(`${baseUrl}/${dni}`)
 }
 
+const getAllByDni = (dni) => {
+  return axios.get(`${baseUrl}/all/${dni}`)
+}
+
 const updatePassword = (password, dni) => {
   return axios.post(`${baseUrl}/change-password/${dni}`, {
     password,
@@ -36,4 +40,5 @@ export {
   getComorbidities,
   getVaccnation,
   updateVaccination,
+  getAllByDni,
 }

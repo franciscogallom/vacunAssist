@@ -34,3 +34,15 @@
 .already-registered {
   color: var(--primary-color);
 }
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.25em 0;
+}
+
+.btn-certificate {
+  color: var(--primary-color);
+  cursor: pointer;
+  font-weight: bold;
+}

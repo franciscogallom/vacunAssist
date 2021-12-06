@@ -1,9 +1,10 @@
 const router = require("express").Router()
 const db = require("../../config/db")
 
-router.get("/", (req, res) => {
-  db.query("SELECT * FROM users", (error, result) => {
-    error ? res.send(error) : res.send(result)
+router.get("/all/:dni", (req, res) => {
+  const { dni } = req.params
+  db.query(`SELECT * FROM users WHERE dni = ${dni}`, (error, result) => {
+    error ? res.send(error) : res.send(result[0])
   })
 })
 
