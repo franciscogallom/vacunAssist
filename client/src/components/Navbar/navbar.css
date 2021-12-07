@@ -4,6 +4,7 @@ nav {
   --bg-primary: #35353b;
   --bg-secondary: #141418;
   --transition-speed: 600ms;
+  z-index: 10;
 }
 
 .navbar {
