@@ -163,10 +163,11 @@ router.get("/today/:vaccination", (req, res) => {
   )
 })
 
-router.get("/lost", (req, res) => {
+router.get("/pending", (req, res) => {
   const filter = "No se presento."
+  const secondFilter = "En cola de espera."
   db.query(
-    `SELECT * FROM inscriptions WHERE covid = '${filter}' OR flu = '${filter}' OR fever = '${filter}'`,
+    `SELECT * FROM inscriptions WHERE covid = '${filter}' OR flu = '${filter}' OR fever = '${filter}' OR covid = '${secondFilter}' OR flu = '${secondFilter}' OR fever = '${secondFilter}'`,
     (error, result) => {
       if (error) {
         res.send(error)

@@ -13,8 +13,8 @@ const getInscriptionsForToday = (vaccination) => {
   return axios.get(`${baseUrl}/today/${vaccination}`)
 }
 
-const getLostInscriptions = () => {
-  return axios.get(`${baseUrl}/lost`)
+const getPendingInscriptions = () => {
+  return axios.get(`${baseUrl}/pending`)
 }
 
 const getVaccinesByDni = (dni) => {
@@ -40,6 +40,6 @@ export {
   applyVaccine,
   lostTurn,
   getInscriptionsForToday,
-  getLostInscriptions,
+  getPendingInscriptions,
   reasign,
 }

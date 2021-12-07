@@ -2,7 +2,7 @@ import Navbar from "../Navbar/Navbar"
 import Form from "../Form/Form"
 import Button from "../Button/Button"
 import { useState, useEffect } from "react"
-import { getLostInscriptions, reasign } from "../../services/axios/inscriptions"
+import { getPendingInscriptions, reasign } from "../../services/axios/inscriptions"
 
 function Turns() {
   const [inscriptions, setInscriptions] = useState([])
@@ -14,7 +14,7 @@ function Turns() {
   const [errorHandle, setErrorHandle] = useState("")
 
   useEffect(() => {
-    getLostInscriptions()
+    getPendingInscriptions()
       .then((res) => {
         setInscriptions(res.data)
       })
@@ -64,7 +64,7 @@ function Turns() {
       <Form>
         {inscriptions.length > 0 ? (
           <>
-            <h5>Pacientes que no se presentaron a su turno.</h5>
+            <h5>Pacientes que no se presentaron a su turno o estan en cola de espera.</h5>
             {error && <p className="error-message">{error}</p>}
             {message && <p className="validation-message">{message}</p>}
             {errorHandle && <p className="error-message">{errorHandle}</p>}
@@ -73,10 +73,11 @@ function Turns() {
                 <li key={index}>
                   <span className="inscription-title">DNI:</span> {inscription.dni}.
                   <ul className="inscriptions-items">
-                    {inscription.covid.includes("No se presento") && (
+                    {(inscription.covid.includes("No se presento") ||
+                      inscription.covid.includes("En cola")) && (
                       <li>
                         <span className="inscription-title">COVID:</span> {inscription.covid}
-                        <p className="form-label-secondary">Reasignar turno.</p>
+                        <p className="form-label-secondary">Asignar turno.</p>
                         <input
                           id="date"
                           min={`${getMinDate()}`}
@@ -87,17 +88,18 @@ function Turns() {
                         <div className="inscriptions-buttons-container">
                           <Button
                             handleClick={() => handleApply(covidDate, inscription.dni, "covid")}
-                            text="Reasignar"
+                            text="Confirmar"
                             isSmall
                           />
                         </div>
                       </li>
                     )}
-                    {inscription.fever.includes("No se presento") && (
+                    {(inscription.fever.includes("No se presento") ||
+                      inscription.fever.includes("En cola")) && (
                       <li>
                         <span className="inscription-title">Fiebre amarilla:</span>{" "}
                         {inscription.fever}
-                        <p className="form-label-secondary">Reasignar turno.</p>
+                        <p className="form-label-secondary">Asignar turno.</p>
                         <input
                           id="date"
                           min={`${getMinDate()}`}
@@ -108,16 +110,17 @@ function Turns() {
                         <div className="inscriptions-buttons-container">
                           <Button
                             handleClick={() => handleApply(feverDate, inscription.dni, "fever")}
-                            text="Reasignar"
+                            text="Confirmar"
                             isSmall
                           />
                         </div>
                       </li>
                     )}
-                    {inscription.flu.includes("No se presento") && (
+                    {(inscription.flu.includes("No se presento") ||
+                      inscription.flu.includes("En cola")) && (
                       <li>
                         <span className="inscription-title">Gripe:</span> {inscription.flu}
-                        <p className="form-label-secondary">Reasignar turno.</p>
+                        <p className="form-label-secondary">Asignar turno.</p>
                         <input
                           id="date"
                           min={`${getMinDate()}`}
@@ -128,7 +131,7 @@ function Turns() {
                         <div className="inscriptions-buttons-container">
                           <Button
                             handleClick={() => handleApply(fluDate, inscription.dni, "flu")}
-                            text="Reasignar"
+                            text="Confirmar"
                             isSmall
                           />
                         </div>
@@ -140,7 +143,7 @@ function Turns() {
             </ul>
           </>
         ) : (
-          <h5>No hay pacientes pendientes de reasignación de turno.</h5>
+          <h5>No hay pacientes pendientes de asignación de turno.</h5>
         )}
       </Form>
     </>
