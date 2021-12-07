@@ -25,8 +25,8 @@ const reasign = (turn, dni, vaccine) => {
   return axios.post(`${baseUrl}/reasign`, { turn, dni, vaccine })
 }
 
-const applyVaccine = (dni, vaccine, lot) => {
-  return axios.post(`${baseUrl}/apply`, { vaccine, dni, lot })
+const applyVaccine = (dni, vaccine, lot, vaccination) => {
+  return axios.post(`${baseUrl}/apply`, { vaccine, dni, lot, vaccination })
 }
 
 const lostTurn = (dni, vaccine) => {

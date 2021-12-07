@@ -204,7 +204,7 @@ router.post("/reasign", (req, res) => {
 })
 
 router.post("/apply", (req, res) => {
-  const { vaccine, dni, lot } = req.body
+  const { vaccine, dni, lot, vaccination } = req.body
   const todayDate = new Date()
   const UTCDay = todayDate.getDate()
   const day = UTCDay < 10 ? `0${UTCDay}` : UTCDay
@@ -217,7 +217,20 @@ router.post("/apply", (req, res) => {
       if (error) {
         res.send(error)
       } else {
-        res.send("Vacuna marcada como aplicada exitosamente.")
+        db.query(
+          `UPDATE stock SET ${vaccine} = ${vaccine} - 1 WHERE vaccination = (?)`,
+          [vaccination],
+          (error, result) => {
+            if (error) {
+              res.send(error)
+            } else {
+              console.log(
+                `Vacuna '${vaccine}' marcada como aplicada al paciente '${dni}' y stock actualizado correctamente en '${vaccination}'.`
+              )
+              res.send("Vacuna marcada como aplicada exitosamente.")
+            }
+          }
+        )
       }
     }
   )

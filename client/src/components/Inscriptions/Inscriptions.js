@@ -18,6 +18,7 @@ function Inscriptions() {
   const [message2, setMessage2] = useState("")
   const [errorHandle, setErrorHandle] = useState("")
   const [lot, setLot] = useState("")
+  const [vaccination, setVaccination] = useState("")
 
   const { dni } = useContext(Context)
 
@@ -26,6 +27,7 @@ function Inscriptions() {
   useEffect(() => {
     getVaccination(dni)
       .then((res) => {
+        setVaccination(res.data)
         getInscriptionsForToday(res.data)
           .then((res) => {
             setInscriptions(res.data)
@@ -55,7 +57,7 @@ function Inscriptions() {
         }, 5000)
       }
     } else {
-      applyVaccine(dni, vaccine, lot)
+      applyVaccine(dni, vaccine, lot, vaccination)
         .then((res) => {
           if (isSecondForm) {
             document.getElementById("dni").value = ""
