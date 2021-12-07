@@ -46,7 +46,11 @@ function Inscriptions() {
   const handleApply = (dni, vaccine, isSecondForm) => {
     if (lot.length === 0) {
       if (isSecondForm) {
-        setError2("Ingrese un fabricante y lote de vacuna.")
+        if (dniWithoutInscription.length === 0) {
+          setError2("Ingrese un DNI, fabricante y lote de vacuna.")
+        } else {
+          setError2("Ingrese un fabricante y lote de vacuna.")
+        }
         setTimeout(() => {
           setError2("")
         }, 5000)
@@ -57,34 +61,48 @@ function Inscriptions() {
         }, 5000)
       }
     } else {
-      applyVaccine(dni, vaccine, lot, vaccination)
-        .then((res) => {
-          if (isSecondForm) {
-            document.getElementById("dni").value = ""
-            document.getElementById("vaccine").value = "covid"
-            document.getElementById("lot").value = ""
-            setLot("")
-            setMessage2(res.data)
-            setTimeout(() => {
-              setMessage2("")
-            }, 5000)
-          } else {
-            document.getElementById("lot").value = ""
-            setLot("")
-            setMessage(res.data)
-            setTimeout(() => {
-              setMessage("")
-            }, 5000)
-          }
-        })
-        .catch((e) => {
-          console.log(e)
-          if (isSecondForm) {
-            setError2("Algo salió mal...")
-          } else {
-            setErrorHandle("Algo salió mal...")
-          }
-        })
+      if (isSecondForm && dniWithoutInscription.length === 0) {
+        setError2("Ingrese un DNI.")
+        setTimeout(() => {
+          setError2("")
+        }, 5000)
+      } else {
+        applyVaccine(dni, vaccine, lot, vaccination)
+          .then((res) => {
+            if (isSecondForm) {
+              if (res.data.error) {
+                setError2(res.data.message)
+                setTimeout(() => {
+                  setError2("")
+                }, 5000)
+              } else {
+                document.getElementById("dni").value = ""
+                document.getElementById("vaccine").value = "covid"
+                document.getElementById("lot").value = ""
+                setLot("")
+                setMessage2(res.data)
+                setTimeout(() => {
+                  setMessage2("")
+                }, 5000)
+              }
+            } else {
+              document.getElementById("lot").value = ""
+              setLot("")
+              setMessage(res.data)
+              setTimeout(() => {
+                setMessage("")
+              }, 5000)
+            }
+          })
+          .catch((e) => {
+            console.log(e)
+            if (isSecondForm) {
+              setError2("Algo salió mal...")
+            } else {
+              setErrorHandle("Algo salió mal...")
+            }
+          })
+      }
     }
   }
 

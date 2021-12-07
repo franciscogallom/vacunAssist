@@ -211,29 +211,75 @@ router.post("/apply", (req, res) => {
   const today = `Aplicada el ${day}/${
     todayDate.getMonth() + 1
   }/${todayDate.getFullYear()} (${lot}).`
-  db.query(
-    `UPDATE inscriptions SET ${vaccine} = '${today}' WHERE dni = ${dni}`,
-    (error, result) => {
-      if (error) {
-        res.send(error)
+
+  db.query(`SELECT * FROM users WHERE dni = ${dni}`, (error, result) => {
+    if (error) {
+      res.send(error)
+    } else {
+      // Chequeo que exista el DNI
+      if (result.length === 0) {
+        res.send({ error: true, message: "DNI no registrado en el sistema." })
+        // Chequeo que los vacunatorios del paciente y del vacunador coincidan.
+      } else if (result[0].vaccination !== vaccination) {
+        res.send({
+          error: true,
+          message: "El paciente no se encuentra registrado en este vacunatorio.",
+        })
       } else {
-        db.query(
-          `UPDATE stock SET ${vaccine} = ${vaccine} - 1 WHERE vaccination = (?)`,
-          [vaccination],
-          (error, result) => {
-            if (error) {
-              res.send(error)
+        // Chequeo que la vacuna no figura como aplicada anteriormente.
+        db.query(`SELECT ${vaccine} FROM inscriptions WHERE dni = ${dni}`, (error, result) => {
+          if (error) {
+            res.send(error)
+          } else {
+            if (result[0].covid) {
+              result[0].covid.includes("Aplicada") &&
+                res.send({
+                  error: true,
+                  message: "La vacuna de COVID-19 ya se encontraba como aplicada anteriormente.",
+                })
+            } else if (result[0].flu) {
+              result[0].flu.includes("Aplicada") &&
+                res.send({
+                  error: true,
+                  message: "La vacuna para la gripe ya se encontraba como aplicada anteriormente.",
+                })
+            } else if (result[0].fever) {
+              result[0].fever.includes("Aplicada") &&
+                res.send({
+                  error: true,
+                  message:
+                    "La vacuna de la fiebre amarilla ya se encontraba como aplicada anteriormente.",
+                })
             } else {
-              console.log(
-                `Vacuna '${vaccine}' marcada como aplicada al paciente '${dni}' y stock actualizado correctamente en '${vaccination}'.`
+              db.query(
+                `UPDATE inscriptions SET ${vaccine} = '${today}' WHERE dni = ${dni}`,
+                (error, result) => {
+                  if (error) {
+                    res.send(error)
+                  } else {
+                    db.query(
+                      `UPDATE stock SET ${vaccine} = ${vaccine} - 1 WHERE vaccination = (?)`,
+                      [vaccination],
+                      (error, result) => {
+                        if (error) {
+                          res.send(error)
+                        } else {
+                          console.log(
+                            `Vacuna '${vaccine}' marcada como aplicada al paciente '${dni}' y stock actualizado correctamente en '${vaccination}'.`
+                          )
+                          res.send("Vacuna marcada como aplicada exitosamente.")
+                        }
+                      }
+                    )
+                  }
+                }
               )
-              res.send("Vacuna marcada como aplicada exitosamente.")
             }
           }
-        )
+        })
       }
     }
-  )
+  })
 })
 
 router.post("/lost-turn", (req, res) => {
