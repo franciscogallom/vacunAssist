@@ -1,8 +1,10 @@
+import "./home.css"
 import { useContext, useState, useEffect } from "react"
 import { getNameByDni } from "../../services/axios/users"
 import { getVaccinatorNameByDni } from "../../services/axios/vaccinators"
 import Context from "../../context/context"
 import Navbar from "../Navbar/Navbar"
+import homeBannerSVG from "../../assets/images/home-banner.svg"
 
 function Home() {
   const { dni } = useContext(Context)
@@ -36,9 +38,12 @@ function Home() {
   return (
     <>
       <Navbar />
-      <h1 style={{ marginLeft: "7.5vw" }}>
-        {isAdmin ? "Panel de administrador." : `Bienvenido ${name}!`}
-      </h1>
+      <div className="home-container">
+        <h1 style={{ marginLeft: "7.5vw" }}>
+          {isAdmin ? "Panel de administrador." : `Bienvenido, ${name}.`}
+        </h1>
+        <img className="home-img" src={homeBannerSVG} alt="Ilustración de médicos" />
+      </div>
     </>
   )
 }
