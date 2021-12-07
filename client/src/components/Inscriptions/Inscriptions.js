@@ -140,6 +140,26 @@ function Inscriptions() {
                         </div>
                       </li>
                     )}
+                    {inscription.covid2.includes(today) && (
+                      <li>
+                        <span className="inscription-title">COVID (segunda dósis):</span>{" "}
+                        {inscription.covid2}
+                        <div className="inscriptions-buttons-container">
+                          <input
+                            id="lot"
+                            style={{ marginTop: 0 }}
+                            onChange={(e) => setLot(e.target.value)}
+                            placeholder="Fabricante y lote de vacuna"
+                            type="text"
+                          />
+                          <Button
+                            handleClick={() => handleApply(inscription.dni, "covid2")}
+                            text="Aplicada"
+                            isSmall
+                          />
+                        </div>
+                      </li>
+                    )}
                     {inscription.fever.includes(today) && (
                       <li>
                         <span className="inscription-title">Fiebre amarilla:</span>{" "}
@@ -162,7 +182,7 @@ function Inscriptions() {
                     )}
                     {inscription.flu.includes(today) && (
                       <li>
-                        <span className="inscription-title">Gripe:</span> {inscription.flu}
+                        <span className="inscription-title">Gripe (2021):</span> {inscription.flu}
                         <div className="inscriptions-buttons-container">
                           <input
                             id="lot"
@@ -173,6 +193,25 @@ function Inscriptions() {
                           />
                           <Button
                             handleClick={() => handleApply(inscription.dni, "flu")}
+                            text="Aplicada"
+                            isSmall
+                          />
+                        </div>
+                      </li>
+                    )}
+                    {inscription.flu2.includes(today) && (
+                      <li>
+                        <span className="inscription-title">Gripe (2022):</span> {inscription.flu2}
+                        <div className="inscriptions-buttons-container">
+                          <input
+                            id="lot"
+                            style={{ marginTop: 0 }}
+                            onChange={(e) => setLot(e.target.value)}
+                            placeholder="Fabricante y lote de vacuna"
+                            type="text"
+                          />
+                          <Button
+                            handleClick={() => handleApply(inscription.dni, "flu2")}
                             text="Aplicada"
                             isSmall
                           />

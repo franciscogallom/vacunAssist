@@ -155,7 +155,7 @@ router.get("/today/:vaccination", (req, res) => {
   const today = getTodayDate()
 
   db.query(
-    `SELECT * FROM inscriptions WHERE (covid = '${today}' OR flu = '${today}' OR fever = '${today}') AND (vaccination = '${vaccination}')`,
+    `SELECT * FROM inscriptions WHERE (covid = '${today}' OR covid2 = '${today}' OR flu = '${today}' OR flu2 = '${today}' OR fever = '${today}') AND (vaccination = '${vaccination}')`,
     (error, result) => {
       if (error) {
         res.send(error)
