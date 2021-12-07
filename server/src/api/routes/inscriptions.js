@@ -124,17 +124,20 @@ router.post("/:vaccine/:dni", (req, res) => {
 
 router.get("/vaccines/:dni", (req, res) => {
   const { dni } = req.params
-  db.query(`SELECT covid, fever, flu FROM inscriptions WHERE dni = ${dni}`, (error, result) => {
-    if (error) {
-      res.send(error)
-    } else {
-      if (result.length === 0) {
-        console.log("DNI no existente")
+  db.query(
+    `SELECT covid, covid2, fever, flu, flu2 FROM inscriptions WHERE dni = ${dni}`,
+    (error, result) => {
+      if (error) {
+        res.send(error)
       } else {
-        res.send(result[0])
+        if (result.length === 0) {
+          console.log("DNI no existente")
+        } else {
+          res.send(result[0])
+        }
       }
     }
-  })
+  )
 })
 
 router.get("/", (req, res) => {

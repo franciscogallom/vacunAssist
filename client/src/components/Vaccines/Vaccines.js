@@ -12,16 +12,29 @@ function Vaccines() {
   const [message, setMessage] = useState("")
   const [error, setError] = useState("")
   const [covid, setCovid] = useState("")
+  const [covid2, setCovid2] = useState("")
   const [fever, setFever] = useState("")
   const [flu, setFlu] = useState("")
+  const [flu2, setFlu2] = useState("")
+  const [hasCovid, setHasCovid] = useState(false)
+  const [hasFlu, setHasFlu] = useState(false)
   const { dni } = useContext(Context)
 
   useEffect(() => {
     getVaccinesByDni(dni)
       .then((res) => {
         setCovid(res.data.covid)
+        if (res.data.covid.includes("Aplicada")) {
+          setHasCovid(true)
+        }
+        setCovid2(res.data.covid2)
         setFever(res.data.fever)
         setFlu(res.data.flu)
+        if (res.data.flu.includes("Aplicada")) {
+          setHasFlu(true)
+        }
+        setFlu2(res.data.flu2)
+        console.log(res.data)
       })
       .catch((error) => {
         console.log(error)
@@ -49,12 +62,12 @@ function Vaccines() {
         <h5>Inscripción a vacunas.</h5>
         <div className="vaccines-container">
           <div className="vaccine">
-            <p>Coronavirus</p>
+            <p>{hasCovid ? "Coronavirus (segunda dósis)" : "Coronavirus (primera dósis)"}</p>
             <div className="inscription-container">
               {covid === "No inscripto." ? (
                 <Button handleClick={() => handleInscription("covid")} text="Inscribirme" />
               ) : (
-                <p className="already-registered">{covid}</p>
+                <p className="already-registered">{hasCovid ? covid2 : covid}</p>
               )}
             </div>
           </div>
@@ -74,7 +87,7 @@ function Vaccines() {
               {flu === "No inscripto." ? (
                 <Button handleClick={() => handleInscription("flu")} text="Inscribirme" />
               ) : (
-                <p className="already-registered">{flu}</p>
+                <p className="already-registered">{hasFlu ? flu2 : flu}</p>
               )}
             </div>
           </div>
@@ -101,7 +114,7 @@ function Vaccines() {
         <h5>Historial.</h5>
         <div className="history-item">
           <p>
-            <span style={{ fontWeight: "bold" }}>COVID:</span> {covid}
+            <span style={{ fontWeight: "bold" }}>COVID (primera dósis):</span> {covid}
           </p>
           {covid.includes("Aplicada") && (
             <span
@@ -114,6 +127,24 @@ function Vaccines() {
             </span>
           )}
         </div>
+
+        {hasCovid && (
+          <div className="history-item">
+            <p>
+              <span style={{ fontWeight: "bold" }}>COVID (segunda dósis):</span> {covid2}
+            </p>
+            {covid2.includes("Aplicada") && (
+              <span
+                onClick={() =>
+                  window.open(`http://localhost:3000/certificate?vaccine=covid2&&dni=${dni}`)
+                }
+                className="btn-certificate"
+              >
+                Ver vertificado
+              </span>
+            )}
+          </div>
+        )}
 
         <div className="history-item">
           <p>
@@ -133,7 +164,7 @@ function Vaccines() {
 
         <div className="history-item">
           <p>
-            <span style={{ fontWeight: "bold" }}>Gripe:</span> {flu}
+            <span style={{ fontWeight: "bold" }}>Gripe (2021):</span> {flu}
           </p>
           {flu.includes("Aplicada") && (
             <span
@@ -146,6 +177,24 @@ function Vaccines() {
             </span>
           )}
         </div>
+
+        {hasFlu && (
+          <div className="history-item">
+            <p>
+              <span style={{ fontWeight: "bold" }}>Gripe (2022):</span> {flu2}
+            </p>
+            {flu2.includes("Aplicada") && (
+              <span
+                onClick={() =>
+                  window.open(`http://localhost:3000/certificate?vaccine=flu2&&dni=${dni}`)
+                }
+                className="btn-certificate"
+              >
+                Ver vertificado
+              </span>
+            )}
+          </div>
+        )}
       </Form>
     </>
   )

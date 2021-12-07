@@ -28,11 +28,17 @@ export default function Certificate() {
     getVaccinesByDni(dni)
       .then((res) => {
         if (vaccine === "covid") {
-          setVaccineMessage(`COVID-19: ${res.data.covid}`)
+          setVaccineMessage(`COVID-19 (primera dósis): ${res.data.covid}`)
+        } else if (vaccine === "covid2") {
+          setVaccineMessage(
+            `COVID-19 (primera dósis): ${res.data.covid} y COVID-19 (segunda dósis): ${res.data.covid2}`
+          )
         } else if (vaccine === "fever") {
           setVaccineMessage(`FIEBRE AMARILLA: ${res.data.fever}`)
+        } else if (vaccine === "flu") {
+          setVaccineMessage(`GRIPE (2021): ${res.data.flu}`)
         } else {
-          setVaccineMessage(`GRIPE: ${res.data.flu}`)
+          setVaccineMessage(`GRIPE (2022): ${res.data.flu2}`)
         }
       })
       .catch((e) => {
