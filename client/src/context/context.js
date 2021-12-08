@@ -3,7 +3,7 @@ import { createContext, useState } from "react"
 const Context = createContext({})
 
 export function ContextProvider({ children }) {
-  const [dni, setDni] = useState("12345678")
+  const [dni, setDni] = useState("")
 
   return <Context.Provider value={{ dni, setDni }}>{children}</Context.Provider>
 }

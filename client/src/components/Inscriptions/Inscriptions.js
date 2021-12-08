@@ -6,7 +6,6 @@ import { useState, useEffect, useContext } from "react"
 import { getInscriptionsForToday, applyVaccine } from "../../services/axios/inscriptions"
 import { getVaccination } from "../../services/axios/vaccinators"
 import Context from "../../context/context"
-import { getTodayDate } from "../../services/getTodayDate"
 
 function Inscriptions() {
   const [inscriptions, setInscriptions] = useState([])
@@ -22,7 +21,7 @@ function Inscriptions() {
 
   const { dni } = useContext(Context)
 
-  const today = getTodayDate()
+  const today = `Turno para el ${new Date().toLocaleDateString()}.`
 
   useEffect(() => {
     getVaccination(dni)
