@@ -209,12 +209,12 @@ router.post("/reasign", (req, res) => {
 router.post("/apply", (req, res) => {
   const { vaccine, dni, lot, vaccination } = req.body
   const todayDate = new Date()
+  const date = new Date()
   const UTCDay = todayDate.getDate()
   const day = UTCDay < 10 ? `0${UTCDay}` : UTCDay
   const today = `Aplicada el ${day}/${
     todayDate.getMonth() + 1
   }/${todayDate.getFullYear()} (${lot}).`
-
   db.query(`SELECT * FROM users WHERE dni = ${dni}`, (error, result) => {
     if (error) {
       res.send(error)
@@ -253,31 +253,73 @@ router.post("/apply", (req, res) => {
                   message:
                     "La vacuna de la fiebre amarilla ya se encontraba como aplicada anteriormente.",
                 })
-            } else {
-              db.query(
-                `UPDATE inscriptions SET ${vaccine} = '${today}' WHERE dni = ${dni}`,
-                (error, result) => {
-                  if (error) {
-                    res.send(error)
-                  } else {
-                    db.query(
-                      `UPDATE stock SET ${vaccine} = ${vaccine} - 1 WHERE vaccination = (?)`,
-                      [vaccination],
-                      (error, result) => {
-                        if (error) {
-                          res.send(error)
-                        } else {
-                          console.log(
-                            `Vacuna '${vaccine}' marcada como aplicada al paciente '${dni}' y stock actualizado correctamente en '${vaccination}'.`
-                          )
-                          res.send("Vacuna marcada como aplicada exitosamente.")
-                        }
-                      }
-                    )
-                  }
-                }
-              )
             }
+            // Paso todas las validaciones.
+            db.query(
+              `UPDATE inscriptions SET ${vaccine} = '${today}' WHERE dni = ${dni}`,
+              (error, result) => {
+                if (error) {
+                  res.send(error)
+                } else {
+                  db.query(
+                    `UPDATE stock SET ${vaccine} = ${vaccine} - 1 WHERE vaccination = (?)`,
+                    [vaccination],
+                    (error, result) => {
+                      if (error) {
+                        res.send(error)
+                      } else {
+                        console.log(
+                          `Vacuna '${vaccine}' marcada como aplicada al paciente '${dni}' y stock actualizado correctamente en '${vaccination}'.`
+                        )
+                        const today = new Date().getDate()
+                        if (vaccine === "covid") {
+                          const assignedDay = today + 14
+                          date.setDate(assignedDay)
+                          const UTCDay = date.getDate()
+                          const day = UTCDay < 10 ? `0${UTCDay}` : UTCDay
+
+                          const turn = `Turno para el ${day}/${
+                            date.getMonth() + 1
+                          }/${date.getFullYear()}.`
+
+                          db.query(
+                            `UPDATE inscriptions SET covid2 = '${turn}' WHERE dni = ${dni}`,
+                            (error, result) => {
+                              if (error) {
+                                res.send(error)
+                              } else {
+                                console.log(`Segunda dósis de COVID: ${turn}`)
+                              }
+                            }
+                          )
+                        } else if (vaccine === "flu") {
+                          const assignedDay = today + 365
+                          date.setDate(assignedDay)
+                          const UTCDay = date.getDate()
+                          const day = UTCDay < 10 ? `0${UTCDay}` : UTCDay
+
+                          const turn = `Turno para el ${day}/${
+                            date.getMonth() + 1
+                          }/${date.getFullYear()}.`
+
+                          db.query(
+                            `UPDATE inscriptions SET flu2 = '${turn}' WHERE dni = ${dni}`,
+                            (error, result) => {
+                              if (error) {
+                                res.send(error)
+                              } else {
+                                console.log(`Gripe 2022: ${turn}`)
+                              }
+                            }
+                          )
+                        }
+                        res.send("Vacuna marcada como aplicada exitosamente.")
+                      }
+                    }
+                  )
+                }
+              }
+            )
           }
         })
       }
