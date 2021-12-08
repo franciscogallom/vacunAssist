@@ -39,7 +39,7 @@ router.post("/signup", (req, res) => {
                 } else {
                   // El usuario se creo correctamente. Se crea una nueva fila en la tabla "inscriptions"
                   db.query(
-                    "INSERT INTO inscriptions (dni, covid, flu, fever, covid2, flu2 vaccination) VALUES (?, ?, ?, ?, ?)",
+                    "INSERT INTO inscriptions (dni, covid, flu, fever, covid2, flu2, vaccination) VALUES (?, ?, ?, ?, ?, ?, ?)",
                     [dni, "No inscripto.", "No inscripto.", "No inscripto.", "No inscripto." , "No inscripto." , vaccination], //Agregar covid 2 y flu 2
                     (err) => {
                       if (err) {
