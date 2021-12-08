@@ -52,7 +52,11 @@ router.post("/:vaccine/:dni", (req, res) => {
                             }
                           )
                         } else {
-                          res.send({ error: true, message: "Sin vacunas disponibles" })
+                          res.send({
+                            error: true,
+                            message:
+                              "Lo sentimos! No contamos con vacunas disponibles. Vuelva a intentarlo mañana.",
+                          })
                         }
                       }
                     }
@@ -95,7 +99,11 @@ router.post("/:vaccine/:dni", (req, res) => {
                             }
                           )
                         } else {
-                          res.send({ error: true, message: "Sin vacunas disponibles" })
+                          res.send({
+                            error: true,
+                            message:
+                              "Lo sentimos! No contamos con vacunas disponibles. Vuelva a intentarlo mañana.",
+                          })
                         }
                       }
                     }
@@ -177,7 +185,11 @@ router.post("/:vaccine/:dni", (req, res) => {
                             }
                           )
                         } else {
-                          res.send({ error: true, message: "Sin vacunas disponibles" })
+                          res.send({
+                            error: true,
+                            message:
+                              "Lo sentimos! No contamos con vacunas disponibles. Vuelva a intentarlo mañana.",
+                          })
                         }
                       }
                     }
@@ -218,7 +230,11 @@ router.post("/:vaccine/:dni", (req, res) => {
                             }
                           )
                         } else {
-                          res.send({ error: true, message: "Sin vacunas disponibles" })
+                          res.send({
+                            error: true,
+                            message:
+                              "Lo sentimos! No contamos con vacunas disponibles. Vuelva a intentarlo mañana.",
+                          })
                         }
                       }
                     }

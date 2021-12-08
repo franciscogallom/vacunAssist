@@ -45,10 +45,14 @@ function Vaccines() {
   const handleInscription = (vaccine) => {
     inscription(vaccine, dni)
       .then((res) => {
-        setMessage(res.data)
-        setTimeout(() => {
-          setMessage("")
-        }, 5000)
+        if (res.data.error) {
+          setError(res.data.message)
+        } else {
+          setMessage(res.data)
+          setTimeout(() => {
+            setMessage("")
+          }, 5000)
+        }
       })
       .catch(() => {
         setError("Algo salio mal, vuelve a intentarlo.")
