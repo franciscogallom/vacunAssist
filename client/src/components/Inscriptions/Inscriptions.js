@@ -122,7 +122,8 @@ function Inscriptions() {
                   <ul className="inscriptions-items">
                     {inscription.covid.includes(today) && (
                       <li>
-                        <span className="inscription-title">COVID:</span> {inscription.covid}
+                        <span className="inscription-title">COVID (primera dósis):</span>{" "}
+                        {inscription.covid}
                         <div className="inscriptions-buttons-container">
                           <input
                             id="lot"
