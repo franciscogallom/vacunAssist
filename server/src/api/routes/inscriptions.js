@@ -5,201 +5,232 @@ router.post("/:vaccine/:dni", (req, res) => {
   const date = new Date()
   const actualDay = date.getDate()
   const { vaccine, dni } = req.params
-  db.query(`SELECT date_of_birth, risk_factor, vaccination from users WHERE dni = ${dni}`, (error, result) => {
-    if (error) {
-      res.send(error)
-    } else if (result.length === 0) {
-      console.log("DNI no existente")
-    } else {
-      const age = date.getFullYear() - result[0].date_of_birth.slice(0, 4)
-      // Casos para el covid-19.
-      if (vaccine === "covid") {
-        if (age >= 60) {
-          const assignedDay = actualDay + 7
-          date.setDate(assignedDay)
-          const turn = date.toLocaleDateString()
-          let availables
-          let total
-          const vaccination = result[0].vaccination
-          db.query(`SELECT covid FROM inscriptions WHERE (covid= 'Turno para el ${turn}.') and (vaccination= '${result[0].vaccination}') `, (error, result) => {
-            if(error){
-              res.send(error)
-            } else {
-              availables  = result.length
-              db.query(`SELECT covid FROM stock WHERE (vaccination= '${vaccination}') `, (error, result) =>{
-                if(error){
+  db.query(
+    `SELECT date_of_birth, risk_factor, vaccination from users WHERE dni = ${dni}`,
+    (error, result) => {
+      if (error) {
+        res.send(error)
+      } else if (result.length === 0) {
+        console.log("DNI no existente")
+      } else {
+        const age = date.getFullYear() - result[0].date_of_birth.slice(0, 4)
+        // Casos para el covid-19.
+        if (vaccine === "covid") {
+          if (age >= 60) {
+            const assignedDay = actualDay + 7
+            date.setDate(assignedDay)
+            const turn = date.toLocaleDateString()
+            let availables
+            let total
+            const vaccination = result[0].vaccination
+            db.query(
+              `SELECT covid FROM inscriptions WHERE (covid= 'Turno para el ${turn}.') and (vaccination= '${result[0].vaccination}') `,
+              (error, result) => {
+                if (error) {
                   res.send(error)
                 } else {
-                  total = result[0].covid
-                  
-                  if(total - availables > 0){
+                  availables = result.length
                   db.query(
-                    `UPDATE inscriptions SET covid = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
+                    `SELECT covid FROM stock WHERE (vaccination= '${vaccination}') `,
                     (error, result) => {
                       if (error) {
                         res.send(error)
-                      } else if (result.length === 0) {
-                        res.send("DNI no existente")
                       } else {
-                        res.send("Prioridad confirmada, turno en 7 dias.")
+                        total = result[0].covid
+
+                        if (total - availables > 0) {
+                          db.query(
+                            `UPDATE inscriptions SET covid = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
+                            (error, result) => {
+                              if (error) {
+                                res.send(error)
+                              } else if (result.length === 0) {
+                                res.send("DNI no existente")
+                              } else {
+                                res.send("Prioridad confirmada, turno en 7 dias.")
+                              }
+                            }
+                          )
+                        } else {
+                          res.send({ error: true, message: "Sin vacunas disponibles" })
+                        }
                       }
-                    })
-                  } else {
-                    res.send({ error: true, message: "Sin vacunas disponibles" })
-                  }
+                    }
+                  )
                 }
-              })
-            }
-          })  
-        } else if (age > 18 && age < 60 && result[0].risk_factor) {
-          const assignedDay = actualDay + 7
-          date.setDate(assignedDay)
-          const turn = date.toLocaleDateString()
-          const vaccination = result[0].vaccination
-          let availables
-          let total
-          db.query(`SELECT covid FROM inscriptions WHERE (covid= 'Turno para el ${turn}.') and (vaccination= '${result[0].vaccination}') `, (error, result) => {
-            if(error){
-              res.send(error)
-            } else {
-              availables  = result.length
-              db.query(`SELECT covid FROM stock WHERE (vaccination= '${vaccination}') `, (error, result) =>{
-                if(error){
+              }
+            )
+          } else if (age > 18 && age < 60 && result[0].risk_factor) {
+            const assignedDay = actualDay + 7
+            date.setDate(assignedDay)
+            const turn = date.toLocaleDateString()
+            const vaccination = result[0].vaccination
+            let availables
+            let total
+            db.query(
+              `SELECT covid FROM inscriptions WHERE (covid= 'Turno para el ${turn}.') and (vaccination= '${result[0].vaccination}') `,
+              (error, result) => {
+                if (error) {
                   res.send(error)
                 } else {
-                  total = result[0].covid
-                  if(total - availables > 0){
+                  availables = result.length
                   db.query(
-                    `UPDATE inscriptions SET covid = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
+                    `SELECT covid FROM stock WHERE (vaccination= '${vaccination}') `,
                     (error, result) => {
                       if (error) {
                         res.send(error)
-                      } else if (result.length === 0) {
-                        res.send("DNI no existente")
                       } else {
-                        res.send("Prioridad confirmada, turno en 7 dias.")
+                        total = result[0].covid
+                        if (total - availables > 0) {
+                          db.query(
+                            `UPDATE inscriptions SET covid = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
+                            (error, result) => {
+                              if (error) {
+                                res.send(error)
+                              } else if (result.length === 0) {
+                                res.send("DNI no existente")
+                              } else {
+                                res.send("Prioridad confirmada, turno en 7 dias.")
+                              }
+                            }
+                          )
+                        } else {
+                          res.send({ error: true, message: "Sin vacunas disponibles" })
+                        }
                       }
-                    })
-                  } else {
-                    res.send({ error: true, message: "Sin vacunas disponibles" })
-                  }
+                    }
+                  )
                 }
-              })
-            }
-          })  
-        } else if (age < 18) {
-          res.send("Aun no se puede inscribir.")
-        } else {
-          const turn = "En cola de espera."
-          db.query(
-            `UPDATE inscriptions SET covid = '${turn}' WHERE dni = ${dni}`,
-            (error, result) => {
-              if (error) {
-                res.send(error)
-              } else if (result.length === 0) {
-                res.send("DNI no existente")
-              } else {
-                res.send("En cola de espera para asignacion del turno.")
               }
-            }
-          )
-        }
-      }
-      // Casos para la fiebre amarilla.
-      else if (vaccine === "fever") {
-        if (age < 60) {
-          const turn = "En cola de espera."
-          db.query(
-            `UPDATE inscriptions SET fever = '${turn}' WHERE dni = ${dni}`,
-            (error, result) => {
-              if (error) {
-                res.send(error)
-              } else if (result.length === 0) {
-                res.send("DNI no existente")
-              } else {
-                res.send("En espera a que se le asigne un turno.")
+            )
+          } else if (age < 18) {
+            res.send("Aun no se puede inscribir.")
+          } else {
+            const turn = "En cola de espera."
+            db.query(
+              `UPDATE inscriptions SET covid = '${turn}' WHERE dni = ${dni}`,
+              (error, result) => {
+                if (error) {
+                  res.send(error)
+                } else if (result.length === 0) {
+                  res.send("DNI no existente")
+                } else {
+                  res.send("En cola de espera para asignacion del turno.")
+                }
               }
-            }
-          )
-        } else {
-          res.send("No puede inscribirse a la vacuna por ser mayor de 60 años.")
+            )
+          }
         }
-        // Casos para la gripe.
-      } else if (vaccine === "flu") {
-        if (age >= 60) {
-          const assignedDay = actualDay + 90
-          date.setDate(assignedDay)
-          const turn = date.toLocaleDateString()
-          let availables
-          let total
-          const vaccination = result[0].vaccination
-          db.query(`SELECT flu FROM inscriptions WHERE (flu= 'Turno para el ${turn}.') and (vaccination= '${result[0].vaccination}') `, (error, result) => {
-            if(error){
-              res.send(error)
-            } else {
-              availables  = result.length
-              db.query(`SELECT flu FROM stock WHERE (vaccination= '${vaccination}') `, (error, result) =>{
-                if(error){
+        // Casos para la fiebre amarilla.
+        else if (vaccine === "fever") {
+          if (age < 60) {
+            const turn = "En cola de espera."
+            db.query(
+              `UPDATE inscriptions SET fever = '${turn}' WHERE dni = ${dni}`,
+              (error, result) => {
+                if (error) {
+                  res.send(error)
+                } else if (result.length === 0) {
+                  res.send("DNI no existente")
+                } else {
+                  res.send("En espera a que se le asigne un turno.")
+                }
+              }
+            )
+          } else {
+            res.send("No puede inscribirse a la vacuna por ser mayor de 60 años.")
+          }
+          // Casos para la gripe.
+        } else if (vaccine === "flu") {
+          if (age >= 60) {
+            const assignedDay = actualDay + 90
+            date.setDate(assignedDay)
+            const turn = date.toLocaleDateString()
+            let availables
+            let total
+            const vaccination = result[0].vaccination
+            db.query(
+              `SELECT flu FROM inscriptions WHERE (flu= 'Turno para el ${turn}.') and (vaccination= '${result[0].vaccination}') `,
+              (error, result) => {
+                if (error) {
                   res.send(error)
                 } else {
-                  total = result[0].flu
-                  if(total - availables > 0){
-                    db.query(
-                      `UPDATE inscriptions SET flu = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
-                      (error, result) => {
-                        if (error) {
-                          res.send(error)
-                        } else if (result.length === 0) {
-                          res.send("DNI no existente")
+                  availables = result.length
+                  db.query(
+                    `SELECT flu FROM stock WHERE (vaccination= '${vaccination}') `,
+                    (error, result) => {
+                      if (error) {
+                        res.send(error)
+                      } else {
+                        total = result[0].flu
+                        if (total - availables > 0) {
+                          db.query(
+                            `UPDATE inscriptions SET flu = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
+                            (error, result) => {
+                              if (error) {
+                                res.send(error)
+                              } else if (result.length === 0) {
+                                res.send("DNI no existente")
+                              } else {
+                                res.send("Turno en los proximos 3 meses.")
+                              }
+                            }
+                          )
                         } else {
-                          res.send("Turno en los proximos 3 meses.")
+                          res.send({ error: true, message: "Sin vacunas disponibles" })
                         }
-                      })
-                  } else {
-                    res.send({ error: true, message: "Sin vacunas disponibles" })
-                  }
+                      }
+                    }
+                  )
                 }
-              })
-            }
-          })
-        } else {
-          const assignedDay = actualDay + 180
-          date.setDate(assignedDay)
-          const turn = date.toLocaleDateString()
-          let availables
-          let total
-          const vaccination = result[0].vaccination
-          db.query(`SELECT flu FROM inscriptions WHERE (flu= 'Turno para el ${turn}.') and (vaccination= '${result[0].vaccination}') `, (error, result) => {
-            if(error){
-              res.send(error)
-            } else {
-              availables  = result.length
-              db.query(`SELECT flu FROM stock WHERE (vaccination= '${vaccination}') `, (error, result) =>{
-                if(error){
+              }
+            )
+          } else {
+            const assignedDay = actualDay + 180
+            date.setDate(assignedDay)
+            const turn = date.toLocaleDateString()
+            let availables
+            let total
+            const vaccination = result[0].vaccination
+            db.query(
+              `SELECT flu FROM inscriptions WHERE (flu= 'Turno para el ${turn}.') and (vaccination= '${result[0].vaccination}') `,
+              (error, result) => {
+                if (error) {
                   res.send(error)
                 } else {
-                  total = result[0].flu 
-                  if(total - availables > 0){
-                    db.query(
-                      `UPDATE inscriptions SET flu = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
-                      (error, result) => {
-                        if (error) {
-                          res.send(error)
+                  availables = result.length
+                  db.query(
+                    `SELECT flu FROM stock WHERE (vaccination= '${vaccination}') `,
+                    (error, result) => {
+                      if (error) {
+                        res.send(error)
+                      } else {
+                        total = result[0].flu
+                        if (total - availables > 0) {
+                          db.query(
+                            `UPDATE inscriptions SET flu = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
+                            (error, result) => {
+                              if (error) {
+                                res.send(error)
+                              } else {
+                                res.send("Turno en los proximos 6 meses.")
+                              }
+                            }
+                          )
                         } else {
-                          res.send("Turno en los proximos 6 meses.")
+                          res.send({ error: true, message: "Sin vacunas disponibles" })
                         }
-                      })
-                  } else {
-                    res.send({ error: true, message: "Sin vacunas disponibles" })
-                  }
+                      }
+                    }
+                  )
                 }
-              })
-            }
-          })
+              }
+            )
+          }
         }
       }
     }
-  })
+  )
 })
 
 router.get("/vaccines/:dni", (req, res) => {
@@ -250,7 +281,7 @@ router.get("/pending", (req, res) => {
   const filter = "No se presento."
   const secondFilter = "En cola de espera."
   db.query(
-    `SELECT * FROM inscriptions WHERE covid = '${filter}' OR flu = '${filter}' OR fever = '${filter}' OR covid = '${secondFilter}' OR flu = '${secondFilter}' OR fever = '${secondFilter}'`,
+    `SELECT * FROM inscriptions WHERE covid = '${filter}' OR covid2 = '${filter}' OR flu = '${filter}' OR flu2 = '${filter}' OR fever = '${filter}' OR covid = '${secondFilter}' OR covid2 = '${secondFilter}' OR flu = '${secondFilter}' OR flu2 = '${secondFilter}' OR fever = '${secondFilter}'`,
     (error, result) => {
       if (error) {
         res.send(error)
@@ -263,23 +294,13 @@ router.get("/pending", (req, res) => {
 
 router.post("/reasign", (req, res) => {
   const { turn, dni, vaccine } = req.body
-  let message
-  if (vaccine === "covid") {
-    message = "COVID-19"
-  } else if (vaccine === "fever") {
-    message = "fiebre amarilla"
-  } else {
-    message = "gripe"
-  }
   db.query(
     `UPDATE inscriptions SET ${vaccine} = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
     (error, result) => {
       if (error) {
         res.send(error)
       } else {
-        res.send(
-          `Turno del usuario de DNI ${dni} para ${message} reasignado exitosamente para el ${turn}.`
-        )
+        res.send(`Turno del usuario de DNI ${dni} reasignado exitosamente para el ${turn}.`)
       }
     }
   )
@@ -404,9 +425,5 @@ router.post("/lost-turn", (req, res) => {
     }
   )
 })
-
-
-
-
 
 module.exports = router

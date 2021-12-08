@@ -76,7 +76,8 @@ function Turns() {
                     {(inscription.covid.includes("No se presento") ||
                       inscription.covid.includes("En cola")) && (
                       <li>
-                        <span className="inscription-title">COVID:</span> {inscription.covid}
+                        <span className="inscription-title">COVID (primera dósis):</span>{" "}
+                        {inscription.covid}
                         <p className="form-label-secondary">Asignar turno.</p>
                         <input
                           id="date"
@@ -88,6 +89,28 @@ function Turns() {
                         <div className="inscriptions-buttons-container">
                           <Button
                             handleClick={() => handleApply(covidDate, inscription.dni, "covid")}
+                            text="Confirmar"
+                            isSmall
+                          />
+                        </div>
+                      </li>
+                    )}
+                    {(inscription.covid2.includes("No se presento") ||
+                      inscription.covid2.includes("En cola")) && (
+                      <li>
+                        <span className="inscription-title">COVID (segunda dósis):</span>{" "}
+                        {inscription.covid}
+                        <p className="form-label-secondary">Asignar turno.</p>
+                        <input
+                          id="date"
+                          min={`${getMinDate()}`}
+                          onChange={(e) => setCovidDate(e.target.value)}
+                          className="form-date"
+                          type="date"
+                        />
+                        <div className="inscriptions-buttons-container">
+                          <Button
+                            handleClick={() => handleApply(covidDate, inscription.dni, "covid2")}
                             text="Confirmar"
                             isSmall
                           />
