@@ -224,7 +224,10 @@ function Inscriptions() {
             </ul>
           </>
         ) : (
-          <h5>No hay pacientes con turno para hoy {new Date().toLocaleDateString()}.</h5>
+          <>
+            <h5>No hay pacientes con turno para hoy {new Date().toLocaleDateString()}.</h5>
+            {message && <p className="validation-message">{message}</p>}
+          </>
         )}
       </Form>
       <Form>
