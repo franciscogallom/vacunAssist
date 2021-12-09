@@ -350,6 +350,9 @@ router.post("/reasign", (req, res) => {
                       }
                     )
                   } else {
+                    console.log(
+                      `El stock físico es ${total}, y la cantidad de turnos para el ${turn} es ${availables}`
+                    )
                     res.send({
                       error: true,
                       message: "No contamos con vacunas disponibles para esta fecha.",

@@ -115,12 +115,13 @@ function Vaccines() {
       </Form>
 
       <Form>
-        <h5>Historial.</h5>
-        <div className="history-item">
-          <p>
-            <span style={{ fontWeight: "bold" }}>COVID (primera dósis):</span> {covid}
-          </p>
-          {covid.includes("Aplicada") && (
+        <h5>Historial de vacunas aplicadas.</h5>
+
+        {covid.includes("Aplicada") && (
+          <div className="history-item">
+            <p>
+              <span style={{ fontWeight: "bold" }}>COVID (primera dósis):</span> {covid}
+            </p>
             <span
               onClick={() =>
                 window.open(`http://localhost:3000/certificate?vaccine=covid&&dni=${dni}`)
@@ -129,32 +130,30 @@ function Vaccines() {
             >
               Ver vertificado
             </span>
-          )}
-        </div>
+          </div>
+        )}
 
-        {hasCovid && (
+        {covid2.includes("Aplicada") && (
           <div className="history-item">
             <p>
               <span style={{ fontWeight: "bold" }}>COVID (segunda dósis):</span> {covid2}
             </p>
-            {covid2.includes("Aplicada") && (
-              <span
-                onClick={() =>
-                  window.open(`http://localhost:3000/certificate?vaccine=covid2&&dni=${dni}`)
-                }
-                className="btn-certificate"
-              >
-                Ver vertificado
-              </span>
-            )}
+            <span
+              onClick={() =>
+                window.open(`http://localhost:3000/certificate?vaccine=covid2&&dni=${dni}`)
+              }
+              className="btn-certificate"
+            >
+              Ver vertificado
+            </span>
           </div>
         )}
 
-        <div className="history-item">
-          <p>
-            <span style={{ fontWeight: "bold" }}>Fiebre amarilla:</span> {fever}
-          </p>
-          {fever.includes("Aplicada") && (
+        {fever.includes("Aplicada") && (
+          <div className="history-item">
+            <p>
+              <span style={{ fontWeight: "bold" }}>Fiebre amarilla:</span> {fever}
+            </p>
             <span
               onClick={() =>
                 window.open(`http://localhost:3000/certificate?vaccine=fever&&dni=${dni}`)
@@ -163,14 +162,14 @@ function Vaccines() {
             >
               Ver vertificado
             </span>
-          )}
-        </div>
+          </div>
+        )}
 
-        <div className="history-item">
-          <p>
-            <span style={{ fontWeight: "bold" }}>Gripe (2021):</span> {flu}
-          </p>
-          {flu.includes("Aplicada") && (
+        {flu.includes("Aplicada") && (
+          <div className="history-item">
+            <p>
+              <span style={{ fontWeight: "bold" }}>Gripe (2021):</span> {flu}
+            </p>
             <span
               onClick={() =>
                 window.open(`http://localhost:3000/certificate?vaccine=flu&&dni=${dni}`)
@@ -179,24 +178,22 @@ function Vaccines() {
             >
               Ver vertificado
             </span>
-          )}
-        </div>
+          </div>
+        )}
 
-        {hasFlu && (
+        {flu2.includes("Aplicada") && (
           <div className="history-item">
             <p>
               <span style={{ fontWeight: "bold" }}>Gripe (2022):</span> {flu2}
             </p>
-            {flu2.includes("Aplicada") && (
-              <span
-                onClick={() =>
-                  window.open(`http://localhost:3000/certificate?vaccine=flu2&&dni=${dni}`)
-                }
-                className="btn-certificate"
-              >
-                Ver vertificado
-              </span>
-            )}
+            <span
+              onClick={() =>
+                window.open(`http://localhost:3000/certificate?vaccine=flu2&&dni=${dni}`)
+              }
+              className="btn-certificate"
+            >
+              Ver vertificado
+            </span>
           </div>
         )}
       </Form>

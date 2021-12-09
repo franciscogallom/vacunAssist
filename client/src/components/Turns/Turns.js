@@ -173,7 +173,10 @@ function Turns() {
             </ul>
           </>
         ) : (
-          <h5>No hay pacientes pendientes de asignación de turno.</h5>
+          <>
+            <h5>No hay pacientes pendientes de asignación de turno.</h5>
+            {message && <p className="validation-message">{message}</p>}
+          </>
         )}
       </Form>
     </>
