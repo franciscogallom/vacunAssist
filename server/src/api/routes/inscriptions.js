@@ -310,16 +310,59 @@ router.get("/pending", (req, res) => {
 
 router.post("/reasign", (req, res) => {
   const { turn, dni, vaccine } = req.body
-  db.query(
-    `UPDATE inscriptions SET ${vaccine} = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
-    (error, result) => {
-      if (error) {
-        res.send(error)
-      } else {
-        res.send(`Turno del usuario de DNI ${dni} reasignado exitosamente para el ${turn}.`)
-      }
+
+  let vaccination
+  db.query(`SELECT vaccination FROM users WHERE dni = ${dni}`, (error, result) => {
+    if (error) {
+      res.send(result)
+    } else {
+      vaccination = result[0].vaccination
+      let availables
+      let total
+      db.query(
+        `SELECT ${vaccine} FROM inscriptions WHERE (${vaccine}= 'Turno para el ${turn}.') and (vaccination= '${vaccination}') `,
+        (error, result) => {
+          if (error) {
+            res.send(error)
+          } else {
+            availables = result.length
+            db.query(
+              `SELECT ${
+                vaccine === "covid2" ? "covid" : vaccine
+              } FROM stock WHERE (vaccination= '${vaccination}') `,
+              (error, result) => {
+                if (error) {
+                  res.send(error)
+                } else {
+                  total = result[0][vaccine === "covid2" ? "covid" : vaccine]
+
+                  if (total - availables > 0) {
+                    db.query(
+                      `UPDATE inscriptions SET ${vaccine} = 'Turno para el ${turn}.' WHERE dni = ${dni}`,
+                      (error, result) => {
+                        if (error) {
+                          res.send(error)
+                        } else {
+                          res.send(
+                            `Turno del usuario de DNI ${dni} reasignado exitosamente para el ${turn}.`
+                          )
+                        }
+                      }
+                    )
+                  } else {
+                    res.send({
+                      error: true,
+                      message: "No contamos con vacunas disponibles para esta fecha.",
+                    })
+                  }
+                }
+              }
+            )
+          }
+        }
+      )
     }
-  )
+  })
 })
 
 router.post("/apply", (req, res) => {

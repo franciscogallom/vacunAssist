@@ -42,14 +42,21 @@ function Turns() {
       finalDate.setDate(finalDate.getDate() + 1)
       reasign(finalDate.toLocaleDateString(), dni, vaccine)
         .then((res) => {
-          document.getElementById("date").value = ""
-          setMessage(res.data)
-          setTimeout(() => {
-            setMessage("")
-          }, 15000)
-          setCovidDate("")
-          setFeverDate("")
-          setFluDate("")
+          if (res.data.error) {
+            setError(res.data.message)
+            setTimeout(() => {
+              setError("")
+            }, 5000)
+          } else {
+            document.getElementById("date").value = ""
+            setMessage(res.data)
+            setTimeout(() => {
+              setMessage("")
+            }, 15000)
+            setCovidDate("")
+            setFeverDate("")
+            setFluDate("")
+          }
         })
         .catch((e) => {
           console.log(e)
