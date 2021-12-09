@@ -347,43 +347,47 @@ router.post("/apply", (req, res) => {
             res.send(error)
           } else {
             if (result[0].covid.includes("Aplicada") && vaccine === "covid") {
-                isApply = true
-                res.send({
-                  error: true,
-                  message: "La vacuna de COVID-19 ya se encontraba como aplicada anteriormente.",
-                })
-            } else if(result[0].covid2.includes("Aplicada") && vaccine === "covid2" ){
               isApply = true
               res.send({
                 error: true,
-                message: "La segunda dosis de COVID-19 ya se encontraba como aplicada anteriormente.",
+                message: "La vacuna de COVID-19 ya se encontraba como aplicada anteriormente.",
               })
-            } else if(!(result[0].includes("Aplicada") && vaccine === "covid2")){
-                res.send({
-                  error: true,
-                  message: "No se puede aplicar la segunda dosis si la primera no lo esta."
-                })
-            } else if (result[0].flu.includes("Aplicada") && vaccine === "flu") { 
-              isApply = true
-              
-                res.send({
-                  error: true,
-                  message: "La vacuna para la gripe ya se encontraba como aplicada anteriormente.",
-                })
-            } else if(result[0].flu2.includes("Aplicada") && vaccine === "flu2"){
+            } else if (result[0].covid2.includes("Aplicada") && vaccine === "covid2") {
               isApply = true
               res.send({
                 error: true,
-                message: "La segunda dosis para la gripe ya se encontraba como aplicada anteriormente.",
+                message:
+                  "La segunda dosis de COVID-19 ya se encontraba como aplicada anteriormente.",
+              })
+            } else if (!result[0].covid.includes("Aplicada") && vaccine === "covid2") {
+              isApply = true
+              res.send({
+                error: true,
+                message: "No se puede aplicar la segunda dosis si la primera no lo esta.",
+              })
+            } else if (result[0].flu.includes("Aplicada") && vaccine === "flu") {
+              isApply = true
+
+              res.send({
+                error: true,
+                message: "La vacuna para la gripe ya se encontraba como aplicada anteriormente.",
+              })
+            } else if (result[0].flu2.includes("Aplicada") && vaccine === "flu2") {
+              isApply = true
+              res.send({
+                error: true,
+                message:
+                  "La segunda dosis para la gripe ya se encontraba como aplicada anteriormente.",
               })
             } else if (result[0].fever.includes("Aplicada") && vaccine === "fever") {
-                isApply = true
-                res.send({
-                  error: true,
-                  message:
-                    "La vacuna de la fiebre amarilla ya se encontraba como aplicada anteriormente.",
-                })
+              isApply = true
+              res.send({
+                error: true,
+                message:
+                  "La vacuna de la fiebre amarilla ya se encontraba como aplicada anteriormente.",
+              })
             }
+            // Paso todas las validaciones.
             db.query(`SELECT ${vaccine} FROM inscriptions WHERE dni = ${dni}`, (error, result) => {
               if (error) {
                 res.send(error)
@@ -391,62 +395,63 @@ router.post("/apply", (req, res) => {
                 actualVaccine = result[0]
               }
             })
-            // Paso todas las validaciones. 
-            } if(!(isApply)) {
-            db.query(
-              `UPDATE inscriptions SET ${vaccine} = '${today}' WHERE dni = ${dni}`,
-              (error, result) => {
-                if (error) {
-                  res.send(error)
-                } else {
-                  db.query(
-                    `UPDATE stock SET ${vaccine} = ${vaccine} - 1 WHERE vaccination = (?)`,
-                    [vaccination],
-                    (error, result) => {
-                      if (error) {
-                        res.send(error)
-                      } else {
-                        console.log(
-                          `Vacuna '${vaccine}' marcada como aplicada al paciente '${dni}' y stock actualizado correctamente en '${vaccination}'.`
-                        )
-                        const today = new Date().getDate()
-                        if (vaccine === "covid") {
-                          const assignedDay = today + 14
-                          date.setDate(assignedDay)
-                          const turn = `Turno para el ${date.toLocaleDateString()}.`
-                          db.query(
-                            `UPDATE inscriptions SET covid2 = '${turn}' WHERE dni = ${dni}`,
-                            (error, result) => {
-                              if (error) {
-                                res.send(error)
-                              } else {
-                                console.log(`Segunda dósis de COVID: ${turn}`)
+            if (!isApply) {
+              db.query(
+                `UPDATE inscriptions SET ${vaccine} = '${today}' WHERE dni = ${dni}`,
+                (error, result) => {
+                  if (error) {
+                    res.send(error)
+                  } else {
+                    const checkVaccine = vaccine === "covid2" ? "covid" : vaccine
+                    db.query(
+                      `UPDATE stock SET ${checkVaccine} = ${checkVaccine} - 1 WHERE vaccination = (?)`,
+                      [vaccination],
+                      (error, result) => {
+                        if (error) {
+                          res.send(error)
+                        } else {
+                          const today = new Date().getDate()
+                          if (vaccine === "covid") {
+                            const assignedDay = today + 14
+                            date.setDate(assignedDay)
+                            const turn = `Turno para el ${date.toLocaleDateString()}.`
+                            db.query(
+                              `UPDATE inscriptions SET covid2 = '${turn}' WHERE dni = ${dni}`,
+                              (error, result) => {
+                                if (error) {
+                                  res.send(error)
+                                } else {
+                                  console.log(`Segunda dósis de COVID: ${turn}`)
+                                }
                               }
-                            }
-                          )
-                        } else if (vaccine === "flu") {
-                          const assignedDay = today + 365
-                          date.setDate(assignedDay)
-                          const turn = `Turno para el ${date.toLocaleDateString()}.`
+                            )
+                          } else if (vaccine === "flu") {
+                            const assignedDay = today + 365
+                            date.setDate(assignedDay)
+                            const turn = `Turno para el ${date.toLocaleDateString()}.`
 
-                          db.query(
-                            `UPDATE inscriptions SET flu2 = '${turn}' WHERE dni = ${dni}`,
-                            (error, result) => {
-                              if (error) {
-                                res.send(error)
-                              } else {
-                                console.log(`Gripe 2022: ${turn}`)
+                            db.query(
+                              `UPDATE inscriptions SET flu2 = '${turn}' WHERE dni = ${dni}`,
+                              (error, result) => {
+                                if (error) {
+                                  res.send(error)
+                                } else {
+                                  console.log(`Gripe 2022: ${turn}`)
+                                }
                               }
-                            }
+                            )
+                          }
+                          console.log(
+                            `Vacuna '${vaccine}' marcada como aplicada al paciente '${dni}' y stock actualizado correctamente en '${vaccination}'.`
                           )
+                          res.send("Vacuna marcada como aplicada exitosamente.")
                         }
-                        res.send("Vacuna marcada como aplicada exitosamente.")
                       }
-                    }
-                  )
+                    )
+                  }
                 }
-              }
-            )}
+              )
+            }
           }
         })
       }

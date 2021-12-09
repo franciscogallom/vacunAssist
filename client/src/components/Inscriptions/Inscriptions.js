@@ -85,12 +85,19 @@ function Inscriptions() {
                 }, 5000)
               }
             } else {
-              document.getElementById("lot").value = ""
-              setLot("")
-              setMessage(res.data)
-              setTimeout(() => {
-                setMessage("")
-              }, 5000)
+              if (res.data.error) {
+                setErrorHandle(res.data.message)
+                setTimeout(() => {
+                  setErrorHandle("")
+                }, 5000)
+              } else {
+                document.getElementById("lot").value = ""
+                setLot("")
+                setMessage(res.data)
+                setTimeout(() => {
+                  setMessage("")
+                }, 5000)
+              }
             }
           })
           .catch((e) => {
