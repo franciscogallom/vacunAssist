@@ -252,7 +252,8 @@ function Inscriptions() {
           onChange={(e) => setAppliedVaccine(e.target.value)}
           className="select"
         >
-          <option value="covid">COVID-19</option>
+          <option value="covid">COVID-19 (primera dósis)</option>
+          <option value="covid2">COVID-19 (segunda dósis)</option>
           <option value="flu">Gripe</option>
           <option value="fever">Fiebre amarilla</option>
         </select>
