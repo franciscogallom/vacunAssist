@@ -288,6 +288,7 @@ router.post("/reasign", (req, res) => {
 router.post("/apply", (req, res) => {
   const { vaccine, dni, lot, vaccination } = req.body
   const date = new Date()
+  let isApply
   const today = `Aplicada el ${new Date().toLocaleDateString()} (${lot}).`
   db.query(`SELECT * FROM users WHERE dni = ${dni}`, (error, result) => {
     if (error) {
@@ -304,31 +305,57 @@ router.post("/apply", (req, res) => {
         })
       } else {
         // Chequeo que la vacuna no figura como aplicada anteriormente.
-        db.query(`SELECT ${vaccine} FROM inscriptions WHERE dni = ${dni}`, (error, result) => {
+        db.query(`SELECT * FROM inscriptions WHERE dni = ${dni}`, (error, result) => {
           if (error) {
             res.send(error)
           } else {
-            if (result[0].covid) {
-              result[0].covid.includes("Aplicada") &&
+            if (result[0].covid.includes("Aplicada") && vaccine === "covid") {
+                isApply = true
                 res.send({
                   error: true,
                   message: "La vacuna de COVID-19 ya se encontraba como aplicada anteriormente.",
                 })
-            } else if (result[0].flu) {
-              result[0].flu.includes("Aplicada") &&
+            } else if(result[0].covid2.includes("Aplicada") && vaccine === "covid2" ){
+              isApply = true
+              res.send({
+                error: true,
+                message: "La segunda dosis de COVID-19 ya se encontraba como aplicada anteriormente.",
+              })
+            } else if(!(result[0].includes("Aplicada") && vaccine === "covid2")){
+                res.send({
+                  error: true,
+                  message: "No se puede aplicar la segunda dosis si la primera no lo esta."
+                })
+            } else if (result[0].flu.includes("Aplicada") && vaccine === "flu") { 
+              isApply = true
+              
                 res.send({
                   error: true,
                   message: "La vacuna para la gripe ya se encontraba como aplicada anteriormente.",
                 })
-            } else if (result[0].fever) {
-              result[0].fever.includes("Aplicada") &&
+            } else if(result[0].flu2.includes("Aplicada") && vaccine === "flu2"){
+              isApply = true
+              res.send({
+                error: true,
+                message: "La segunda dosis para la gripe ya se encontraba como aplicada anteriormente.",
+              })
+            } else if (result[0].fever.includes("Aplicada") && vaccine === "fever") {
+                isApply = true
                 res.send({
                   error: true,
                   message:
                     "La vacuna de la fiebre amarilla ya se encontraba como aplicada anteriormente.",
                 })
             }
-            // Paso todas las validaciones.
+            db.query(`SELECT ${vaccine} FROM inscriptions WHERE dni = ${dni}`, (error, result) => {
+              if (error) {
+                res.send(error)
+              } else {
+                actualVaccine = result[0]
+              }
+            })
+            // Paso todas las validaciones. 
+            } if(!(isApply)) {
             db.query(
               `UPDATE inscriptions SET ${vaccine} = '${today}' WHERE dni = ${dni}`,
               (error, result) => {
@@ -349,8 +376,7 @@ router.post("/apply", (req, res) => {
                         if (vaccine === "covid") {
                           const assignedDay = today + 14
                           date.setDate(assignedDay)
-                          const turn = `Turno para el ${new date.toLocaleDateString()}.`
-
+                          const turn = `Turno para el ${date.toLocaleDateString()}.`
                           db.query(
                             `UPDATE inscriptions SET covid2 = '${turn}' WHERE dni = ${dni}`,
                             (error, result) => {
@@ -383,7 +409,7 @@ router.post("/apply", (req, res) => {
                   )
                 }
               }
-            )
+            )}
           }
         })
       }
