@@ -128,7 +128,7 @@ function Vaccines() {
               }
               className="btn-certificate"
             >
-              Ver vertificado
+              Ver certificado
             </span>
           </div>
         )}
@@ -144,7 +144,7 @@ function Vaccines() {
               }
               className="btn-certificate"
             >
-              Ver vertificado
+              Ver certificado
             </span>
           </div>
         )}
@@ -160,7 +160,7 @@ function Vaccines() {
               }
               className="btn-certificate"
             >
-              Ver vertificado
+              Ver certificado
             </span>
           </div>
         )}
@@ -176,7 +176,7 @@ function Vaccines() {
               }
               className="btn-certificate"
             >
-              Ver vertificado
+              Ver certificado
             </span>
           </div>
         )}
@@ -192,7 +192,7 @@ function Vaccines() {
               }
               className="btn-certificate"
             >
-              Ver vertificado
+              Ver certificado
             </span>
           </div>
         )}
